@@ -2,26 +2,32 @@
 
 ## Overview
 
-In this module, you'll create, sign, and broadcast your first BSV transaction. This is where blockchain development becomes real - you'll be moving actual value on the BSV blockchain!
+In this module, you'll create, sign, and broadcast your first BSV transaction. We'll show you two approaches: backend development using the SDK's Transaction class, and frontend development using the WalletClient. Both leverage the SDK's built-in features to handle complexity automatically.
+
+**Important Paradigm Note**: The BSV SDK handles most transaction complexity for you - fee calculation, change outputs, UTXO selection, and broadcasting are all automated. You focus on what you want to accomplish, not the low-level mechanics.
 
 ## Learning Objectives
 
 By the end of this module, you will be able to:
-- Build a complete BSV transaction
-- Add inputs and outputs correctly
-- Calculate and manage fees
-- Sign transactions with private keys
-- Broadcast transactions to the network
+- Understand transaction structure conceptually
+- Build transactions using SDK's simplified methods
+- Use backend Transaction class for server-side applications
+- Use frontend WalletClient for browser-based applications
+- Broadcast transactions using SDK methods
 - Monitor transaction confirmations
 
 ## Prerequisites
 
 Before starting, ensure you have:
-- ✅ Completed [Your First Wallet](../first-wallet/README.md)
-- ✅ A wallet with testnet BSV (get from [faucet](https://faucet.bsvblockchain.org/))
-- ✅ Basic understanding of UTXOs and transactions
+- Completed [Your First Wallet](../first-wallet/README.md)
+- A wallet with testnet BSV (get from [faucet](https://faucet.bsvblockchain.org/))
+- Basic understanding of UTXOs and transactions
 
-## Transaction Anatomy
+## Transaction Structure (Conceptual)
+
+Understanding transaction structure helps you reason about Bitcoin, even though the SDK handles the details.
+
+### What Happens Under the Hood
 
 A BSV transaction consists of:
 
@@ -38,274 +44,56 @@ interface Transaction {
 
 ```
 Your UTXOs (Inputs)
-    ↓
-Transaction
-    ↓
-Recipient UTXOs (Outputs)
-+ Your Change (Output)
+    |
+    v
+Transaction Logic
+- Validates inputs
+- Creates outputs
+- Calculates fees
+- Generates change
+    |
+    v
+New UTXOs (Outputs)
 ```
 
-## Step-by-Step: Creating Your First Transaction
+### What the SDK Handles Automatically
 
-### Step 1: Set Up
+The SDK takes care of:
+- **Fee Calculation**: Analyzes transaction size and applies fee rate
+- **Change Outputs**: Calculates and creates change back to your address
+- **UTXO Selection**: Chooses appropriate UTXOs for your transaction
+- **Dust Limits**: Ensures outputs meet minimum values
+- **Script Templates**: Manages locking and unlocking scripts
 
-```typescript
-import {
-  Transaction,
-  PrivateKey,
-  P2PKH,
-  SatoshisPerKilobyte
-} from '@bsv/sdk'
+You just specify: **what to send, how much, and to whom**.
 
-// Your wallet private key
-const privateKey = PrivateKey.fromWif('your-testnet-private-key-wif')
-const myAddress = privateKey.toPublicKey().toAddress()
+## Backend Approach: Transaction Class
 
-// Recipient address
-const recipientAddress = '1RecipientAddressGoesHere...'
+Use this approach for server-side applications, backend services, or when you need direct control over wallet management.
 
-// Amount to send (in satoshis)
-const amountToSend = 10000 // 0.0001 BSV
-```
-
-### Step 2: Fetch Your UTXOs
+### Simple Payment Transaction
 
 ```typescript
-interface UTXO {
-  txid: string
-  vout: number
-  satoshis: number
-  script: string
-}
+import { Transaction, PrivateKey, P2PKH } from '@bsv/sdk'
 
-async function getUTXOs(address: string): Promise<UTXO[]> {
-  const response = await fetch(
-    `https://api.whatsonchain.com/v1/bsv/test/address/${address}/unspent`
-  )
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch UTXOs')
-  }
-
-  return await response.json()
-}
-
-// Fetch your UTXOs
-const myUTXOs = await getUTXOs(myAddress)
-console.log('Available UTXOs:', myUTXOs)
-```
-
-### Step 3: Select UTXOs for Input
-
-```typescript
-// Simple UTXO selection: use first UTXO with enough funds
-function selectUTXOs(utxos: UTXO[], targetAmount: number): UTXO[] {
-  const selected: UTXO[] = []
-  let total = 0
-
-  for (const utxo of utxos) {
-    selected.push(utxo)
-    total += utxo.satoshis
-
-    // Include estimated fee (500 sats for simple tx)
-    if (total >= targetAmount + 500) {
-      break
-    }
-  }
-
-  if (total < targetAmount + 500) {
-    throw new Error('Insufficient funds')
-  }
-
-  return selected
-}
-
-const selectedUTXOs = selectUTXOs(myUTXOs, amountToSend)
-console.log('Selected UTXOs:', selectedUTXOs)
-```
-
-### Step 4: Create Transaction
-
-```typescript
-// Create new transaction
-const tx = new Transaction()
-
-// Calculate total input amount
-const inputTotal = selectedUTXOs.reduce((sum, utxo) => sum + utxo.satoshis, 0)
-
-console.log('Input total:', inputTotal, 'satoshis')
-```
-
-### Step 5: Add Inputs
-
-```typescript
-// Add each UTXO as an input
-for (const utxo of selectedUTXOs) {
-  await tx.addInput({
-    sourceTransaction: utxo.txid,
-    sourceOutputIndex: utxo.vout,
-    unlockingScriptTemplate: new P2PKH().unlock(privateKey),
-    sequence: 0xffffffff // Standard sequence number
-  })
-}
-
-console.log('Added', tx.inputs.length, 'inputs')
-```
-
-### Step 6: Add Payment Output
-
-```typescript
-// Create output paying recipient
-tx.addOutput({
-  satoshis: amountToSend,
-  lockingScript: new P2PKH().lock(recipientAddress)
-})
-
-console.log('Added payment output:', amountToSend, 'satoshis')
-```
-
-### Step 7: Calculate Fee and Add Change
-
-```typescript
-// Create fee model (50 satoshis per kilobyte)
-const feeModel = new SatoshisPerKilobyte(50)
-
-// Calculate fee for this transaction
-const estimatedFee = await tx.getFee(feeModel)
-console.log('Estimated fee:', estimatedFee, 'satoshis')
-
-// Calculate change
-const changeAmount = inputTotal - amountToSend - estimatedFee
-
-if (changeAmount > 0) {
-  // Add change output back to yourself
-  tx.addOutput({
-    satoshis: changeAmount,
-    lockingScript: new P2PKH().lock(myAddress)
-  })
-
-  console.log('Added change output:', changeAmount, 'satoshis')
-} else if (changeAmount < 0) {
-  throw new Error('Insufficient funds for fee')
-}
-```
-
-### Step 8: Sign Transaction
-
-```typescript
-// Sign all inputs
-await tx.sign()
-
-console.log('Transaction signed successfully')
-
-// Get transaction ID
-const txid = tx.id('hex')
-console.log('Transaction ID:', txid)
-
-// Get raw transaction hex
-const rawTx = tx.toHex()
-console.log('Raw transaction:', rawTx)
-```
-
-### Step 9: Broadcast Transaction
-
-```typescript
-async function broadcastTransaction(txHex: string): Promise<string> {
-  const response = await fetch(
-    'https://api.whatsonchain.com/v1/bsv/test/tx/raw',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ txhex: txHex })
-    }
-  )
-
-  if (!response.ok) {
-    const error = await response.text()
-    throw new Error(`Broadcast failed: ${error}`)
-  }
-
-  const result = await response.text()
-  return result.replace(/"/g, '') // Remove quotes from txid
-}
-
-// Broadcast the transaction
-try {
-  const broadcastedTxid = await broadcastTransaction(rawTx)
-  console.log('✅ Transaction broadcast successfully!')
-  console.log('Transaction ID:', broadcastedTxid)
-  console.log('View on explorer:', `https://test.whatsonchain.com/tx/${broadcastedTxid}`)
-} catch (error) {
-  console.error('❌ Broadcast failed:', error.message)
-}
-```
-
-## Complete Example Function
-
-```typescript
-import {
-  Transaction,
-  PrivateKey,
-  P2PKH,
-  SatoshisPerKilobyte
-} from '@bsv/sdk'
-
-async function sendBSV(
+async function sendPayment(
   privateKeyWif: string,
   recipientAddress: string,
-  amountSatoshis: number,
-  network: 'main' | 'test' = 'test'
+  amountSatoshis: number
 ): Promise<string> {
-  // 1. Setup
+  // Initialize your private key
   const privateKey = PrivateKey.fromWif(privateKeyWif)
-  const myAddress = privateKey.toPublicKey().toAddress()
 
-  console.log('Sending from:', myAddress)
-  console.log('Sending to:', recipientAddress)
-  console.log('Amount:', amountSatoshis, 'satoshis')
-
-  // 2. Fetch UTXOs
-  const apiBase = network === 'main'
-    ? 'https://api.whatsonchain.com/v1/bsv/main'
-    : 'https://api.whatsonchain.com/v1/bsv/test'
-
-  const utxosResponse = await fetch(`${apiBase}/address/${myAddress}/unspent`)
-  const utxos: UTXO[] = await utxosResponse.json()
-
-  if (utxos.length === 0) {
-    throw new Error('No UTXOs available. Fund your wallet first.')
-  }
-
-  // 3. Select UTXOs
-  let inputTotal = 0
-  const selectedUTXOs: UTXO[] = []
-
-  for (const utxo of utxos) {
-    selectedUTXOs.push(utxo)
-    inputTotal += utxo.satoshis
-
-    if (inputTotal >= amountSatoshis + 1000) { // +1000 for fee buffer
-      break
-    }
-  }
-
-  if (inputTotal < amountSatoshis + 500) {
-    throw new Error(`Insufficient funds. Have: ${inputTotal}, Need: ${amountSatoshis + 500}`)
-  }
-
-  // 4. Build transaction
+  // Create a transaction
   const tx = new Transaction()
 
-  // Add inputs
-  for (const utxo of selectedUTXOs) {
-    await tx.addInput({
-      sourceTransaction: utxo.txid,
-      sourceOutputIndex: utxo.vout,
-      unlockingScriptTemplate: new P2PKH().unlock(privateKey)
-    })
-  }
+  // Add input (UTXO you're spending)
+  // Note: In practice, you get this from a UTXO manager or wallet service
+  await tx.addInput({
+    sourceTransaction: previousTxid,  // Your UTXO's transaction ID
+    sourceOutputIndex: outputIndex,    // Which output in that transaction
+    unlockingScriptTemplate: new P2PKH().unlock(privateKey)
+  })
 
   // Add payment output
   tx.addOutput({
@@ -313,272 +101,830 @@ async function sendBSV(
     lockingScript: new P2PKH().lock(recipientAddress)
   })
 
-  // Calculate fee
-  const feeModel = new SatoshisPerKilobyte(50)
-  const fee = await tx.getFee(feeModel)
+  // SDK automatically:
+  // - Calculates required fee based on transaction size
+  // - Creates change output back to your address
+  // - Handles dust limits
 
-  // Add change output
-  const change = inputTotal - amountSatoshis - fee
-
-  if (change > 546) { // Dust limit
-    tx.addOutput({
-      satoshis: change,
-      lockingScript: new P2PKH().lock(myAddress)
-    })
-  } else if (change < 0) {
-    throw new Error('Insufficient funds for transaction fee')
-  }
-
-  // 5. Sign transaction
+  // Sign the transaction
   await tx.sign()
 
-  // 6. Broadcast
-  const rawTx = tx.toHex()
-  const broadcastResponse = await fetch(`${apiBase}/tx/raw`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ txhex: rawTx })
+  // Broadcast using SDK method
+  const result = await tx.broadcast()
+
+  return result.txid
+}
+```
+
+### What You Write vs What Happens
+
+**What You Write**:
+```typescript
+tx.addInput({ sourceTransaction, sourceOutputIndex, unlockingScriptTemplate })
+tx.addOutput({ satoshis, lockingScript })
+await tx.sign()
+await tx.broadcast()
+```
+
+**What the SDK Does**:
+1. Validates the input UTXO
+2. Calculates transaction size
+3. Computes appropriate fee
+4. Determines change amount
+5. Creates change output (if needed)
+6. Checks dust limits
+7. Signs all inputs
+8. Serializes transaction
+9. Broadcasts to network
+10. Returns transaction ID
+
+### Complete Backend Example
+
+```typescript
+import { Transaction, PrivateKey, P2PKH, ARC } from '@bsv/sdk'
+
+interface PaymentRequest {
+  privateKeyWif: string
+  recipientAddress: string
+  amountSatoshis: number
+}
+
+async function createAndSendPayment(
+  request: PaymentRequest
+): Promise<{ txid: string; fee: number }> {
+  const { privateKeyWif, recipientAddress, amountSatoshis } = request
+
+  // Setup
+  const privateKey = PrivateKey.fromWif(privateKeyWif)
+  const myAddress = privateKey.toPublicKey().toAddress()
+
+  console.log('Sending from:', myAddress)
+  console.log('Sending to:', recipientAddress)
+  console.log('Amount:', amountSatoshis, 'satoshis')
+
+  // Create transaction
+  const tx = new Transaction()
+
+  // Add your UTXO as input
+  // In production: get UTXOs from your wallet manager or overlay services
+  await tx.addInput({
+    sourceTransaction: yourUTXO.txid,
+    sourceOutputIndex: yourUTXO.vout,
+    unlockingScriptTemplate: new P2PKH().unlock(privateKey),
+    sequence: 0xffffffff
   })
 
-  if (!broadcastResponse.ok) {
-    const error = await broadcastResponse.text()
-    throw new Error(`Broadcast failed: ${error}`)
-  }
+  // Add payment output
+  tx.addOutput({
+    satoshis: amountSatoshis,
+    lockingScript: new P2PKH().lock(recipientAddress)
+  })
 
-  const txid = await broadcastResponse.text()
-  return txid.replace(/"/g, '')
+  // SDK handles:
+  // - Fee calculation
+  // - Change output creation
+  // - Dust limit checking
+
+  // Sign transaction
+  await tx.sign()
+
+  console.log('Transaction signed')
+  console.log('Transaction ID:', tx.id('hex'))
+
+  // Broadcast using SDK's broadcast method
+  const broadcastResult = await tx.broadcast()
+
+  console.log('Transaction broadcast successfully')
+  console.log('Status:', broadcastResult.status)
+  console.log('TXID:', broadcastResult.txid)
+
+  // Get fee information (SDK calculated this)
+  const fee = await tx.getFee()
+
+  return {
+    txid: broadcastResult.txid,
+    fee
+  }
 }
 
 // Usage
 try {
-  const txid = await sendBSV(
-    'your-private-key-wif',
-    'recipient-address',
-    10000, // 0.0001 BSV
-    'test'
-  )
+  const result = await createAndSendPayment({
+    privateKeyWif: 'your-testnet-private-key-wif',
+    recipientAddress: '1RecipientAddressGoesHere...',
+    amountSatoshis: 10000  // 0.0001 BSV
+  })
 
-  console.log('✅ Success! Transaction ID:', txid)
-  console.log('View:', `https://test.whatsonchain.com/tx/${txid}`)
+  console.log('Success!')
+  console.log('Transaction ID:', result.txid)
+  console.log('Fee paid:', result.fee, 'satoshis')
+  console.log('View on explorer:', `https://test.whatsonchain.com/tx/${result.txid}`)
 } catch (error) {
-  console.error('❌ Error:', error.message)
+  console.error('Transaction failed:', error.message)
 }
 ```
 
-## Monitoring Confirmations
+### Backend: Multiple Recipients
 
-After broadcasting, monitor confirmations:
+Sending to multiple recipients is simple - just add multiple outputs:
 
 ```typescript
-async function getConfirmations(
-  txid: string,
-  network: 'main' | 'test' = 'test'
-): Promise<number> {
-  const apiBase = network === 'main'
-    ? 'https://api.whatsonchain.com/v1/bsv/main'
-    : 'https://api.whatsonchain.com/v1/bsv/test'
+async function sendToMultipleRecipients(
+  privateKeyWif: string,
+  payments: Array<{ address: string; amount: number }>
+): Promise<string> {
+  const privateKey = PrivateKey.fromWif(privateKeyWif)
+  const tx = new Transaction()
 
-  const response = await fetch(`${apiBase}/tx/hash/${txid}`)
+  // Add input(s)
+  await tx.addInput({
+    sourceTransaction: yourUTXO.txid,
+    sourceOutputIndex: yourUTXO.vout,
+    unlockingScriptTemplate: new P2PKH().unlock(privateKey)
+  })
 
-  if (!response.ok) {
-    return 0 // Not found or not confirmed
+  // Add multiple payment outputs
+  for (const payment of payments) {
+    tx.addOutput({
+      satoshis: payment.amount,
+      lockingScript: new P2PKH().lock(payment.address)
+    })
   }
 
-  const txInfo = await response.json()
+  // SDK automatically handles:
+  // - Fee calculation for larger transaction
+  // - Change output creation
 
-  if (!txInfo.blockheight) {
-    return 0 // In mempool, not in block
-  }
+  await tx.sign()
+  const result = await tx.broadcast()
 
-  // Get current block height
-  const chainInfoResponse = await fetch(`${apiBase}/chain/info`)
-  const chainInfo = await chainInfoResponse.json()
-
-  const confirmations = chainInfo.blocks - txInfo.blockheight + 1
-  return confirmations
+  return result.txid
 }
 
-// Monitor transaction
-async function waitForConfirmations(
+// Usage: send to 3 recipients in one transaction
+const txid = await sendToMultipleRecipients(
+  privateKeyWif,
+  [
+    { address: 'recipient1...', amount: 5000 },
+    { address: 'recipient2...', amount: 10000 },
+    { address: 'recipient3...', amount: 15000 }
+  ]
+)
+```
+
+## Frontend Approach: WalletClient
+
+Use this approach for browser-based applications where the user's wallet (like Panda Wallet) handles all the complexity.
+
+### How WalletClient Works
+
+WalletClient is a standardized interface that connects to user wallets. The wallet:
+- Manages private keys securely
+- Selects and manages UTXOs
+- Calculates fees
+- Signs transactions
+- Broadcasts to network
+
+You just specify what you want to accomplish.
+
+### Simple Payment with WalletClient
+
+```typescript
+import { WalletClient } from '@bsv/sdk'
+
+async function sendPaymentViaWallet(
+  recipientAddress: string,
+  amountSatoshis: number
+): Promise<string> {
+  // Connect to user's wallet
+  const wallet = await WalletClient.connect()
+
+  // Request payment - wallet handles everything
+  const result = await wallet.createAction({
+    outputs: [
+      {
+        satoshis: amountSatoshis,
+        script: new P2PKH().lock(recipientAddress).toHex()
+      }
+    ],
+    description: 'Payment transaction'
+  })
+
+  // Wallet has:
+  // - Selected UTXOs
+  // - Calculated fees
+  // - Created change output
+  // - Signed transaction
+  // - Broadcast to network
+
+  return result.txid
+}
+
+// Usage
+try {
+  const txid = await sendPaymentViaWallet(
+    '1RecipientAddressGoesHere...',
+    10000  // 0.0001 BSV
+  )
+
+  console.log('Payment sent!')
+  console.log('Transaction ID:', txid)
+  console.log('View:', `https://whatsonchain.com/tx/${txid}`)
+} catch (error) {
+  console.error('Payment failed:', error.message)
+}
+```
+
+### Frontend: Complete Example with UI
+
+```typescript
+import { WalletClient, P2PKH } from '@bsv/sdk'
+
+class PaymentApp {
+  private wallet: WalletClient | null = null
+
+  async connectWallet(): Promise<void> {
+    try {
+      this.wallet = await WalletClient.connect()
+      console.log('Wallet connected successfully')
+
+      // Get user's identity
+      const identity = await this.wallet.getPublicKey()
+      console.log('Connected as:', identity)
+    } catch (error) {
+      throw new Error('Failed to connect wallet: ' + error.message)
+    }
+  }
+
+  async sendPayment(
+    recipientAddress: string,
+    amountSatoshis: number,
+    description: string = 'Payment'
+  ): Promise<string> {
+    if (!this.wallet) {
+      throw new Error('Wallet not connected')
+    }
+
+    console.log('Creating payment...')
+    console.log('To:', recipientAddress)
+    console.log('Amount:', amountSatoshis, 'satoshis')
+
+    // Create payment action
+    const result = await this.wallet.createAction({
+      outputs: [
+        {
+          satoshis: amountSatoshis,
+          script: new P2PKH().lock(recipientAddress).toHex()
+        }
+      ],
+      description
+    })
+
+    console.log('Payment successful!')
+    console.log('TXID:', result.txid)
+
+    return result.txid
+  }
+
+  async sendToMultiple(
+    payments: Array<{ address: string; amount: number }>
+  ): Promise<string> {
+    if (!this.wallet) {
+      throw new Error('Wallet not connected')
+    }
+
+    // Create multiple outputs
+    const outputs = payments.map(p => ({
+      satoshis: p.amount,
+      script: new P2PKH().lock(p.address).toHex()
+    }))
+
+    const result = await this.wallet.createAction({
+      outputs,
+      description: `Payment to ${payments.length} recipients`
+    })
+
+    return result.txid
+  }
+}
+
+// Usage in your app
+const app = new PaymentApp()
+
+async function handlePayment() {
+  try {
+    // Connect wallet
+    await app.connectWallet()
+
+    // Send payment
+    const txid = await app.sendPayment(
+      '1RecipientAddress...',
+      10000,
+      'Payment for goods'
+    )
+
+    // Show success
+    alert(`Payment sent! TXID: ${txid}`)
+  } catch (error) {
+    alert(`Payment failed: ${error.message}`)
+  }
+}
+```
+
+### Frontend: Request Payment from User
+
+You can also request a payment from the user with a specific amount:
+
+```typescript
+async function requestPayment(
+  recipientAddress: string,
+  amountSatoshis: number,
+  description: string
+): Promise<string> {
+  const wallet = await WalletClient.connect()
+
+  // Request specific payment
+  const result = await wallet.createAction({
+    outputs: [
+      {
+        satoshis: amountSatoshis,
+        script: new P2PKH().lock(recipientAddress).toHex()
+      }
+    ],
+    description
+  })
+
+  return result.txid
+}
+
+// Usage: request payment for a service
+const txid = await requestPayment(
+  'your-business-address',
+  50000,  // 0.0005 BSV
+  'Payment for Premium Subscription'
+)
+```
+
+## Broadcasting Transactions
+
+### Using SDK's Built-in Broadcast
+
+The simplest way to broadcast is using the Transaction class's built-in method:
+
+```typescript
+// Backend approach
+const tx = new Transaction()
+// ... add inputs and outputs ...
+await tx.sign()
+
+// Broadcast using SDK method
+const result = await tx.broadcast()
+
+console.log('Transaction ID:', result.txid)
+console.log('Status:', result.status)
+```
+
+**What `tx.broadcast()` does**:
+- Serializes the transaction to hex
+- Connects to ARC (miner broadcasting service)
+- Submits transaction to the network
+- Returns confirmation with TXID
+
+### WalletClient Auto-Broadcast
+
+With WalletClient, broadcasting is automatic:
+
+```typescript
+// Frontend approach
+const wallet = await WalletClient.connect()
+
+// This broadcasts automatically
+const result = await wallet.createAction({
+  outputs: [{ satoshis: 10000, script: lockingScript }],
+  description: 'Payment'
+})
+
+// Transaction is already broadcast
+console.log('Broadcast TXID:', result.txid)
+```
+
+### Broadcast Options (Advanced)
+
+If you need custom broadcast behavior:
+
+```typescript
+import { Transaction, ARC } from '@bsv/sdk'
+
+const tx = new Transaction()
+// ... build transaction ...
+await tx.sign()
+
+// Option 1: Use default ARC
+await tx.broadcast()
+
+// Option 2: Specify custom ARC endpoint
+const customARC = new ARC({
+  apiKey: 'your-api-key',
+  deploymentId: 'your-deployment'
+})
+
+await tx.broadcast(customARC)
+
+// Option 3: Get raw hex for manual broadcasting
+const rawHex = tx.toHex()
+// ... use your own broadcast mechanism ...
+```
+
+## Monitoring Transactions
+
+### Check Transaction Status
+
+After broadcasting, you can check the transaction status:
+
+```typescript
+async function checkTransactionStatus(txid: string): Promise<void> {
+  // In production, use overlay services or block explorers
+  // This is a simplified example
+
+  console.log('Transaction ID:', txid)
+  console.log('View on explorer:', `https://test.whatsonchain.com/tx/${txid}`)
+  console.log('Status: Broadcast to network')
+  console.log('Waiting for confirmation...')
+}
+
+// Usage
+const result = await tx.broadcast()
+await checkTransactionStatus(result.txid)
+```
+
+### Understanding Confirmations
+
+**Confirmations** = number of blocks mined after your transaction's block
+
+```
+Your transaction broadcast
+    |
+    v
+Included in block (1 confirmation)
+    |
+    v
+Next block mined (2 confirmations)
+    |
+    v
+Next block mined (3 confirmations)
+... and so on
+```
+
+**Confirmation Guidelines**:
+- **0 confirmations**: In mempool, waiting to be mined
+- **1 confirmation**: Included in a block, generally safe
+- **6+ confirmations**: Very secure, standard for larger amounts
+
+### Polling for Confirmations
+
+```typescript
+async function waitForFirstConfirmation(
   txid: string,
-  targetConfirmations: number = 6,
-  network: 'main' | 'test' = 'test'
-): Promise<void> {
-  console.log(`Waiting for ${targetConfirmations} confirmations...`)
+  maxWaitMinutes: number = 30
+): Promise<boolean> {
+  const startTime = Date.now()
+  const maxWaitMs = maxWaitMinutes * 60 * 1000
 
-  while (true) {
-    const confirmations = await getConfirmations(txid, network)
-    console.log(`Confirmations: ${confirmations}/${targetConfirmations}`)
+  console.log(`Waiting for transaction ${txid} to be confirmed...`)
 
-    if (confirmations >= targetConfirmations) {
-      console.log('✅ Transaction confirmed!')
-      break
+  while (Date.now() - startTime < maxWaitMs) {
+    // Check if transaction is in a block
+    // In production: use overlay services for this
+    const confirmed = await isTransactionConfirmed(txid)
+
+    if (confirmed) {
+      console.log('Transaction confirmed!')
+      return true
     }
 
     // Wait 30 seconds before checking again
     await new Promise(resolve => setTimeout(resolve, 30000))
   }
+
+  console.log('Timeout waiting for confirmation')
+  return false
 }
 
-// Usage
-await waitForConfirmations(txid, 6, 'test')
-```
-
-## Common Issues and Solutions
-
-### Issue 1: "Insufficient funds"
-
-**Problem**: Not enough satoshis to cover amount + fee
-
-**Solution**:
-```typescript
-// Check balance first
-const utxos = await getUTXOs(myAddress)
-const balance = utxos.reduce((sum, utxo) => sum + utxo.satoshis, 0)
-
-console.log('Balance:', balance)
-console.log('Needed:', amountToSend + 500)
-
-if (balance < amountToSend + 500) {
-  throw new Error('Insufficient balance. Get testnet BSV from faucet.')
+// Helper function (implement based on your infrastructure)
+async function isTransactionConfirmed(txid: string): Promise<boolean> {
+  // Use overlay services or block explorer APIs
+  // Return true if transaction has at least 1 confirmation
+  // This is application-specific
+  return false // Placeholder
 }
 ```
 
-### Issue 2: "Transaction broadcast rejected"
+## Common Patterns
 
-**Problem**: Invalid transaction or double-spend
+### Pattern 1: Simple Payment
 
-**Solutions**:
-- Ensure UTXOs haven't been spent
-- Verify signatures are correct
-- Check transaction format
-
+**Backend**:
 ```typescript
-// Verify transaction before broadcasting
-const isValid = await tx.verify()
-if (!isValid) {
-  throw new Error('Transaction validation failed')
-}
+const tx = new Transaction()
+await tx.addInput({ sourceTransaction, sourceOutputIndex, unlockingScriptTemplate })
+tx.addOutput({ satoshis, lockingScript })
+await tx.sign()
+await tx.broadcast()
 ```
 
-### Issue 3: "Dust output"
-
-**Problem**: Change output too small (< 546 satoshis)
-
-**Solution**:
+**Frontend**:
 ```typescript
-const DUST_LIMIT = 546
+const wallet = await WalletClient.connect()
+await wallet.createAction({
+  outputs: [{ satoshis, script }],
+  description: 'Payment'
+})
+```
 
-if (change > DUST_LIMIT) {
-  // Add change output
+### Pattern 2: Batch Payments
+
+**Backend**:
+```typescript
+const tx = new Transaction()
+await tx.addInput({ /* input */ })
+
+for (const recipient of recipients) {
   tx.addOutput({
-    satoshis: change,
-    lockingScript: new P2PKH().lock(myAddress)
+    satoshis: recipient.amount,
+    lockingScript: new P2PKH().lock(recipient.address)
   })
-} else {
-  // Add to fee instead
-  console.log('Change below dust limit, adding to fee')
 }
+
+await tx.sign()
+await tx.broadcast()
 ```
 
-## Understanding Transaction Fees
+**Frontend**:
+```typescript
+const wallet = await WalletClient.connect()
+const outputs = recipients.map(r => ({
+  satoshis: r.amount,
+  script: new P2PKH().lock(r.address).toHex()
+}))
 
-### Fee Calculation
-
-Fees are based on transaction size:
+await wallet.createAction({ outputs, description: 'Batch payment' })
 ```
-Fee = (Transaction Size in Bytes) × (Fee Rate in sats/byte)
-```
 
-**Fee Rate**: Typically 0.5 - 1 satoshi per byte on BSV
+### Pattern 3: Transaction with Data
 
-**Transaction Size**: Depends on inputs and outputs
-- Each input: ~148 bytes
-- Each output: ~34 bytes
-- Fixed overhead: ~10 bytes
-
-### Example Calculation
+You can embed data in transactions using OP_RETURN:
 
 ```typescript
-// 1 input, 2 outputs transaction
-const size = 10 + (1 * 148) + (2 * 34) // = 226 bytes
+import { Transaction, PrivateKey, P2PKH, OpReturn } from '@bsv/sdk'
 
-// At 0.5 sats/byte
-const fee = 226 * 0.5 // = 113 satoshis
+// Backend: Transaction with embedded data
+const tx = new Transaction()
 
-// At 1 sat/byte
-const fee2 = 226 * 1 // = 226 satoshis
+await tx.addInput({ /* input */ })
+
+// Payment output
+tx.addOutput({
+  satoshis: 10000,
+  lockingScript: new P2PKH().lock(recipientAddress)
+})
+
+// Data output (OP_RETURN)
+tx.addOutput({
+  satoshis: 0,
+  lockingScript: new OpReturn().lock(['Hello', 'BSV', 'Blockchain'])
+})
+
+await tx.sign()
+await tx.broadcast()
 ```
 
-### Fee Models in SDK
+## Error Handling
 
-```typescript
-import { SatoshisPerKilobyte } from '@bsv/sdk'
+### Common Errors and Solutions
 
-// 50 satoshis per kilobyte = 0.05 sats/byte
-const feeModel = new SatoshisPerKilobyte(50)
+#### Error: "Insufficient funds"
 
-const fee = await tx.getFee(feeModel)
-```
+**Cause**: Not enough satoshis to cover payment + fees
 
-## Best Practices
-
-### 1. Always Test on Testnet
-
-```typescript
-const NETWORK = 'test' // Change to 'main' only after testing
-
-// Use testnet faucet
-console.log('Get testnet BSV:', 'https://faucet.bsvblockchain.org/')
-```
-
-### 2. Verify Before Broadcasting
-
-```typescript
-// Check transaction is valid
-if (await tx.verify()) {
-  console.log('✅ Transaction is valid')
-} else {
-  console.error('❌ Transaction validation failed')
-  return
-}
-```
-
-### 3. Handle Errors Gracefully
-
+**Solution**:
 ```typescript
 try {
-  const txid = await sendBSV(...)
-  console.log('Success:', txid)
+  await tx.broadcast()
 } catch (error) {
-  if (error.message.includes('Insufficient')) {
-    console.error('Not enough funds. Get more from faucet.')
-  } else if (error.message.includes('double spend')) {
-    console.error('UTXO already spent. Fetch fresh UTXOs.')
-  } else {
-    console.error('Error:', error.message)
+  if (error.message.includes('insufficient')) {
+    console.error('Not enough funds. Need more BSV.')
+    console.log('Get testnet BSV:', 'https://faucet.bsvblockchain.org/')
   }
 }
 ```
 
-### 4. Wait for Confirmations
+#### Error: "Transaction broadcast failed"
+
+**Cause**: Invalid transaction or network issue
+
+**Solution**:
+```typescript
+try {
+  const result = await tx.broadcast()
+} catch (error) {
+  if (error.message.includes('broadcast')) {
+    // Verify transaction
+    const isValid = await tx.verify()
+    if (!isValid) {
+      console.error('Transaction is invalid')
+    } else {
+      console.error('Network issue, retry broadcast')
+    }
+  }
+}
+```
+
+#### Error: "UTXO already spent"
+
+**Cause**: Trying to spend a UTXO that's already been used
+
+**Solution**:
+```typescript
+// Always get fresh UTXOs before creating transaction
+// Don't reuse UTXO references from previous transactions
+```
+
+### Best Practices for Error Handling
 
 ```typescript
-// For small amounts: 1-3 confirmations
-// For medium amounts: 6 confirmations
-// For large amounts: 6+ confirmations
+async function sendPaymentWithErrorHandling(
+  privateKeyWif: string,
+  recipientAddress: string,
+  amountSatoshis: number
+): Promise<{ success: boolean; txid?: string; error?: string }> {
+  try {
+    const privateKey = PrivateKey.fromWif(privateKeyWif)
+    const tx = new Transaction()
 
-const REQUIRED_CONFIRMATIONS = 6
-await waitForConfirmations(txid, REQUIRED_CONFIRMATIONS)
+    // Build transaction
+    await tx.addInput({
+      sourceTransaction: utxo.txid,
+      sourceOutputIndex: utxo.vout,
+      unlockingScriptTemplate: new P2PKH().unlock(privateKey)
+    })
+
+    tx.addOutput({
+      satoshis: amountSatoshis,
+      lockingScript: new P2PKH().lock(recipientAddress)
+    })
+
+    // Sign
+    await tx.sign()
+
+    // Verify before broadcasting
+    const isValid = await tx.verify()
+    if (!isValid) {
+      return { success: false, error: 'Transaction validation failed' }
+    }
+
+    // Broadcast
+    const result = await tx.broadcast()
+
+    return { success: true, txid: result.txid }
+
+  } catch (error) {
+    return { success: false, error: error.message }
+  }
+}
+
+// Usage with error handling
+const result = await sendPaymentWithErrorHandling(wif, address, amount)
+
+if (result.success) {
+  console.log('Success! TXID:', result.txid)
+} else {
+  console.error('Failed:', result.error)
+}
 ```
+
+## Testing on Testnet
+
+### Always Test First
+
+```typescript
+// Use testnet for development
+const NETWORK = 'test'
+const TESTNET_FAUCET = 'https://faucet.bsvblockchain.org/'
+
+console.log('Testing on testnet')
+console.log('Get testnet BSV:', TESTNET_FAUCET)
+console.log('View transactions:', 'https://test.whatsonchain.com/')
+```
+
+### Testnet Checklist
+
+Before moving to mainnet:
+- [ ] Successfully send payment transaction
+- [ ] Successfully send batch payment
+- [ ] Handle insufficient funds error
+- [ ] Handle invalid address error
+- [ ] Verify transaction confirmation
+- [ ] Test with different amounts
+- [ ] Test change output behavior
 
 ## Practice Exercises
 
-1. **Send Testnet BSV**: Send 0.0001 BSV to another address
-2. **Batch Payment**: Send to multiple recipients in one transaction
-3. **Monitor Confirmations**: Track a transaction from broadcast to 6 confirmations
-4. **Calculate Fees**: Estimate fees for different transaction sizes
-5. **Handle Errors**: Implement proper error handling for all cases
+### Exercise 1: Simple Payment
+
+Send 0.0001 BSV (10,000 satoshis) to another testnet address.
+
+**Backend approach**:
+```typescript
+// TODO: Implement using Transaction class
+// - Create transaction
+// - Add input
+// - Add output
+// - Sign and broadcast
+```
+
+**Frontend approach**:
+```typescript
+// TODO: Implement using WalletClient
+// - Connect wallet
+// - Create action with output
+// - Display result
+```
+
+### Exercise 2: Batch Payment
+
+Send different amounts to 3 recipients in a single transaction.
+
+```typescript
+const recipients = [
+  { address: 'address1...', amount: 5000 },
+  { address: 'address2...', amount: 10000 },
+  { address: 'address3...', amount: 15000 }
+]
+
+// TODO: Implement batch payment
+```
+
+### Exercise 3: Transaction Monitor
+
+Create a function that monitors a transaction until it receives 3 confirmations.
+
+```typescript
+async function monitorTransaction(txid: string): Promise<void> {
+  // TODO: Poll for confirmations
+  // Display progress: 0, 1, 2, 3 confirmations
+  // Complete when 3 confirmations reached
+}
+```
+
+### Exercise 4: Error Recovery
+
+Implement a payment function that handles common errors gracefully.
+
+```typescript
+async function robustPayment(
+  wif: string,
+  address: string,
+  amount: number
+): Promise<{ success: boolean; txid?: string; error?: string }> {
+  // TODO: Implement with error handling
+  // - Validate inputs
+  // - Handle insufficient funds
+  // - Handle broadcast failures
+  // - Return meaningful error messages
+}
+```
+
+## Key Takeaways
+
+### What the SDK Does for You
+
+- **Fee Calculation**: Automatically computes correct fees based on transaction size
+- **Change Management**: Creates change outputs when needed
+- **UTXO Selection**: Backend can select appropriate UTXOs (or use wallet for frontend)
+- **Dust Limits**: Ensures all outputs meet minimum values
+- **Broadcasting**: Handles network communication with miners
+- **Verification**: Validates transactions before broadcast
+
+### What You Focus On
+
+- **Business Logic**: What payments to make and when
+- **User Experience**: How users interact with transactions
+- **Error Handling**: How to handle edge cases gracefully
+- **Application Flow**: Integration with your app's workflow
+
+### Backend vs Frontend
+
+**Backend (Transaction class)**:
+- Direct control over transaction building
+- Manage your own UTXOs and keys
+- Server-side or programmatic access
+- Full flexibility
+
+**Frontend (WalletClient)**:
+- User's wallet handles everything
+- Better security (keys stay in wallet)
+- Simpler integration
+- Standard user experience
 
 ## Related Components
 
@@ -586,6 +932,7 @@ await waitForConfirmations(txid, REQUIRED_CONFIRMATIONS)
 - [Transaction Input](../../../sdk-components/transaction-input/README.md)
 - [Transaction Output](../../../sdk-components/transaction-output/README.md)
 - [P2PKH](../../../sdk-components/p2pkh/README.md)
+- [WalletClient](../../../sdk-components/wallet-client/README.md)
 
 ## Related Code Features
 
@@ -596,19 +943,21 @@ await waitForConfirmations(txid, REQUIRED_CONFIRMATIONS)
 ## Next Steps
 
 Congratulations! You've completed the Beginner Learning Path. You now know how to:
-- ✅ Set up a BSV development environment
-- ✅ Understand BSV blockchain fundamentals
-- ✅ Create and manage wallets
-- ✅ Build, sign, and broadcast transactions
+- Set up a BSV development environment
+- Understand BSV blockchain fundamentals
+- Create and manage wallets
+- Build, sign, and broadcast transactions using SDK methods
 
 **Ready for more?** Continue to the [Intermediate Learning Path](../../intermediate/README.md) to learn about:
-- Complex transaction building
+- Complex transaction patterns
 - Custom Bitcoin Scripts
 - SPV verification
 - BRC standards implementation
+- Overlay services integration
 
 ## Additional Resources
 
 - [WhatsOnChain Testnet](https://test.whatsonchain.com/) - View your transactions
 - [BSV Testnet Faucet](https://faucet.bsvblockchain.org/) - Get free testnet BSV
 - [Transaction Format](https://wiki.bitcoinsv.io/index.php/Transaction) - Technical details
+- [BSV SDK Documentation](https://docs.bsvblockchain.org/) - Complete SDK reference

@@ -1,8 +1,12 @@
 # BSV Fundamentals
 
-## Overview
+**Module 2: Core BSV Blockchain Concepts**
 
 This module covers the core concepts and building blocks of the BSV blockchain. Understanding these fundamentals is essential for all BSV development.
+
+> **Note**: These concepts apply to **both Backend and Frontend development paradigms**. After completing this module, you'll choose your path:
+> - **Backend Development**: Server-side wallet management → [First Wallet (Backend)](../first-wallet/)
+> - **Frontend Development**: User wallet integration → [WalletClient Integration](../wallet-client-integration/)
 
 ## Learning Objectives
 
@@ -402,22 +406,30 @@ function verifyTxInBlock(
 
 ### Example: Complete Payment Flow
 
+**Important Note**: This example shows the conceptual flow to understand how transactions work internally. In practice:
+- **Frontend apps**: Use `WalletClient` which handles all of this automatically
+- **Backend apps**: Use SDK's built-in methods for UTXO management, fees, and broadcasting
+
+#### Conceptual Example (Understanding the Flow)
+
 ```typescript
 import { PrivateKey, Transaction, P2PKH } from '@bsv/sdk'
 
-async function sendPayment(
+// This shows what happens "under the hood"
+// You typically won't write this code yourself
+async function sendPaymentConceptual(
   privateKey: PrivateKey,
   recipientAddress: string,
   amount: number
 ) {
-  // 1. Get UTXOs
+  // 1. Get UTXOs (in practice, SDK or wallet handles this)
   const myAddress = privateKey.toPublicKey().toAddress()
   const utxos = await getUTXOs(myAddress)
 
   // 2. Create transaction
   const tx = new Transaction()
 
-  // 3. Add inputs
+  // 3. Add inputs (SDK can select UTXOs automatically)
   let inputTotal = 0
   for (const utxo of utxos) {
     if (inputTotal >= amount + 1000) break // +fee
@@ -437,7 +449,7 @@ async function sendPayment(
     lockingScript: new P2PKH().lock(recipientAddress)
   })
 
-  // 5. Add change output
+  // 5. Add change output (SDK can calculate this automatically)
   const fee = 500
   const change = inputTotal - amount - fee
   if (change > 0) {
@@ -447,15 +459,67 @@ async function sendPayment(
     })
   }
 
-  // 6. Sign
+  // 6. Sign (SDK handles)
   await tx.sign()
 
-  // 7. Broadcast
+  // 7. Broadcast (SDK/wallet handles)
   const txid = await broadcast(tx)
 
   return txid
 }
 ```
+
+#### In Practice: Frontend with WalletClient
+
+```typescript
+import { WalletClient } from '@bsv/sdk'
+
+// What you actually write for frontend apps
+async function sendPaymentFrontend(
+  wallet: WalletClient,
+  recipientAddress: string,
+  amount: number
+) {
+  // Wallet handles: UTXO selection, fees, change, signing, broadcasting
+  const result = await wallet.sendTransaction({
+    outputs: [{
+      address: recipientAddress,
+      satoshis: amount
+    }]
+  })
+
+  return result.txid
+}
+```
+
+#### In Practice: Backend with SDK
+
+```typescript
+import { PrivateKey, Transaction, P2PKH } from '@bsv/sdk'
+
+// What you write for backend services (simplified)
+async function sendPaymentBackend(
+  privateKey: PrivateKey,
+  recipientAddress: string,
+  amount: number
+) {
+  const tx = new Transaction()
+
+  // Add payment output
+  tx.addOutput({
+    satoshis: amount,
+    lockingScript: new P2PKH().lock(recipientAddress)
+  })
+
+  // SDK handles: UTXO selection, fee calculation, change outputs
+  await tx.sign(privateKey)
+  const txid = await tx.broadcast()
+
+  return txid
+}
+```
+
+**Key Point**: The detailed manual code above is for **understanding the concepts**. In real applications, the SDK and WalletClient handle UTXO selection, fee calculation, change outputs, and broadcasting automatically.
 
 ## Key Takeaways
 
@@ -487,9 +551,21 @@ async function sendPayment(
 
 ## Next Steps
 
-Now that you understand BSV fundamentals, let's create your first wallet!
+Now that you understand BSV fundamentals, choose your development path:
 
-Continue to: [Your First Wallet](../first-wallet/README.md)
+### Backend Development (Custodial)
+**You control private keys server-side**
+
+Continue to: [Your First Wallet (Backend)](../first-wallet/) - Learn server-side wallet management, UTXO tracking, and programmatic transaction creation.
+
+### Frontend Development (Non-Custodial)
+**Users control their own keys via wallet**
+
+Continue to: [WalletClient Integration](../wallet-client-integration/) - Learn to connect to MetaNet Desktop Wallet and request user signatures.
+
+---
+
+**Not sure which path?** Review [Development Paradigms](../development-paradigms/) to understand the differences.
 
 ## Additional Resources
 
