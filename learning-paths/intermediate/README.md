@@ -1,232 +1,262 @@
 # Intermediate Learning Path
 
-Welcome to the Intermediate Learning Path! This path builds on beginner knowledge to help you create production-ready BSV applications.
+Welcome to the Intermediate Learning Path! This path takes you beyond the fundamentals to build **real-world, production-ready BSV blockchain applications** through hands-on project development.
 
-## What You'll Learn
+## What Makes This Path Different
 
-By completing this path, you will:
-- Master BSV blockchain primitives
-- Build complex multi-party transactions
-- Implement custom script templates
-- Use SPV for trustless verification
-- Implement BRC standards in your applications
-- Work with overlays and advanced protocols
+The intermediate path is **project-based**. Instead of learning concepts in isolation, you'll build three complete, deployable applications that demonstrate real blockchain use cases. Each project includes:
+
+- **Full working code** you can run and deploy
+- **Backend implementation** (custodial wallet management)
+- **Frontend implementation** (user-controlled wallets with WalletClient + MetaNet Desktop Wallet)
+- **Best practices** for production deployment
+- **SDK-first approach** using pre-built components
+
+## What You'll Build
+
+By completing this path, you will build three production-ready applications:
+
+1. **Crowdfunding Platform** - Token-based campaign funding with escrow and automated payouts
+2. **Asset Tokenization System** - Real-world asset representation with compliance workflows
+3. **Supply Chain Digital Passports** - Product lifecycle tracking with multi-party verification
 
 ## Prerequisites
 
 Before starting this path, you should have completed the [Beginner Learning Path](../beginner/README.md) or have equivalent knowledge:
-- Setting up BSV development environment
-- Understanding basic blockchain concepts
-- Creating simple transactions
-- Managing wallets and keys
+- BSV SDK installation and setup
+- Creating and signing basic transactions
+- Understanding UTXOs and transaction structure
+- Wallet management with both backend and frontend approaches
+- Using WalletClient for frontend wallet integration
 
-## Learning Modules
+## Core Projects
 
-### 1. [BSV Primitives](bsv-primitives/README.md)
+### Project 1: [Crowdfunding Platform](crowdfunding-platform/README.md)
+**Duration**: 4-6 hours | **Difficulty**: Intermediate
+
+Build a complete token-based crowdfunding platform with escrow mechanisms and automated payouts.
+
+**What You'll Build**:
+- Token issuance for campaign shares
+- Escrow smart contracts for fund security
+- Automated payout logic when goals are met
+- Campaign dashboard and tracking
+- Both backend (custodial) and frontend (WalletClient) implementations
+
+**Key Features**:
+- Campaign creation and management
+- Token distribution to backers
+- Goal tracking and automated payouts
+- Refund mechanisms for failed campaigns
+- Multi-party escrow patterns
+
+**SDK Components Used**:
+- Transaction building with automatic fee handling
+- Token template creation
+- Escrow script patterns
+- BEEF transaction bundles
+
+---
+
+### Project 2: [Asset Tokenization System](asset-tokenization/README.md)
+**Duration**: 4-6 hours | **Difficulty**: Intermediate
+
+Create a production-ready system for representing real-world assets on the BSV blockchain.
+
+**What You'll Build**:
+- Asset registration and tokenization
+- Ownership transfer protocols
+- Compliance metadata embedding
+- Transfer history and provenance tracking
+- Both backend and frontend implementations
+
+**Key Features**:
+- Real estate, commodities, or certificate tokenization
+- Custom business logic with script templates
+- Compliance workflow integration
+- Ownership verification and transfer
+- Metadata standards (BRC integration)
+
+**SDK Components Used**:
+- Custom script templates
+- Transaction metadata embedding
+- Certificate protocols (BRC-56)
+- SPV verification for lightweight clients
+
+---
+
+### Project 3: [Supply Chain Digital Passports](supply-chain-passports/README.md)
+**Duration**: 4-6 hours | **Difficulty**: Intermediate
+
+Implement a complete supply chain tracking system with immutable product passports.
+
+**What You'll Build**:
+- Product lifecycle tracking from manufacture to consumer
+- Multi-party verification workflows
+- Immutable documentation and certification storage
+- QR code integration for physical products
+- Both enterprise backend and consumer frontend implementations
+
+**Key Features**:
+- Product registration and identity creation
+- Multi-signature verification from supply chain participants
+- Chain of custody tracking
+- Quality assurance and compliance documentation
+- Overlay network integration for efficient data organization
+
+**SDK Components Used**:
+- Multi-signature script templates
+- Overlay network patterns
+- SPV verification
+- BRC standards for interoperability
+
+---
+
+## Supporting Modules
+
+These foundational modules provide the technical knowledge needed for the projects above. You can study them in parallel with the projects or reference them as needed.
+
+### [BSV Primitives](bsv-primitives/README.md)
 **Duration**: 1.5 hours
 
-Deep dive into the core building blocks of BSV blockchain.
+Deep dive into core BSV blockchain building blocks: transaction structure, inputs/outputs, scripts, SIGHASH types, and UTXO management.
 
-**Topics**:
-- Transaction structure and serialization
-- Input and output types
-- Script opcodes and operations
-- Signature hash types (SIGHASH)
-- Locktime and sequence numbers
-- UTXO management strategies
-
-**SDK Components Referenced**:
-- [Transaction](../../sdk-components/transaction/README.md)
-- [Transaction Input](../../sdk-components/transaction-input/README.md)
-- [Transaction Output](../../sdk-components/transaction-output/README.md)
-- [Script](../../sdk-components/script/README.md)
-
-### 2. [Transaction Building](transaction-building/README.md)
+### [Transaction Building](transaction-building/README.md)
 **Duration**: 2 hours
 
-Learn to construct complex, efficient transactions.
+Master complex transaction construction: multi-input transactions, batch payments, fee optimization, change management, and BEEF format.
 
-**Topics**:
-- Multi-input transactions
-- Batch payments (multiple outputs)
-- Fee calculation and optimization
-- Transaction size estimation
-- Change management
-- Transaction chaining
-- BEEF format transactions
-
-**Code Features Used**:
-- [Transaction Creation](../../code-features/transaction-creation/README.md)
-- [Multi-Input Transaction](../../code-features/multi-input-transaction/README.md)
-- [Fee Estimation](../../code-features/fee-estimation/README.md)
-
-**SDK Components Referenced**:
-- [Transaction](../../sdk-components/transaction/README.md)
-- [UTXO Management](../../sdk-components/utxo-management/README.md)
-- [BEEF Format](../../sdk-components/beef/README.md)
-
-### 3. [Script Templates](script-templates/README.md)
+### [Script Templates](script-templates/README.md)
 **Duration**: 2 hours
 
-Master Bitcoin Script and create custom locking conditions.
+Learn Bitcoin Script and create custom locking conditions: P2PKH, multi-sig, hash-locked contracts, time-locks, and custom templates.
 
-**Topics**:
-- P2PKH template (standard payments)
-- P2PK template (pay to public key)
-- Multi-signature scripts
-- Hash-locked contracts (HTLC)
-- Time-locked contracts
-- Custom script creation
-- Script debugging and testing
-
-**Code Features Used**:
-- [P2PKH Template](../../code-features/p2pkh-template/README.md)
-- [Custom Lock Script](../../code-features/custom-lock-script/README.md)
-- [Multi-Sig Setup](../../code-features/multi-sig-setup/README.md)
-
-**SDK Components Referenced**:
-- [Script](../../sdk-components/script/README.md)
-- [Script Templates](../../sdk-components/script-templates/README.md)
-- [P2PKH](../../sdk-components/p2pkh/README.md)
-
-### 4. [SPV & Verification](spv-verification/README.md)
+### [SPV & Verification](spv-verification/README.md)
 **Duration**: 1.5 hours
 
-Implement Simplified Payment Verification for trustless applications.
+Implement Simplified Payment Verification for trustless applications: merkle proofs, block header validation, and SPV client development.
 
-**Topics**:
-- SPV fundamentals
-- Merkle proof verification
-- Block header validation
-- Chain work calculation
-- Building SPV clients
-- BEEF verification
-- Trust minimization strategies
-
-**Code Features Used**:
-- [SPV Proof Verification](../../code-features/spv-verification/README.md)
-- [BEEF Transaction](../../code-features/beef-transaction/README.md)
-- [Block Header Validation](../../code-features/block-header-validation/README.md)
-
-**SDK Components Referenced**:
-- [SPV](../../sdk-components/spv/README.md)
-- [Merkle Proofs](../../sdk-components/merkle-proofs/README.md)
-- [BEEF](../../sdk-components/beef/README.md)
-- [Chain Tracker](../../sdk-components/chain-tracker/README.md)
-
-### 5. [BRC Standards](brc-standards/README.md)
+### [BRC Standards](brc-standards/README.md)
 **Duration**: 2 hours
 
-Implement Bitcoin Request for Comments standards for interoperability.
+Implement Bitcoin Request for Comments standards: BRC-42 (key derivation), BRC-43 (security levels), BRC-29 (payments), BRC-56 (certificates).
 
-**Topics**:
-- BRC-42: Key derivation protocol
-- BRC-43: Wallet security levels
-- BRC-29: Payment protocol
-- BRC-56: Certificate management
-- BRC-1: Merchant API specification
-- Custom BRC implementation
+## Development Paradigms
 
-**Code Features Used**:
-- [BRC-42 Key Derivation](../../code-features/brc-42-derivation/README.md)
+Throughout this path, you'll learn two essential approaches to BSV application development:
 
-**SDK Components Referenced**:
-- [BRC-42](../../sdk-components/brc-42/README.md)
-- [BRC-29](../../sdk-components/brc-29/README.md)
+### Backend/Service Development
+**When to Use**: Internal business systems, automated services, custody solutions
 
-## Hands-On Projects
+- Application controls wallets and manages keys
+- Server-side transaction creation and signing
+- SDK handles all transaction mechanics automatically
+- Use cases: payment processors, tokenization services, supply chain backends, enterprise wallets
 
-### Project 1: Multi-Sig Wallet
-Build a 2-of-3 multi-signature wallet:
-- Create multi-sig locking scripts
-- Coordinate signing between parties
-- Handle partial signatures
-- Broadcast completed transactions
+### Frontend Integration Development
+**When to Use**: User-facing dApps, consumer applications
 
-### Project 2: SPV Payment Validator
-Create a lightweight payment validator:
-- Receive merkle proofs
-- Validate block headers
-- Verify transaction inclusion
-- Track confirmation depth
+- Users control their own wallets via MetaNet Desktop Wallet
+- Browser-based transaction signing through WalletClient
+- SDK's WalletClient component handles wallet communication
+- Use cases: crowdfunding platforms, marketplace frontends, consumer verification apps
 
-### Project 3: BRC-42 Key Manager
-Implement a protocol-specific key derivation system:
-- Derive application-specific keys
-- Manage counterparty relationships
-- Generate invoice-specific keys
-- Export/import key configurations
+**Reference**: [BRC Specification for WalletClient](https://fast.brc.dev/)
 
-### Project 4: Atomic Swap Contract
-Build a trustless exchange mechanism:
-- Create hash-locked scripts
-- Implement timeout conditions
-- Handle swap coordination
-- Monitor swap completion
+---
 
-## Advanced Topics Covered
+## SDK-First Philosophy
 
-### Transaction Efficiency
-- Minimize transaction size
-- Optimize fee-to-value ratio
-- Batch operations efficiently
-- UTXO consolidation strategies
+All three projects emphasize using the **BSV SDK's pre-built components** rather than manual low-level configuration:
 
-### Security Patterns
-- Script validation
-- Input verification
-- Signature schemes
-- Key isolation techniques
+✅ **DO**: Use SDK's built-in transaction methods that handle broadcasting, fees, and UTXO management automatically
 
-### Interoperability
-- Standard compliance
-- Protocol compatibility
-- Cross-application communication
-- Data format standardization
+✅ **DO**: Use WalletClient for frontend wallet integration with MetaNet Desktop Wallet
+
+✅ **DO**: Let the SDK abstract away infrastructure details
+
+❌ **DON'T**: Manually configure ARC broadcasters, fee calculators, or UTXO managers as primary methods
+
+❌ **DON'T**: Use external APIs (like WhatsOnChain) when SDK provides built-in methods
+
+❌ **DON'T**: Implement low-level protocol details that the SDK handles for you
+
+The SDK provides **ready-to-use, pre-configured components** that let you focus on building applications, not blockchain infrastructure.
+
+---
 
 ## Learning Path Completion
 
-After completing this path, you should be able to:
-- ✅ Understand and use all BSV primitives
-- ✅ Build complex multi-party transactions
-- ✅ Create custom Bitcoin Script templates
-- ✅ Implement SPV verification
-- ✅ Use BRC standards in applications
-- ✅ Optimize transactions for efficiency
-- ✅ Build production-ready BSV applications
+After completing this path, you will have:
+- ✅ Built three production-ready, deployable BSV applications
+- ✅ Implemented both backend (custodial) and frontend (user-wallet) architectures
+- ✅ Mastered the BSV SDK's pre-built components and patterns
+- ✅ Created token systems, escrow mechanisms, and multi-party workflows
+- ✅ Integrated WalletClient for frontend wallet communication
+- ✅ Implemented SPV verification for lightweight clients
+- ✅ Applied BRC standards for interoperability
+- ✅ Developed real-world blockchain solutions you can adapt for your own projects
 
 ## Next Steps
 
 Ready for advanced topics? Continue to the [Advanced Learning Path](../advanced/README.md) to learn about:
-- Custom overlay networks
-- Network topology and peer connections
-- Node operations and infrastructure
-- Advanced smart contracts
-- Protocol development
+- Overlay Networks and data organization
+- Identity Certification workflows
+- Advanced SDK usage patterns
+- Enterprise integration architectures
+- High-throughput application design
 
 ## Real-World Applications
 
-Skills from this path enable you to build:
-- **Payment Processors**: Multi-party payment systems
-- **Escrow Services**: Time and hash-locked contracts
-- **Identity Systems**: BRC-42/43 based authentication
-- **Data Verification**: SPV-based proof systems
-- **Token Systems**: Custom token protocols
-- **Supply Chain**: Multi-sig approval workflows
+The projects in this path directly prepare you to build:
+
+**From Crowdfunding Platform:**
+- Campaign funding systems
+- Token-based investment platforms
+- Donation and grant management
+- Community funding applications
+
+**From Asset Tokenization:**
+- Real estate tokenization
+- Commodity trading platforms
+- Certificate and credential systems
+- Ownership transfer protocols
+
+**From Supply Chain Passports:**
+- Product authentication systems
+- Supply chain transparency platforms
+- Quality assurance tracking
+- Multi-party verification workflows
 
 ## Getting Help
 
 - Check the [SDK Components](../../sdk-components/README.md) for detailed API reference
 - Browse [Code Features](../../code-features/README.md) for working examples
+- Reference [BRC Specifications](https://fast.brc.dev/) for WalletClient and standards
 - Visit [BSV Skills Center](https://hub.bsvblockchain.org/bsv-skills-center) for additional resources
 - Join BSV developer communities for peer support
 
 ## Estimated Time
 
-**Total Path Duration**: 9-10 hours
+**Core Projects**: 12-18 hours total
+- Crowdfunding Platform: 4-6 hours
+- Asset Tokenization System: 4-6 hours
+- Supply Chain Digital Passports: 4-6 hours
 
-This includes reading, coding exercises, and project implementation. The hands-on projects will take additional time depending on scope.
+**Supporting Modules**: 9-10 hours total (can be studied in parallel with projects)
+
+**Total Path Duration**: 20-30 hours depending on depth and customization
+
+This is a hands-on learning path - you'll spend most of your time writing and deploying real code, not just reading documentation.
 
 ---
 
-Ready to dive deep into BSV primitives? Start with [BSV Primitives](bsv-primitives/README.md)!
+## Recommended Learning Path
+
+1. **Start with a project** that interests you most (Crowdfunding, Tokenization, or Supply Chain)
+2. **Reference supporting modules** as needed when you encounter new concepts
+3. **Build both implementations** (backend and frontend) for each project
+4. **Customize and deploy** your own version with unique features
+5. **Move to the next project** and repeat the process
+
+Ready to build production BSV applications? Start with [**Crowdfunding Platform**](crowdfunding-platform/README.md), [**Asset Tokenization**](asset-tokenization/README.md), or [**Supply Chain Passports**](supply-chain-passports/README.md)!
