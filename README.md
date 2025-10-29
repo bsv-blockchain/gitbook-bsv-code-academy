@@ -46,13 +46,13 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 
 ```
 1. Start → learning-paths/beginner/getting-started/
-2. Follow → All 5 beginner courses in order
+2. Follow → All 7 beginner courses in order
 3. Practice → Use code-features examples
 4. Reference → SDK components when needed
 ```
 
-**Estimated time**: 10-15 hours
-**You'll learn**: Development setup, BSV fundamentals, create wallet, build transactions
+**Estimated time**: 16 hours
+**You'll learn**: Development setup, BSV fundamentals, create wallet, build transactions, integrate wallets
 
 ### For Experienced Developers
 **"I know blockchain, new to BSV"**
@@ -64,8 +64,8 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 4. Use → code-features/ for specific implementations
 ```
 
-**Estimated time**: 5-8 hours to get productive
-**You'll learn**: BSV-specific features, transaction building, SPV, BRC standards
+**Estimated time**: 8-12 hours to get productive
+**You'll learn**: BSV-specific features, transaction building, SPV, BRC standards, asset tokenization
 
 ### For SDK Reference
 **"I need API documentation"**
@@ -104,11 +104,13 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 |--------|------|-------------------|
 | [Getting Started](learning-paths/beginner/getting-started/) | 2h | Install tools, understand workflow |
 | [Development Environment](learning-paths/beginner/development-environment/) | 2h | Set up BSV development environment |
+| [Development Paradigms](learning-paths/beginner/development-paradigms/) | 2h | BSV development patterns and paradigms |
 | [BSV Fundamentals](learning-paths/beginner/bsv-fundamentals/) | 3h | Core concepts: UTXOs, transactions, scripts |
 | [First Wallet](learning-paths/beginner/first-wallet/) | 2h | Create and manage BSV wallets |
 | [First Transaction](learning-paths/beginner/first-transaction/) | 3h | Build, sign, and broadcast transactions |
+| [Wallet Client Integration](learning-paths/beginner/wallet-client-integration/) | 2h | Integrate wallets into client applications |
 
-**Total time**: ~12 hours
+**Total time**: ~16 hours
 **Prerequisites**: Basic programming knowledge (JavaScript/TypeScript)
 **Outcome**: Build simple BSV applications
 
@@ -122,8 +124,11 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 | [Script Templates](learning-paths/intermediate/script-templates/) | 4h | Custom locking scripts, multisig, timelocks |
 | [SPV Verification](learning-paths/intermediate/spv-verification/) | 4h | Simplified Payment Verification |
 | [BRC Standards](learning-paths/intermediate/brc-standards/) | 3h | BSV Request for Comment standards |
+| [Asset Tokenization](learning-paths/intermediate/asset-tokenization/) | 4h | Create and manage digital assets on BSV |
+| [Supply Chain Passports](learning-paths/intermediate/supply-chain-passports/) | 4h | Track products through supply chains |
+| [Crowdfunding Platform](learning-paths/intermediate/crowdfunding-platform/) | 4h | Build decentralized crowdfunding systems |
 
-**Total time**: ~18 hours
+**Total time**: ~30 hours
 **Prerequisites**: Complete beginner path
 **Outcome**: Build complex, production-ready applications
 
@@ -183,8 +188,11 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 
 ### Transaction Operations
 - [Transaction Building](code-features/transaction-building/) - Multi-input, batch payments
+- [Transaction Creation](code-features/transaction-creation/) - Create transactions from scratch
 - [Transaction Signing](code-features/transaction-signing/) - All SIGHASH types
+- [Sign Transaction](code-features/sign-transaction/) - Transaction signing examples
 - [Transaction Broadcasting](code-features/transaction-broadcasting/) - ARC integration
+- [Broadcast ARC](code-features/broadcast-arc/) - ARC broadcasting examples
 - [Transaction Chains](code-features/transaction-chains/) - BEEF format chains
 - [Batch Operations](code-features/batch-operations/) - Efficient batch processing
 
@@ -203,8 +211,9 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 - [Standard Transactions](code-features/standard-transactions/) - P2PKH, P2PK
 
 ### Verification & Security
-- [SPV Verification](code-features/spv-verification/) - Merkle proof validation
 - [SPV](code-features/spv/) - SPV client implementation
+- [SPV Verification](code-features/spv-verification/) - Merkle proof validation
+- [SPV Validation](code-features/spv-validation/) - Transaction validation with SPV
 - [Double Spend Detection](code-features/double-spend-detection/) - Security monitoring
 
 ### Advanced Patterns
@@ -269,31 +278,37 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 gitbook-bsv-code-academy/
 │
 ├── learning-paths/          # 📚 Structured courses (follow in order)
-│   ├── beginner/           # 5 courses (~12 hours)
-│   ├── intermediate/       # 5 courses (~18 hours)
+│   ├── beginner/           # 7 courses (~16 hours)
+│   ├── intermediate/       # 8 courses (~30 hours)
 │   └── advanced/           # 5 courses (~24 hours)
 │
 ├── sdk-components/         # 🔧 Technical reference (jump to as needed)
 │   ├── private-keys/       # API docs + patterns
 │   ├── transaction/        # API docs + patterns
 │   ├── script/            # API docs + patterns
-│   └── ... (15 components total)
+│   └── ... (17 components total)
 │
-└── code-features/          # 💻 Ready-to-use code (copy & adapt)
-    ├── transaction-building/    # Production examples
-    ├── multi-signature/         # Production examples
-    ├── payment-processing/      # Production examples
-    └── ... (31 features total)
+├── code-features/          # 💻 Ready-to-use code (copy & adapt)
+│   ├── transaction-building/    # Production examples
+│   ├── multi-signature/         # Production examples
+│   ├── payment-processing/      # Production examples
+│   └── ... (31 features total)
+│
+├── assets/                 # 🎨 Images, diagrams, icons
+└── resources/              # 📚 External links and references
 ```
 
 ---
 
 ## 📊 What's Inside
 
-- **📚 15 Structured Courses** covering beginner → intermediate → advanced
+- **📚 20 Structured Courses** covering beginner → intermediate → advanced
+  - 7 Beginner courses
+  - 8 Intermediate courses
+  - 5 Advanced courses
 - **🔧 17 SDK Components** with complete API documentation
-- **💻 31 Code Features** with 500+ production-ready examples
-- **📝 57,000+ lines** of comprehensive documentation
+- **💻 31 Code Features** with production-ready examples
+- **📝 Comprehensive documentation** covering all aspects of BSV development
 - **⚡ Latest Tech** including Teranode architecture and deployment
 
 ---
@@ -355,19 +370,19 @@ console.log('Address:', key.toPublicKey().toAddress())
 
 ## 🎓 Recommended Learning Sequences
 
-### Fastest Path to Production (1 week intensive)
+### Fastest Path to Production (2 weeks intensive)
 ```
-Day 1-2: Beginner basics (getting-started, fundamentals, first-wallet)
-Day 3-4: Transaction building (intermediate/transaction-building + code-features)
-Day 5-6: Your use case (pick relevant intermediate course + code features)
-Day 7: Deploy (reference advanced/node-operations if needed)
+Week 1: Beginner essentials (getting-started, fundamentals, first-wallet, first-transaction)
+Week 2: Intermediate skills (transaction-building, script-templates) + Your use case
+       + code-features implementation
 ```
 
-### Comprehensive Mastery (3 months part-time)
+### Comprehensive Mastery (3-4 months part-time)
 ```
-Month 1: All beginner + intermediate courses
-Month 2: Advanced courses + build project
-Month 3: Deep dive SDK components + optimize project
+Month 1: All beginner courses (7 courses, ~16 hours)
+Month 2: Core intermediate courses (transaction-building, script-templates, SPV, BRC)
+Month 3: Specialized intermediate (asset-tokenization, supply-chain, crowdfunding)
+Month 4: Advanced courses + build and deploy a complete project
 ```
 
 ### SDK Reference User (ongoing)
