@@ -128,7 +128,7 @@ const publicKey = privateKey.toPublicKey()
 // Generate Bitcoin address from public key
 const address = publicKey.toAddress()
 
-console.log('Public Key (Hex):', publicKey.toHex())
+console.log('Public Key (Hex):', publicKey.toString())
 console.log('Address:', address)
 ```
 
@@ -151,7 +151,7 @@ class SimpleWallet {
     this.privateKey = privateKey || PrivateKey.fromRandom()
 
     const pubKey = this.privateKey.toPublicKey()
-    this.publicKey = pubKey.toHex()
+    this.publicKey = pubKey.toString()
     this.address = pubKey.toAddress()
   }
 
@@ -219,14 +219,14 @@ import { Mnemonic } from '@bsv/sdk'
 
 // Generate 12-word mnemonic (128 bits of entropy)
 const mnemonic = Mnemonic.fromRandom()
-const words = mnemonic.toWords()
+const mnemonicPhrase = mnemonic.toString()
 
-console.log('Mnemonic:', words.join(' '))
+console.log('Mnemonic:', mnemonicPhrase)
 // Example: abandon ability able about above absent absorb abstract absurd abuse access accident
 
 // Convert to seed (used for key derivation)
 const seed = mnemonic.toSeed()
-console.log('Seed (Hex):', seed.toString('hex'))
+console.log('Seed (Hex):', Buffer.from(seed).toString('hex'))
 ```
 
 **Mnemonic Standards**:
@@ -248,7 +248,9 @@ const mnemonic = Mnemonic.fromRandom()
 
 // Derive master private key from mnemonic seed
 const seed = mnemonic.toSeed()
-const masterKey = PrivateKey.fromSeed(seed)
+// Use first 32 bytes of seed as private key
+const seedHex = Buffer.from(seed).toString('hex').substring(0, 64)
+const masterKey = PrivateKey.fromHex(seedHex)
 
 console.log('Master Private Key:', masterKey.toWif())
 ```
@@ -256,12 +258,13 @@ console.log('Master Private Key:', masterKey.toWif())
 ### Step 3: Implement HD Wallet with BRC-42
 
 ```typescript
-import { Mnemonic, PrivateKey } from '@bsv/sdk'
+import { Mnemonic, PrivateKey, PublicKey } from '@bsv/sdk'
 
 class HDWallet {
   private masterKey: PrivateKey
   private mnemonic: Mnemonic
-  private protocolID: PrivateKey
+  private protocolID: string
+  private counterparty: PublicKey  // Use 'anyone' for self-derivation
   private derivedKeys: Map<string, PrivateKey> = new Map()
 
   constructor(mnemonic?: Mnemonic, protocolID: string = 'wallet') {
@@ -270,10 +273,15 @@ class HDWallet {
 
     // Derive master key from mnemonic
     const seed = this.mnemonic.toSeed()
-    this.masterKey = PrivateKey.fromSeed(seed)
+    // Use first 32 bytes of seed as private key
+    const seedHex = Buffer.from(seed).toString('hex').substring(0, 64)
+    this.masterKey = PrivateKey.fromHex(seedHex)
 
     // Set protocol ID for BRC-42 derivation
-    this.protocolID = PrivateKey.fromString(protocolID)
+    this.protocolID = protocolID
+
+    // Use 'anyone' (PrivateKey(1).toPublicKey()) as counterparty for self-derivation
+    this.counterparty = new PrivateKey(1).toPublicKey()
   }
 
   /**
@@ -291,13 +299,13 @@ class HDWallet {
       return this.derivedKeys.get(cacheKey)!
     }
 
-    // Create key ID
-    const keyIDPrivate = PrivateKey.fromString(keyID)
+    // Create invoice number in BRC-42 format: "<securityLevel>-<protocolID>-<keyID>"
+    // Security level 0 = can be revealed, level 1 = with counterparty consent, level 2 = cannot be revealed
+    const invoiceNumber = `0-${this.protocolID}-${keyID}`
 
     // Derive child key using BRC-42
-    const derivedKey = counterparty
-      ? this.masterKey.deriveChild(this.protocolID, keyIDPrivate, counterparty)
-      : this.masterKey.deriveChild(this.protocolID, keyIDPrivate)
+    // For simple wallet: counterparty is 'anyone' (PrivateKey(1).toPublicKey())
+    const derivedKey = this.masterKey.deriveChild(this.counterparty, invoiceNumber)
 
     // Cache derived key
     this.derivedKeys.set(cacheKey, derivedKey)
@@ -350,15 +358,14 @@ class HDWallet {
    * In production: encrypt before storing
    */
   exportMnemonic(): string {
-    return this.mnemonic.toWords().join(' ')
+    return this.mnemonic.toString()
   }
 
   /**
    * Restore HD wallet from mnemonic phrase
    */
-  static fromMnemonic(mnemonicPhrase: string, protocolID: string = 'wallet'): HDWallet {
-    const words = mnemonicPhrase.split(' ')
-    const mnemonic = Mnemonic.fromWords(words)
+  static fromMnemonic(mnemonicPhrase: string, protocolID: string = 'simple wallet'): HDWallet {
+    const mnemonic = Mnemonic.fromString(mnemonicPhrase)
     return new HDWallet(mnemonic, protocolID)
   }
 
@@ -992,22 +999,24 @@ For frontend applications where users control their own keys, use **WalletClient
 ```typescript
 import { WalletClient } from '@bsv/sdk'
 
-// Connect to user's wallet (browser extension)
-const wallet = await WalletClient.connect()
+// Create WalletClient and connect to user's wallet
+const wallet = new WalletClient('auto')
+await wallet.connectToSubstrate()
 
-// Request user's address
-const address = await wallet.getAddress()
+// Request user's identity public key
+const { publicKey } = await wallet.getPublicKey({ identityKey: true })
 
-// Create and sign transaction (user approves in wallet)
-const tx = await wallet.createTransaction({
+// Create action (auto-signs and broadcasts)
+const result = await wallet.createAction({
+  description: 'Send payment',
   outputs: [{
-    to: recipientAddress,
-    satoshis: 10000
+    lockingScript: new P2PKH().lock(recipientAddress).toHex(),
+    satoshis: 10000,
+    outputDescription: 'Payment'
   }]
 })
 
-// Broadcast transaction
-const txid = await wallet.broadcast(tx)
+const txid = result.txid
 ```
 
 **Key Difference**: With WalletClient, the user's browser wallet handles all key management and signing. Your application never touches private keys.

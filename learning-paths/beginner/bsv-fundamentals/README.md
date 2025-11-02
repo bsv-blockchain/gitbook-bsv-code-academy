@@ -140,7 +140,7 @@ const privateKey2 = PrivateKey.fromWif('L1234...')
 // Derive public key from private key
 const publicKey = privateKey.toPublicKey()
 
-console.log(publicKey.toHex()) // 02a1b2c3...
+console.log(publicKey.toString()) // 02a1b2c3...
 ```
 
 #### Key Properties
@@ -489,10 +489,12 @@ async function sendPaymentFrontend(
   amount: number
 ) {
   // Wallet handles: UTXO selection, fees, change, signing, broadcasting
-  const result = await wallet.sendTransaction({
+  const result = await wallet.createAction({
+    description: 'Send payment',
     outputs: [{
-      address: recipientAddress,
-      satoshis: amount
+      lockingScript: new P2PKH().lock(recipientAddress).toHex(),
+      satoshis: amount,
+      outputDescription: 'Payment'
     }]
   })
 

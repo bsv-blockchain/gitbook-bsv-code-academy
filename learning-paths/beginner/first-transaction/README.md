@@ -106,6 +106,9 @@ async function sendPayment(
   // - Creates change output back to your address
   // - Handles dust limits
 
+  // Calculate fees and change amounts
+  await tx.fee()
+
   // Sign the transaction
   await tx.sign()
 
@@ -122,6 +125,7 @@ async function sendPayment(
 ```typescript
 tx.addInput({ sourceTransaction, sourceOutputIndex, unlockingScriptTemplate })
 tx.addOutput({ satoshis, lockingScript })
+await tx.fee()
 await tx.sign()
 await tx.broadcast()
 ```
@@ -184,6 +188,9 @@ async function createAndSendPayment(
   // - Fee calculation
   // - Change output creation
   // - Dust limit checking
+
+  // Calculate fees and change
+  await tx.fee()
 
   // Sign transaction
   await tx.sign()
@@ -255,6 +262,7 @@ async function sendToMultipleRecipients(
   // - Fee calculation for larger transaction
   // - Change output creation
 
+  await tx.fee()
   await tx.sign()
   const result = await tx.broadcast()
 
@@ -475,6 +483,7 @@ The simplest way to broadcast is using the Transaction class's built-in method:
 // Backend approach
 const tx = new Transaction()
 // ... add inputs and outputs ...
+await tx.fee()
 await tx.sign()
 
 // Broadcast using SDK method
@@ -517,6 +526,7 @@ import { Transaction, ARC } from '@bsv/sdk'
 
 const tx = new Transaction()
 // ... build transaction ...
+await tx.fee()
 await tx.sign()
 
 // Option 1: Use default ARC
@@ -628,6 +638,7 @@ async function isTransactionConfirmed(txid: string): Promise<boolean> {
 const tx = new Transaction()
 await tx.addInput({ sourceTransaction, sourceOutputIndex, unlockingScriptTemplate })
 tx.addOutput({ satoshis, lockingScript })
+await tx.fee()
 await tx.sign()
 await tx.broadcast()
 ```
@@ -655,6 +666,7 @@ for (const recipient of recipients) {
   })
 }
 
+await tx.fee()
 await tx.sign()
 await tx.broadcast()
 ```
@@ -694,6 +706,7 @@ tx.addOutput({
   lockingScript: new OpReturn().lock(['Hello', 'BSV', 'Blockchain'])
 })
 
+await tx.fee()
 await tx.sign()
 await tx.broadcast()
 ```
@@ -773,7 +786,8 @@ async function sendPaymentWithErrorHandling(
       lockingScript: new P2PKH().lock(recipientAddress)
     })
 
-    // Sign
+    // Calculate fee and sign
+    await tx.fee()
     await tx.sign()
 
     // Verify before broadcasting

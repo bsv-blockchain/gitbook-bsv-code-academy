@@ -58,33 +58,30 @@ import { WalletClient } from '@bsv/sdk'
 ### Core Methods
 
 ```typescript
-const wallet = new WalletClient()
+import { WalletClient, P2PKH } from '@bsv/sdk'
 
-// Connect to user's wallet
-await wallet.connect()
+const wallet = new WalletClient('auto')
 
-// Get user's address
-const address = await wallet.getAddress()
+// Connect to user's wallet substrate
+await wallet.connectToSubstrate()
 
-// Get user's public key
-const pubKey = await wallet.getPublicKey()
+// Get user's identity public key
+const { publicKey } = await wallet.getPublicKey({ identityKey: true })
 
-// Send a transaction
-const result = await wallet.sendTransaction({
+// Create and send a transaction (auto-signed and broadcast)
+const result = await wallet.createAction({
+  description: 'Send payment',
   outputs: [{
-    address: 'recipient-address',
-    satoshis: 1000
+    lockingScript: new P2PKH().lock('recipient-address').toHex(),
+    satoshis: 1000,
+    outputDescription: 'Payment output'
   }]
 })
 
-// Sign a message
-const signature = await wallet.signMessage('Hello BSV')
-
-// Disconnect
-await wallet.disconnect()
+const txid = result.txid
 ```
 
-**That's the entire API!** WalletClient is intentionally simple because the wallet handles complexity.
+**These are the main methods you'll use!** WalletClient handles the complexity of key management, UTXO selection, and broadcasting.
 
 ---
 
@@ -98,16 +95,16 @@ import { WalletClient } from '@bsv/sdk'
 async function connectWallet() {
   try {
     // 1. Create WalletClient instance
-    const wallet = new WalletClient()
+    const wallet = new WalletClient('auto')
 
-    // 2. Request connection to user's wallet
-    await wallet.connect()
+    // 2. Connect to the wallet substrate
+    await wallet.connectToSubstrate()
 
-    // 3. Get user's address
-    const address = await wallet.getAddress()
+    // 3. Get user's identity public key
+    const { publicKey } = await wallet.getPublicKey({ identityKey: true })
 
-    console.log('Connected to wallet:', address)
-    return { wallet, address }
+    console.log('Connected to wallet, public key:', publicKey)
+    return { wallet, publicKey }
 
   } catch (error: any) {
     if (error.code === 'USER_REJECTED') {
@@ -127,7 +124,7 @@ async function connectWallet() {
 ```
 Your dApp                    MetaNet Desktop Wallet
     │                                │
-    │  wallet.connect()              │
+    │  connectToSubstrate()          │
     ├───────────────────────────────>│
     │                                │
     │      [Popup appears]           │
@@ -137,11 +134,11 @@ Your dApp                    MetaNet Desktop Wallet
     │     User clicks "Allow"        │
     │                                │
     │  Connection established        │
-    │  wallet.getAddress()           │
+    │  getPublicKey({identityKey})   │
     ├───────────────────────────────>│
     │                                │
     │<───────────────────────────────┤
-    │     Returns address            │
+    │     Returns public key         │
     │                                │
 ```
 
@@ -154,7 +151,7 @@ import { WalletClient } from '@bsv/sdk'
 
 export interface WalletState {
   wallet: WalletClient | null
-  address: string | null
+  publicKey: string | null
   connected: boolean
   connecting: boolean
   error: string | null
@@ -163,7 +160,7 @@ export interface WalletState {
 export function useWallet() {
   const [state, setState] = useState<WalletState>({
     wallet: null,
-    address: null,
+    publicKey: null,
     connected: false,
     connecting: false,
     error: null
@@ -173,24 +170,24 @@ export function useWallet() {
     setState(prev => ({ ...prev, connecting: true, error: null }))
 
     try {
-      const wallet = new WalletClient()
-      await wallet.connect()
+      const wallet = new WalletClient('auto')
+      await wallet.connectToSubstrate()
 
-      const address = await wallet.getAddress()
+      const { publicKey } = await wallet.getPublicKey({ identityKey: true })
 
       setState({
         wallet,
-        address,
+        publicKey,
         connected: true,
         connecting: false,
         error: null
       })
 
-      console.log('✅ Wallet connected:', address)
+      console.log('✅ Wallet connected, public key:', publicKey)
     } catch (error: any) {
       setState({
         wallet: null,
-        address: null,
+        publicKey: null,
         connected: false,
         connecting: false,
         error: error.message
@@ -201,13 +198,11 @@ export function useWallet() {
   }
 
   const disconnect = async () => {
-    if (state.wallet) {
-      await state.wallet.disconnect()
-    }
-
+    // Note: WalletClient doesn't have a disconnect method
+    // Simply clear local state
     setState({
       wallet: null,
-      address: null,
+      publicKey: null,
       connected: false,
       connecting: false,
       error: null
@@ -251,12 +246,12 @@ import React from 'react'
 import { useWallet } from '../hooks/useWallet'
 
 export const WalletConnect: React.FC = () => {
-  const { address, connected, connecting, error, connect, disconnect } = useWallet()
+  const { publicKey, connected, connecting, error, connect, disconnect } = useWallet()
 
-  if (connected && address) {
+  if (connected && publicKey) {
     return (
       <div className="wallet-connected">
-        <p>Connected: {address.substring(0, 8)}...{address.substring(address.length - 8)}</p>
+        <p>Connected: {publicKey.substring(0, 12)}...{publicKey.substring(publicKey.length - 12)}</p>
         <button onClick={disconnect}>Disconnect</button>
       </div>
     )
@@ -295,7 +290,7 @@ export const WalletConnect: React.FC = () => {
 ### Simple Payment
 
 ```typescript
-import { WalletClient } from '@bsv/sdk'
+import { WalletClient, P2PKH } from '@bsv/sdk'
 
 async function sendPayment(
   wallet: WalletClient,
@@ -303,11 +298,13 @@ async function sendPayment(
   amountSatoshis: number
 ) {
   try {
-    // Request wallet to send payment
-    const result = await wallet.sendTransaction({
+    // Create action to send payment (auto-signed and broadcast)
+    const result = await wallet.createAction({
+      description: 'Send payment',
       outputs: [{
-        address: recipientAddress,
-        satoshis: amountSatoshis
+        lockingScript: new P2PKH().lock(recipientAddress).toHex(),
+        satoshis: amountSatoshis,
+        outputDescription: 'Payment to recipient'
       }]
     })
 
@@ -335,7 +332,7 @@ const txid = await sendPayment(wallet, '1A1zP1...', 1000)
 
 ### What Happens Under the Hood
 
-When you call `wallet.sendTransaction()`:
+When you call `wallet.createAction()`:
 
 1. **WalletClient** sends transaction request to MetaNet Desktop Wallet
 2. **Wallet popup** appears showing transaction details
@@ -360,7 +357,7 @@ When you call `wallet.sendTransaction()`:
 ```typescript
 // components/SendPayment.tsx
 import React, { useState } from 'react'
-import { WalletClient } from '@bsv/sdk'
+import { WalletClient, P2PKH } from '@bsv/sdk'
 
 interface SendPaymentProps {
   wallet: WalletClient
@@ -385,15 +382,17 @@ export const SendPayment: React.FC<SendPaymentProps> = ({ wallet }) => {
 
       const amountSats = Math.floor(Number(amount) * 100_000_000) // BSV to satoshis
 
-      // Send transaction via wallet
-      const result = await wallet.sendTransaction({
+      // Create action to send payment
+      const result = await wallet.createAction({
+        description: 'Send payment',
         outputs: [{
-          address: recipient,
-          satoshis: amountSats
+          lockingScript: new P2PKH().lock(recipient).toHex(),
+          satoshis: amountSats,
+          outputDescription: 'Payment to recipient'
         }]
       })
 
-      setTxid(result.txid)
+      setTxid(result.txid!)
       setRecipient('')
       setAmount('')
 
@@ -468,20 +467,26 @@ export const SendPayment: React.FC<SendPaymentProps> = ({ wallet }) => {
 ### Batch Payments
 
 ```typescript
+import { WalletClient, P2PKH } from '@bsv/sdk'
+
 async function sendBatchPayment(wallet: WalletClient) {
-  const result = await wallet.sendTransaction({
+  const result = await wallet.createAction({
+    description: 'Batch payment',
     outputs: [
       {
-        address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
-        satoshis: 1000
+        lockingScript: new P2PKH().lock('1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa').toHex(),
+        satoshis: 1000,
+        outputDescription: 'Payment 1'
       },
       {
-        address: '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2',
-        satoshis: 2000
+        lockingScript: new P2PKH().lock('1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2').toHex(),
+        satoshis: 2000,
+        outputDescription: 'Payment 2'
       },
       {
-        address: '1HLoD9E4SDFFPDiYfNYnkBLQ85Y51J3Zb1',
-        satoshis: 3000
+        lockingScript: new P2PKH().lock('1HLoD9E4SDFFPDiYfNYnkBLQ85Y51J3Zb1').toHex(),
+        satoshis: 3000,
+        outputDescription: 'Payment 3'
       }
     ]
   })
@@ -496,25 +501,34 @@ async function sendBatchPayment(wallet: WalletClient) {
 ### Payment with Metadata (OP_RETURN)
 
 ```typescript
+import { WalletClient, P2PKH, Script } from '@bsv/sdk'
+
 async function sendPaymentWithMetadata(
   wallet: WalletClient,
   recipientAddress: string,
   amountSatoshis: number,
   metadata: any
 ) {
-  // Create metadata output
-  const metadataOutput = {
-    script: `OP_FALSE OP_RETURN ${Buffer.from(JSON.stringify(metadata)).toString('hex')}`,
-    satoshis: 0
-  }
+  // Create OP_RETURN script with metadata
+  const metadataHex = Buffer.from(JSON.stringify(metadata)).toString('hex')
+  const opReturnScript = new Script()
+  opReturnScript.writeOpCode(Script.OP_FALSE)
+  opReturnScript.writeOpCode(Script.OP_RETURN)
+  opReturnScript.writeBin(Buffer.from(metadataHex, 'hex'))
 
-  const result = await wallet.sendTransaction({
+  const result = await wallet.createAction({
+    description: 'Payment with metadata',
     outputs: [
       {
-        address: recipientAddress,
-        satoshis: amountSatoshis
+        lockingScript: new P2PKH().lock(recipientAddress).toHex(),
+        satoshis: amountSatoshis,
+        outputDescription: 'Payment'
       },
-      metadataOutput
+      {
+        lockingScript: opReturnScript.toHex(),
+        satoshis: 0,
+        outputDescription: 'Metadata'
+      }
     ]
   })
 
@@ -543,14 +557,24 @@ await sendPaymentWithMetadata(
 ### Sign and Verify Messages
 
 ```typescript
+import { WalletClient } from '@bsv/sdk'
+
 async function signMessage(wallet: WalletClient, message: string) {
   try {
-    // Request wallet to sign message
-    const signature = await wallet.signMessage(message)
+    // Hash the message
+    const messageBytes = Buffer.from(message, 'utf8')
+
+    // Request wallet to sign the message data
+    const { signature } = await wallet.createSignature({
+      data: Array.from(messageBytes),
+      protocolID: [0, 'message signing'],
+      keyID: '1',
+      description: 'Sign message'
+    })
 
     console.log('Message signed!')
     console.log('Message:', message)
-    console.log('Signature:', signature)
+    console.log('Signature:', Buffer.from(signature).toString('hex'))
 
     return signature
 
@@ -577,7 +601,7 @@ import { WalletClient } from '@bsv/sdk'
 
 interface AuthProps {
   wallet: WalletClient
-  onAuthenticated: (address: string, signature: string) => void
+  onAuthenticated: (publicKey: string, signature: Uint8Array) => void
 }
 
 export const AuthWithWallet: React.FC<AuthProps> = ({ wallet, onAuthenticated }) => {
@@ -587,31 +611,37 @@ export const AuthWithWallet: React.FC<AuthProps> = ({ wallet, onAuthenticated })
     setAuthenticating(true)
 
     try {
-      // Get user's address
-      const address = await wallet.getAddress()
+      // Get user's identity public key
+      const { publicKey } = await wallet.getPublicKey({ identityKey: true })
 
       // Create challenge message
       const timestamp = Date.now()
       const challenge = `Login to MyApp at ${timestamp}`
+      const messageBytes = Buffer.from(challenge, 'utf8')
 
       // Request signature
-      const signature = await wallet.signMessage(challenge)
+      const { signature } = await wallet.createSignature({
+        data: Array.from(messageBytes),
+        protocolID: [0, 'authentication'],
+        keyID: '1',
+        description: 'Authenticate to MyApp'
+      })
 
       // Send to backend for verification
       const response = await fetch('/api/auth/wallet', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          address,
+          publicKey,
           message: challenge,
-          signature
+          signature: Buffer.from(signature).toString('hex')
         })
       })
 
       if (response.ok) {
         const { token } = await response.json()
         localStorage.setItem('auth_token', token)
-        onAuthenticated(address, signature)
+        onAuthenticated(publicKey, signature)
         console.log('✅ Authenticated with wallet')
       } else {
         throw new Error('Authentication failed')
@@ -644,7 +674,7 @@ export const AuthWithWallet: React.FC<AuthProps> = ({ wallet, onAuthenticated })
 
 ```typescript
 try {
-  await wallet.sendTransaction({ outputs: [...] })
+  await wallet.createAction({ description: '...', outputs: [...] })
 } catch (error: any) {
   switch (error.code) {
     case 'USER_REJECTED':
@@ -849,7 +879,7 @@ import { TransactionHistory } from './components/TransactionHistory'
 import './App.css'
 
 function App() {
-  const { wallet, address, connected, error } = useWallet()
+  const { wallet, publicKey, connected, error } = useWallet()
 
   return (
     <div className="App">
@@ -863,12 +893,12 @@ function App() {
           <>
             <div className="user-info">
               <h2>Your Wallet</h2>
-              <p>Address: {address}</p>
+              <p>Public Key: {publicKey?.substring(0, 20)}...</p>
             </div>
 
             <SendPayment wallet={wallet} />
 
-            <TransactionHistory address={address!} />
+            <TransactionHistory publicKey={publicKey!} />
           </>
         ) : (
           <div className="connect-prompt">
@@ -898,21 +928,21 @@ export default App
 
 **What You Learned:**
 
-✅ WalletClient connects your dApp to MetaNet Desktop Wallet
-✅ Wallet handles all key management, UTXO selection, fees, and broadcasting
-✅ Your dApp requests user approval for transactions
-✅ Error handling for user rejections and failures
-✅ Message signing for authentication
-✅ Best practices for UX and state management
+- ✅ WalletClient connects your dApp to MetaNet Desktop Wallet
+- ✅ Wallet handles all key management, UTXO selection, fees, and broadcasting
+- ✅ Your dApp requests user approval for transactions
+- ✅ Error handling for user rejections and failures
+- ✅ Message signing for authentication
+- ✅ Best practices for UX and state management
 
 **What You DON'T Need to Do:**
 
-❌ Manage private keys
-❌ Track UTXOs
-❌ Calculate fees
-❌ Create change outputs
-❌ Configure ARC
-❌ Handle low-level transaction details
+- ❌ Manage private keys
+- ❌ Track UTXOs
+- ❌ Calculate fees
+- ❌ Create change outputs
+- ❌ Configure ARC
+- ❌ Handle low-level transaction details
 
 **The wallet does all of this automatically!**
 
