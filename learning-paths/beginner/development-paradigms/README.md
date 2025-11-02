@@ -222,29 +222,33 @@ import { WalletClient } from '@bsv/sdk'
 ### Simple Frontend Example
 
 ```typescript
-import { WalletClient } from '@bsv/sdk'
+import { WalletClient, P2PKH } from '@bsv/sdk'
 
 class PaymentDApp {
   private wallet: WalletClient
 
   async connectWallet() {
     // 1. Connect to user's MetaNet Desktop Wallet
-    this.wallet = new WalletClient()
-    await this.wallet.connect()
+    this.wallet = new WalletClient('auto')
+    await this.wallet.connectToSubstrate()
 
-    // 2. Get user's address (for receiving payments)
-    const address = await this.wallet.getAddress()
+    // 2. Get user's identity public key
+    const { publicKey } = await this.wallet.getPublicKey({
+      identityKey: true
+    })
 
-    console.log('Connected to wallet:', address)
-    return address
+    console.log('Connected to wallet, public key:', publicKey)
+    return publicKey
   }
 
   async requestPayment(recipientAddress: string, amountSatoshis: number) {
-    // 1. Request wallet to create and sign transaction
-    const result = await this.wallet.sendTransaction({
+    // 1. Create action (wallet automatically signs and broadcasts)
+    const result = await this.wallet.createAction({
+      description: 'Send payment',
       outputs: [{
-        address: recipientAddress,
-        satoshis: amountSatoshis
+        lockingScript: new P2PKH().lock(recipientAddress).toHex(),
+        satoshis: amountSatoshis,
+        outputDescription: 'Payment to recipient'
       }]
     })
 
@@ -401,18 +405,20 @@ class MerchantWallet {
 class CheckoutPage {
   async completePayment() {
     // Request user's wallet to send payment
-    const wallet = new WalletClient()
-    await wallet.connect()
+    const wallet = new WalletClient('auto')
+    await wallet.connectToSubstrate()
 
-    const txid = await wallet.sendTransaction({
+    const result = await wallet.createAction({
+      description: 'Payment for order',
       outputs: [{
-        address: merchantAddress,
-        satoshis: orderTotal
+        lockingScript: new P2PKH().lock(merchantAddress).toHex(),
+        satoshis: orderTotal,
+        outputDescription: 'Order payment'
       }]
     })
 
     // Send txid to backend for confirmation
-    await api.confirmPayment(txid)
+    await api.confirmPayment(result.txid)
   }
 }
 ```

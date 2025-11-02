@@ -749,10 +749,12 @@ export const CampaignCard: React.FC<Props> = ({ campaign, onPledge }) => {
       const amountSats = parseInt(pledgeAmount)
 
       // Send pledge to campaign escrow address via WalletClient
-      const result = await wallet.sendTransaction({
+      const result = await wallet.createAction({
+        description: `Pledge to ${campaign.title}`,
         outputs: [{
-          address: campaign.escrowAddress,
-          satoshis: amountSats
+          lockingScript: new P2PKH().lock(campaign.escrowAddress).toHex(),
+          satoshis: amountSats,
+          outputDescription: 'Campaign pledge'
         }]
       })
 
