@@ -103,6 +103,9 @@ npm install @bsv/sdk
 
 # Install development dependencies
 npm install -D typescript @types/node ts-node nodemon
+
+# Install dotenv for environment variables
+npm install dotenv
 ```
 
 ### Step 5: Configure TypeScript
@@ -369,27 +372,29 @@ import { WalletClient } from '@bsv/sdk'
 
 export const WalletTest: React.FC = () => {
   const [wallet, setWallet] = useState<WalletClient | null>(null)
-  const [address, setAddress] = useState<string>('')
+  const [publicKey, setPublicKey] = useState<string>('')
   const [status, setStatus] = useState<string>('Not connected')
 
   const connectWallet = async () => {
     try {
       setStatus('Connecting...')
 
-      // Initialize WalletClient
-      const walletClient = new WalletClient()
+      // Initialize WalletClient (auto-detects available wallet substrate)
+      const walletClient = new WalletClient('auto')
 
-      // Connect to MetaNet Desktop Wallet
-      await walletClient.connect()
+      // Connect to the wallet substrate
+      await walletClient.connectToSubstrate()
 
-      // Get user's address
-      const userAddress = await walletClient.getAddress()
+      // Get user's identity public key
+      const { publicKey: userPubKey } = await walletClient.getPublicKey({
+        identityKey: true
+      })
 
       setWallet(walletClient)
-      setAddress(userAddress)
+      setPublicKey(userPubKey)
       setStatus('Connected')
 
-      console.log('✅ Wallet connected:', userAddress)
+      console.log('✅ Wallet connected, public key:', userPubKey)
     } catch (error: any) {
       console.error('❌ Connection failed:', error)
       setStatus(`Error: ${error.message}`)
@@ -402,7 +407,9 @@ export const WalletTest: React.FC = () => {
 
       <div>
         <p><strong>Status:</strong> {status}</p>
-        {address && <p><strong>Address:</strong> {address}</p>}
+        {publicKey && (
+          <p><strong>Public Key:</strong> {publicKey.substring(0, 20)}...</p>
+        )}
       </div>
 
       {!wallet ? (
@@ -533,7 +540,7 @@ npm start
 3. Wallet popup appears
 4. Authorize connection
 5. See "✅ Wallet connected successfully!"
-6. Address displayed
+6. Public key displayed (truncated for security)
 
 ---
 
