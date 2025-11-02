@@ -363,16 +363,24 @@ Your Transaction
 - Maintains full UTXO set
 - Suitable for miners, services
 
+The example below demonstrates how SPV verification enables you to cryptographically prove that a transaction is included in a block without downloading the entire block. You only need the block header and a Merkle proof.
+
 ```typescript
 import { MerkleProof } from '@bsv/sdk'
 
-// Verify transaction with merkle proof
+// Verify a transaction is in a block using its merkle proof
+// merkleProof: cryptographic proof from SPV server showing tx is in block
+// blockHeader: 80-byte header containing merkle root to verify against
 function verifyTxInBlock(
   txid: string,
   merkleProof: MerkleProof,
   blockHeader: BlockHeader
 ): boolean {
+  // Calculate merkle root from the proof path
   const calculatedRoot = merkleProof.calculateRoot(txid)
+
+  // Compare with the merkle root in the block header
+  // If they match, the transaction is proven to be in the block
   return calculatedRoot === blockHeader.merkleRoot
 }
 ```
