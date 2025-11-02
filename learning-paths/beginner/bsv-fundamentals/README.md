@@ -523,16 +523,16 @@ async function sendPaymentBackend(
 
 ## Key Takeaways
 
-✅ **Transactions** move value via inputs and outputs
-✅ **UTXO Model** enables parallel processing and clear ownership
-✅ **Private Keys** must be kept secret and control funds
-✅ **Public Keys** are derived from private keys and can be shared
-✅ **Addresses** are Base58-encoded public key hashes
-✅ **Satoshis** are the base unit (100M sats = 1 BSV)
-✅ **Bitcoin Script** defines spending conditions
-✅ **Blocks** contain transactions and build on previous blocks
-✅ **Confirmations** indicate transaction finality
-✅ **SPV** enables lightweight verification
+- ✅ **Transactions** move value via inputs and outputs
+- ✅ **UTXO Model** enables parallel processing and clear ownership
+- ✅ **Private Keys** must be kept secret and control funds
+- ✅ **Public Keys** are derived from private keys and can be shared
+- ✅ **Addresses** are Base58-encoded public key hashes
+- ✅ **Satoshis** are the base unit (100M sats = 1 BSV)
+- ✅ **Bitcoin Script** defines spending conditions
+- ✅ **Blocks** contain transactions and build on previous blocks
+- ✅ **Confirmations** indicate transaction finality
+- ✅ **SPV** enables lightweight verification
 
 ## Practice Exercises
 
