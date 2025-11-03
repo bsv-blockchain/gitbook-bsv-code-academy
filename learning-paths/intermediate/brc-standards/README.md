@@ -4,6 +4,10 @@
 
 Bitcoin Request for Comments (BRC) standards define protocols and patterns for interoperability across the BSV ecosystem. This module teaches you how to implement key BRC standards in your applications.
 
+**Estimated Time:** 1.5-2 hours
+**Difficulty:** Intermediate
+**Prerequisites:** Complete [BSV Fundamentals](../../beginner/bsv-fundamentals/README.md) and [Transaction Building](../transaction-building/README.md)
+
 ## What are BRC Standards?
 
 BRC standards are community-driven specifications that define:
@@ -189,6 +193,8 @@ async function processPayment(
     })
   }
 
+  // Calculate fee and sign
+  await tx.fee()
   await tx.sign()
 
   return {

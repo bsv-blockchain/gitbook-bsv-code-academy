@@ -4,6 +4,10 @@
 
 This module provides a deep dive into the core primitives of the BSV blockchain. Understanding these building blocks is essential for creating sophisticated applications and optimizing transaction efficiency.
 
+**Estimated Time:** 2-3 hours
+**Difficulty:** Intermediate
+**Prerequisites:** Complete [BSV Fundamentals](../../beginner/bsv-fundamentals/README.md)
+
 ## Learning Objectives
 
 By the end of this module, you will understand:

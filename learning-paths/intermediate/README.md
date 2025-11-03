@@ -14,8 +14,9 @@ The intermediate path is **project-based**. Instead of learning concepts in isol
 
 ## What You'll Build
 
-By completing this path, you will build three production-ready applications:
+By completing this path, you will build four production-ready applications:
 
+0. **Payment Systems** - Complete payment infrastructure with invoicing, subscriptions, and refunds
 1. **Crowdfunding Platform** - Token-based campaign funding with escrow and automated payouts
 2. **Asset Tokenization System** - Real-world asset representation with compliance workflows
 3. **Supply Chain Digital Passports** - Product lifecycle tracking with multi-party verification
@@ -30,6 +31,37 @@ Before starting this path, you should have completed the [Beginner Learning Path
 - Using WalletClient for frontend wallet integration
 
 ## Core Projects
+
+### Project 0: [Payment Systems](payment-systems/README.md)
+**Duration**: 4-6 hours | **Difficulty**: Intermediate
+
+Build a complete payment processing infrastructure supporting various payment scenarios.
+
+**What You'll Build**:
+- One-time payment processing
+- Invoice generation and management
+- Recurring subscription system
+- Refund processing
+- Payment notifications with webhooks
+- Both backend (merchant) and frontend (customer) implementations
+
+**Key Features**:
+- Multiple payment types (one-time, subscription, invoice)
+- Automated subscription renewals
+- Payment history and receipts
+- Refund workflow
+- Webhook integration for notifications
+- Multi-currency display support
+
+**SDK Components Used**:
+- Transaction building with fee calculation
+- Payment request protocols (BRC-29 style)
+- WalletClient for customer payments
+- Automated payment processing
+
+**Why Start Here**: Understanding payment flows is fundamental to most blockchain applications. This project teaches core patterns you'll use in all other projects.
+
+---
 
 ### Project 1: [Crowdfunding Platform](crowdfunding-platform/README.md)
 **Duration**: 4-6 hours | **Difficulty**: Intermediate
@@ -167,7 +199,7 @@ Throughout this path, you'll learn two essential approaches to BSV application d
 
 ## SDK-First Philosophy
 
-All three projects emphasize using the **BSV SDK's pre-built components** rather than manual low-level configuration:
+All four projects emphasize using the **BSV SDK's pre-built components** rather than manual low-level configuration:
 
 ✅ **DO**: Use SDK's built-in transaction methods that handle broadcasting, fees, and UTXO management automatically
 
@@ -188,7 +220,8 @@ The SDK provides **ready-to-use, pre-configured components** that let you focus 
 ## Learning Path Completion
 
 After completing this path, you will have:
-- ✅ Built three production-ready, deployable BSV applications
+- ✅ Built four production-ready, deployable BSV applications
+- ✅ Implemented complete payment infrastructure (one-time, subscriptions, invoices, refunds)
 - ✅ Implemented both backend (custodial) and frontend (user-wallet) architectures
 - ✅ Mastered the BSV SDK's pre-built components and patterns
 - ✅ Created token systems, escrow mechanisms, and multi-party workflows
@@ -209,6 +242,14 @@ Ready for advanced topics? Continue to the [Advanced Learning Path](../advanced/
 ## Real-World Applications
 
 The projects in this path directly prepare you to build:
+
+**From Payment Systems:**
+- E-commerce payment processing
+- Subscription and membership platforms
+- Professional invoicing systems
+- SaaS billing infrastructure
+- Marketplace payment handling
+- Digital goods purchasing
 
 **From Crowdfunding Platform:**
 - Campaign funding systems
@@ -238,14 +279,20 @@ The projects in this path directly prepare you to build:
 
 ## Estimated Time
 
-**Core Projects**: 12-18 hours total
+**Core Projects**: 16-24 hours total
+- Payment Systems: 4-6 hours
 - Crowdfunding Platform: 4-6 hours
 - Asset Tokenization System: 4-6 hours
 - Supply Chain Digital Passports: 4-6 hours
 
-**Supporting Modules**: 9-10 hours total (can be studied in parallel with projects)
+**Supporting Modules**: 13-17 hours total (can be studied in parallel with projects)
+- BSV Primitives: 2-3 hours
+- Transaction Building: 3-4 hours
+- Script Templates: 3-4 hours
+- SPV Verification: 3-4 hours
+- BRC Standards: 1.5-2 hours
 
-**Total Path Duration**: 20-30 hours depending on depth and customization
+**Total Path Duration**: 29-41 hours depending on depth and customization
 
 This is a hands-on learning path - you'll spend most of your time writing and deploying real code, not just reading documentation.
 
@@ -253,10 +300,11 @@ This is a hands-on learning path - you'll spend most of your time writing and de
 
 ## Recommended Learning Path
 
-1. **Start with a project** that interests you most (Crowdfunding, Tokenization, or Supply Chain)
-2. **Reference supporting modules** as needed when you encounter new concepts
-3. **Build both implementations** (backend and frontend) for each project
-4. **Customize and deploy** your own version with unique features
-5. **Move to the next project** and repeat the process
+1. **Start with Payment Systems** - Learn fundamental payment flows that apply to all blockchain applications
+2. **Choose your next project** based on your interests (Crowdfunding, Tokenization, or Supply Chain)
+3. **Reference supporting modules** as needed when you encounter new concepts
+4. **Build both implementations** (backend and frontend) for each project
+5. **Customize and deploy** your own version with unique features
+6. **Move to the next project** and repeat the process
 
-Ready to build production BSV applications? Start with [**Crowdfunding Platform**](crowdfunding-platform/README.md), [**Asset Tokenization**](asset-tokenization/README.md), or [**Supply Chain Passports**](supply-chain-passports/README.md)!
+Ready to build production BSV applications? Start with [**Payment Systems**](payment-systems/README.md) to learn the fundamentals, then move to [**Crowdfunding Platform**](crowdfunding-platform/README.md), [**Asset Tokenization**](asset-tokenization/README.md), or [**Supply Chain Passports**](supply-chain-passports/README.md)!
