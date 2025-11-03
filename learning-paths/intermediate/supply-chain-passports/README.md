@@ -344,6 +344,13 @@ export class ProductRegistrationService {
     // 4. Build registration transaction
     const tx = new Transaction()
 
+    // Note: In production, add inputs from manufacturer's wallet here
+    // await tx.addInput({
+    //   sourceTXID: manufacturerUTXO.txid,
+    //   sourceOutputIndex: manufacturerUTXO.vout,
+    //   unlockingScriptTemplate: new P2PKH().unlock(params.manufacturerPrivateKey)
+    // })
+
     // Add product UTXO output
     tx.addOutput({
       satoshis: 1000, // Dust amount
@@ -377,9 +384,11 @@ export class ProductRegistrationService {
       lockingScript: metadataScript
     })
 
-    // 5. Sign and broadcast
-    await tx.sign(params.manufacturerPrivateKey)
-    const txid = await tx.broadcast()
+    // 5. Calculate fee, sign and broadcast
+    await tx.fee()
+    await tx.sign()
+    const broadcastResult = await tx.broadcast()
+    const txid = broadcastResult.txid
 
     // 6. Create product record
     const product: Product = {
@@ -673,17 +682,21 @@ export class VerificationService {
     })
 
     // 7. Sign transaction
-    await tx.sign(params.partyPrivateKey)
+    // Note: For multi-party signatures, each party needs to sign
+    // For production: implement proper multi-signature coordination
+    await tx.sign()
 
     // If additional signers, they sign too
     if (params.additionalSigners) {
       for (const signer of params.additionalSigners) {
-        await tx.sign(signer.privateKey)
+        await tx.sign()
       }
     }
 
-    // 8. Broadcast
-    const txid = await tx.broadcast()
+    // 8. Calculate fee and broadcast
+    await tx.fee()
+    const broadcastResult = await tx.broadcast()
+    const txid = broadcastResult.txid
 
     // 9. Create verification record
     const verification: Verification = {

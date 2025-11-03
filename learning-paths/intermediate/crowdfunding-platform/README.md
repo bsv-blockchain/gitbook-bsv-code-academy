@@ -223,9 +223,13 @@ export class EscrowService {
     // 3. Build payout transaction
     const tx = new Transaction()
 
-    // 4. Add escrow output as input (spending the pledges)
-    // Note: In practice, track escrow UTXOs in database
-    // This is simplified for demonstration
+    // 4. Add escrow inputs (spending the pledges)
+    // Note: In production, add inputs from escrow UTXOs
+    // await tx.addInput({
+    //   sourceTXID: escrowUTXO.txid,
+    //   sourceOutputIndex: escrowUTXO.vout,
+    //   unlockingScriptTemplate: new P2PKH().unlock(escrowKey)
+    // })
 
     // 5. Add output to campaign creator
     const platformFee = Math.floor(totalAmount * 0.05) // 5% fee
@@ -243,11 +247,11 @@ export class EscrowService {
       lockingScript: new P2PKH().lock(platformAddress)
     })
 
-    // 7. Sign with escrow key
-    await tx.sign(escrowKey)
-
-    // 8. Broadcast
-    const txid = await tx.broadcast()
+    // 7. Calculate fee, sign with escrow key and broadcast
+    await tx.fee()
+    await tx.sign()
+    const broadcastResult = await tx.broadcast()
+    const txid = broadcastResult.txid
 
     // 9. Update campaign status
     await this.db.updateCampaign(campaign._id!, {
@@ -274,15 +278,24 @@ export class EscrowService {
 
       const tx = new Transaction()
 
+      // Note: In production, add escrow UTXO as input
+      // await tx.addInput({
+      //   sourceTXID: pledgeUTXO.txid,
+      //   sourceOutputIndex: pledgeUTXO.vout,
+      //   unlockingScriptTemplate: new P2PKH().unlock(escrowKey)
+      // })
+
       // Add refund output to backer
       tx.addOutput({
         satoshis: pledge.amount,
         lockingScript: new P2PKH().lock(pledge.backerAddress)
       })
 
-      // Sign and broadcast
-      await tx.sign(escrowKey)
-      const txid = await tx.broadcast()
+      // Calculate fee, sign and broadcast
+      await tx.fee()
+      await tx.sign()
+      const broadcastResult = await tx.broadcast()
+      const txid = broadcastResult.txid
 
       // Update pledge as refunded
       await this.db.updatePledge(pledge._id!, {

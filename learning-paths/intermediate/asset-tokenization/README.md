@@ -282,6 +282,13 @@ export class TokenIssuanceService {
     // 3. Build issuance transaction
     const tx = new Transaction()
 
+    // Note: In production, add inputs from issuer's wallet here
+    // await tx.addInput({
+    //   sourceTXID: issuerUTXO.txid,
+    //   sourceOutputIndex: issuerUTXO.vout,
+    //   unlockingScriptTemplate: new P2PKH().unlock(this.issuerPrivateKey)
+    // })
+
     // 4. Add token output (UTXO representing ownership)
     tx.addOutput({
       satoshis: 1000, // Dust amount
@@ -306,9 +313,11 @@ export class TokenIssuanceService {
       lockingScript: metadataScript
     })
 
-    // 6. Sign and broadcast
-    await tx.sign(this.issuerPrivateKey)
-    const txid = await tx.broadcast()
+    // 6. Calculate fee, sign and broadcast
+    await tx.fee()
+    await tx.sign()
+    const broadcastResult = await tx.broadcast()
+    const txid = broadcastResult.txid
 
     // 7. Create token record
     const token: Token = {
@@ -560,9 +569,11 @@ export class TransferService {
       lockingScript: metadataScript
     })
 
-    // 8. Sign and broadcast
-    await tx.sign(params.ownerPrivateKey)
-    const txid = await tx.broadcast()
+    // 8. Calculate fee, sign and broadcast
+    await tx.fee()
+    await tx.sign()
+    const broadcastResult = await tx.broadcast()
+    const txid = broadcastResult.txid
 
     // 9. Update token records
     // Mark old token as spent
