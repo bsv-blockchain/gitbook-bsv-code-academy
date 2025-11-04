@@ -24,15 +24,6 @@
   * [SPV Verification](learning-paths/intermediate/spv-verification/README.md)
   * [BRC Standards](learning-paths/intermediate/brc-standards/README.md)
 
-### Advanced Path
-
-* [Advanced Overview](learning-paths/advanced/README.md)
-  * [Network Topology](learning-paths/advanced/network-topology/README.md)
-  * [Node Operations](learning-paths/advanced/node-operations/README.md)
-  * [Overlay Networks](learning-paths/advanced/overlay-networks/README.md)
-  * [Advanced Scripting](learning-paths/advanced/advanced-scripting/README.md)
-  * [Custom Protocols](learning-paths/advanced/custom-protocols/README.md)
-
 ## SDK Components Reference
 
 * [SDK Components Overview](sdk-components/README.md)

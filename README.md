@@ -2,7 +2,7 @@
 
 **Your Complete Guide to Building on Bitcoin SV**
 
-Welcome to the BSV Code Academy - a comprehensive, modular learning platform for developers at all skill levels who want to build applications on the Bitcoin Satoshi Vision (BSV) blockchain. From beginner to advanced, from theory to production-ready code.
+Welcome to the BSV Code Academy - a comprehensive, modular learning platform for developers at all skill levels who want to build applications on the Bitcoin Satoshi Vision (BSV) blockchain. From beginner to intermediate production-ready applications.
 
 ---
 
@@ -13,7 +13,7 @@ This academy is organized into **three complementary systems** that work togethe
 ### 1. 🎓 **Learning Paths** (Structured Courses)
 **Start here for guided learning**
 
-Follow progressive courses from beginner to advanced. Each course teaches concepts and references the SDK Components and Code Features below.
+Follow progressive courses from beginner to intermediate. Each course teaches concepts and references the SDK Components and Code Features below.
 
 - **When to use**: You want to learn systematically
 - **Path**: Read courses in order, following the references to components
@@ -65,7 +65,7 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 ```
 
 **Estimated time**: 8-12 hours to get productive
-**You'll learn**: BSV-specific features, transaction building, SPV, BRC standards, asset tokenization
+**You'll learn**: BSV-specific features, transaction building, SPV, BRC standards, payment systems, tokenization
 
 ### For SDK Reference
 **"I need API documentation"**
@@ -139,21 +139,6 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 **Total time**: 29-41 hours (16-24h projects + 13-17h modules)
 **Prerequisites**: Complete beginner path
 **Outcome**: Build four production-ready applications with full frontend and backend
-
-### 🔴 Advanced Path
-**Goal**: Master BSV infrastructure and protocols
-
-| Course | Time | What You'll Learn |
-|--------|------|-------------------|
-| [Network Topology](learning-paths/advanced/network-topology/) | 4h | BSV network, Teranode architecture |
-| [Node Operations](learning-paths/advanced/node-operations/) | 5h | Run nodes, Kubernetes deployment |
-| [Overlay Networks](learning-paths/advanced/overlay-networks/) | 4h | Build application-specific networks |
-| [Advanced Scripting](learning-paths/advanced/advanced-scripting/) | 6h | Complex smart contracts, R-puzzles, covenants |
-| [Custom Protocols](learning-paths/advanced/custom-protocols/) | 5h | Design tokens, credentials, identity systems |
-
-**Total time**: ~24 hours
-**Prerequisites**: Complete intermediate path
-**Outcome**: Design and deploy custom protocols and infrastructure
 
 ---
 
@@ -252,7 +237,7 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 
 ### "I want to create a token system"
 ```
-1. Learning: intermediate/script-templates/ + advanced/custom-protocols/
+1. Learning: intermediate/asset-tokenization/ + intermediate/script-templates/
 2. Components: script-templates/, transaction/, spv/
 3. Code: custom-scripts/, custom-templates/, transaction-building/
 ```
@@ -264,16 +249,16 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 3. Code: payment-processing/, transaction-broadcasting/, batch-operations/
 ```
 
-### "I want to run infrastructure"
+### "I want to build payment infrastructure"
 ```
-1. Learning: advanced/network-topology/ + advanced/node-operations/
-2. Components: arc/, spv/, beef/
-3. Code: transaction-broadcasting/, spv/
+1. Learning: intermediate/payment-systems/ + intermediate/transaction-building/
+2. Components: transaction/, arc/, brc-29/
+3. Code: payment-processing/, transaction-broadcasting/, batch-operations/
 ```
 
 ### "I want to build smart contracts"
 ```
-1. Learning: intermediate/script-templates/ + advanced/advanced-scripting/
+1. Learning: intermediate/script-templates/ + intermediate/bsv-primitives/
 2. Components: script/, script-templates/, signatures/
 3. Code: smart-contracts/, custom-scripts/, multi-signature/
 ```
@@ -287,8 +272,7 @@ gitbook-bsv-code-academy/
 │
 ├── learning-paths/          # 📚 Structured courses (follow in order)
 │   ├── beginner/           # 7 courses (~16 hours)
-│   ├── intermediate/       # 9 courses: 4 projects + 5 modules (~29-41 hours)
-│   └── advanced/           # 5 courses (~24 hours)
+│   └── intermediate/       # 9 courses: 4 projects + 5 modules (~29-41 hours)
 │
 ├── sdk-components/         # 🔧 Technical reference (jump to as needed)
 │   ├── private-keys/       # API docs + patterns
@@ -310,10 +294,9 @@ gitbook-bsv-code-academy/
 
 ## 📊 What's Inside
 
-- **📚 21 Structured Courses** covering beginner → intermediate → advanced
+- **📚 16 Structured Courses** covering beginner → intermediate
   - 7 Beginner courses
   - 9 Intermediate courses (4 projects + 5 modules)
-  - 5 Advanced courses
 - **🔧 17 SDK Components** with complete API documentation
 - **💻 31 Code Features** with production-ready examples
 - **📝 Comprehensive documentation** covering all aspects of BSV development
@@ -385,13 +368,13 @@ Week 2: Intermediate skills (transaction-building, script-templates) + Your use 
        + code-features implementation
 ```
 
-### Comprehensive Mastery (3-4 months part-time)
+### Comprehensive Mastery (2-3 months part-time)
 ```
 Month 1: All beginner courses (7 courses, ~16 hours)
 Month 2: Intermediate projects (payment-systems, crowdfunding-platform)
+        + supporting modules as needed (BSV primitives, transaction-building)
 Month 3: More intermediate projects (asset-tokenization, supply-chain-passports)
-        + supporting modules as needed (BSV primitives, transaction-building, etc.)
-Month 4: Advanced courses + build and deploy a complete custom project
+        + remaining modules (script-templates, SPV, BRC standards)
 ```
 
 ### SDK Reference User (ongoing)
