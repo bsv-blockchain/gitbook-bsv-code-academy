@@ -117,20 +117,28 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 ### 🟡 Intermediate Path
 **Goal**: Build production applications
 
-| Course | Time | What You'll Learn |
-|--------|------|-------------------|
-| [BSV Primitives](learning-paths/intermediate/bsv-primitives/) | 3h | Deep dive into keys, signatures, scripts |
-| [Transaction Building](learning-paths/intermediate/transaction-building/) | 4h | Advanced transaction patterns |
-| [Script Templates](learning-paths/intermediate/script-templates/) | 4h | Custom locking scripts, multisig, timelocks |
-| [SPV Verification](learning-paths/intermediate/spv-verification/) | 4h | Simplified Payment Verification |
-| [BRC Standards](learning-paths/intermediate/brc-standards/) | 3h | BSV Request for Comment standards |
-| [Asset Tokenization](learning-paths/intermediate/asset-tokenization/) | 4h | Create and manage digital assets on BSV |
-| [Supply Chain Passports](learning-paths/intermediate/supply-chain-passports/) | 4h | Track products through supply chains |
-| [Crowdfunding Platform](learning-paths/intermediate/crowdfunding-platform/) | 4h | Build decentralized crowdfunding systems |
+#### Core Projects (Build Real Applications)
 
-**Total time**: ~30 hours
+| Project | Time | What You'll Build |
+|---------|------|-------------------|
+| [Payment Systems](learning-paths/intermediate/payment-systems/) | 4-6h | Complete payment infrastructure with invoices, subscriptions, refunds |
+| [Crowdfunding Platform](learning-paths/intermediate/crowdfunding-platform/) | 4-6h | Token-based crowdfunding with escrow and automated payouts |
+| [Asset Tokenization](learning-paths/intermediate/asset-tokenization/) | 4-6h | Digital asset representation with compliance workflows |
+| [Supply Chain Passports](learning-paths/intermediate/supply-chain-passports/) | 4-6h | Product lifecycle tracking with multi-party verification |
+
+#### Supporting Modules (Reference as Needed)
+
+| Module | Time | What You'll Learn |
+|--------|------|-------------------|
+| [BSV Primitives](learning-paths/intermediate/bsv-primitives/) | 2-3h | Deep dive into transaction structure, opcodes, UTXO management |
+| [Transaction Building](learning-paths/intermediate/transaction-building/) | 3-4h | Multi-input transactions, batch payments, fee optimization |
+| [Script Templates](learning-paths/intermediate/script-templates/) | 3-4h | Custom locking scripts, multisig, timelocks |
+| [SPV Verification](learning-paths/intermediate/spv-verification/) | 3-4h | Merkle proofs, lightweight clients, BRC-9/67 |
+| [BRC Standards](learning-paths/intermediate/brc-standards/) | 1.5-2h | BRC-29, BRC-42, protocol specifications |
+
+**Total time**: 29-41 hours (16-24h projects + 13-17h modules)
 **Prerequisites**: Complete beginner path
-**Outcome**: Build complex, production-ready applications
+**Outcome**: Build four production-ready applications with full frontend and backend
 
 ### 🔴 Advanced Path
 **Goal**: Master BSV infrastructure and protocols
@@ -279,7 +287,7 @@ gitbook-bsv-code-academy/
 │
 ├── learning-paths/          # 📚 Structured courses (follow in order)
 │   ├── beginner/           # 7 courses (~16 hours)
-│   ├── intermediate/       # 8 courses (~30 hours)
+│   ├── intermediate/       # 9 courses: 4 projects + 5 modules (~29-41 hours)
 │   └── advanced/           # 5 courses (~24 hours)
 │
 ├── sdk-components/         # 🔧 Technical reference (jump to as needed)
@@ -302,9 +310,9 @@ gitbook-bsv-code-academy/
 
 ## 📊 What's Inside
 
-- **📚 20 Structured Courses** covering beginner → intermediate → advanced
+- **📚 21 Structured Courses** covering beginner → intermediate → advanced
   - 7 Beginner courses
-  - 8 Intermediate courses
+  - 9 Intermediate courses (4 projects + 5 modules)
   - 5 Advanced courses
 - **🔧 17 SDK Components** with complete API documentation
 - **💻 31 Code Features** with production-ready examples
@@ -380,9 +388,10 @@ Week 2: Intermediate skills (transaction-building, script-templates) + Your use 
 ### Comprehensive Mastery (3-4 months part-time)
 ```
 Month 1: All beginner courses (7 courses, ~16 hours)
-Month 2: Core intermediate courses (transaction-building, script-templates, SPV, BRC)
-Month 3: Specialized intermediate (asset-tokenization, supply-chain, crowdfunding)
-Month 4: Advanced courses + build and deploy a complete project
+Month 2: Intermediate projects (payment-systems, crowdfunding-platform)
+Month 3: More intermediate projects (asset-tokenization, supply-chain-passports)
+        + supporting modules as needed (BSV primitives, transaction-building, etc.)
+Month 4: Advanced courses + build and deploy a complete custom project
 ```
 
 ### SDK Reference User (ongoing)
@@ -411,10 +420,15 @@ Month 4: Advanced courses + build and deploy a complete project
 - [BSV Blockchain](https://www.bsvblockchain.org/) - Official BSV website
 - [BSV Skills Center](https://hub.bsvblockchain.org/bsv-skills-center) - Official learning hub
 - [Teranode Docs](https://bsv-blockchain.github.io/teranode/) - Teranode documentation
-- [BRC Standards](https://github.com/bitcoin-sv/BRCs) - BSV Request for Comments
+- [BRC Standards Hub](https://hub.bsvblockchain.org/brc) - BSV protocol standards
+- [BRC GitHub Repository](https://github.com/bitcoin-sv/BRCs) - BRC specifications source
 
 ### Developer Tools
 - [BSV TypeScript SDK](https://github.com/bsv-blockchain/ts-sdk) - Official SDK repository
+- [BSV SDK Documentation](https://bsv-blockchain.github.io/ts-sdk/) - SDK API reference
+- [MetaNet Desktop Wallet](https://desktop.bsvb.tech/) - BSV desktop wallet
+- [Wallet Toolbox](https://fast.brc.dev/) - WalletClient API documentation
+- [Get BSV - Orange Gateway](https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/get-bsv/orange-gateway) - Purchase BSV with fiat
 - [WhatsOnChain](https://whatsonchain.com/) - BSV blockchain explorer
 - [Gorilla Pool](https://gorillapool.io/) - Mining pool and tools
 

@@ -443,8 +443,9 @@ describe('BRC-42 Implementation', () => {
 - [BRC-42 Key Derivation](../../../code-features/brc-42-derivation/README.md)
 
 ### External Links
+- [BRC Standards Hub](https://hub.bsvblockchain.org/brc)
 - [BRC Specifications Repository](https://github.com/bitcoin-sv/BRCs)
-- [BSV Skills Center - BRC Standards](https://hub.bsvblockchain.org)
+- [BSV Skills Center - BRC Standards](https://hub.bsvblockchain.org/brc)
 
 ## Hands-On Exercise
 

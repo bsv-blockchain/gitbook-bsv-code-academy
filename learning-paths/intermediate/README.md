@@ -193,7 +193,7 @@ Throughout this path, you'll learn two essential approaches to BSV application d
 - SDK's WalletClient component handles wallet communication
 - Use cases: crowdfunding platforms, marketplace frontends, consumer verification apps
 
-**Reference**: [BRC Specification for WalletClient](https://fast.brc.dev/)
+**Reference**: [Wallet Toolbox Documentation](https://fast.brc.dev/) and [BRC Standards](https://hub.bsvblockchain.org/brc)
 
 ---
 
@@ -273,8 +273,10 @@ The projects in this path directly prepare you to build:
 
 - Check the [SDK Components](../../sdk-components/README.md) for detailed API reference
 - Browse [Code Features](../../code-features/README.md) for working examples
-- Reference [BRC Specifications](https://fast.brc.dev/) for WalletClient and standards
+- Reference [Wallet Toolbox Documentation](https://fast.brc.dev/) for WalletClient API
+- Reference [BRC Standards](https://hub.bsvblockchain.org/brc) for protocol specifications
 - Visit [BSV Skills Center](https://hub.bsvblockchain.org/bsv-skills-center) for additional resources
+- Download [MetaNet Desktop Wallet](https://desktop.bsvb.tech/) for testing frontend integration
 - Join BSV developer communities for peer support
 
 ## Estimated Time

@@ -494,15 +494,17 @@ npm start
 
 **Required for frontend development:**
 
-1. Download MetaNet Desktop Wallet from: https://fast.brc.dev/
+1. Download MetaNet Desktop Wallet from: https://desktop.bsvb.tech/
 2. Install and set up wallet
-3. Get testnet BSV from faucet: https://faucet.bsvblockchain.org/
+3. Fund your wallet with BSV:
+   - **Mainnet**: [Orange Gateway](https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/get-bsv/orange-gateway) (buy with fiat)
+   - **Testnet**: Use the built-in wallet faucet feature or contact BSV community for testnet coins
 4. Your dApp will connect to this wallet via WalletClient
 
 **Documentation:**
-- WalletClient API: https://fast.brc.dev/
-- BRC Specification: https://fast.brc.dev/
-- Integration Guide: https://fast.brc.dev/
+- Wallet Toolbox API: https://fast.brc.dev/
+- BRC Standards: https://hub.bsvblockchain.org/brc
+- Tech Stack & Resources: https://hub.bsvblockchain.org/bsv-skills-center
 
 ---
 
@@ -558,18 +560,18 @@ npm start
 - Explore blocks and network stats
 - Debug transaction issues
 
-### Testnet Faucet
+### Getting Testnet BSV
 
 Get free testnet BSV for development:
-- Official Faucet: https://faucet.bsvblockchain.org/
-- Request 0.01 BSV to your testnet address
+- Use MetaNet Desktop Wallet's built-in faucet feature
+- Join [BSV Discord](https://discord.gg/bsv) to request testnet coins from the community
 - Use for testing without real funds
 
 ### API Documentation
 
 - **BSV SDK Docs**: https://bsv-blockchain.github.io/ts-sdk/
-- **WalletClient Reference**: https://fast.brc.dev/
-- **BRC Standards**: https://github.com/bitcoin-sv/BRCs
+- **Wallet Toolbox Reference**: https://fast.brc.dev/
+- **BRC Standards**: https://hub.bsvblockchain.org/brc
 
 ---
 
@@ -720,15 +722,17 @@ Now that your environment is ready, continue to:
 
 ### Official Documentation
 - [BSV SDK Documentation](https://bsv-blockchain.github.io/ts-sdk/)
-- [WalletClient Reference](https://fast.brc.dev/)
+- [Wallet Toolbox Documentation](https://fast.brc.dev/)
 - [Node.js Documentation](https://nodejs.org/docs)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 
 ### Tools
 - [VS Code](https://code.visualstudio.com/)
 - [WhatsOnChain Explorer](https://whatsonchain.com/)
-- [MetaNet Desktop Wallet](https://fast.brc.dev/)
-- [BSV Testnet Faucet](https://faucet.bsvblockchain.org/)
+- [MetaNet Desktop Wallet](https://desktop.bsvb.tech/)
+- [BRC Standards](https://hub.bsvblockchain.org/brc)
+- [Get BSV - Orange Gateway](https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/get-bsv/orange-gateway)
+- [BSV Discord Community](https://discord.gg/bsv) - Get help and testnet coins
 
 ### Community
 - [BSV Discord](https://discord.gg/bsv)

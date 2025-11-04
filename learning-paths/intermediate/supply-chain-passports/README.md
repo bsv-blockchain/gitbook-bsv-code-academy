@@ -2112,7 +2112,7 @@ You've built a complete supply chain digital passports system demonstrating:
 
 ## Resources
 
-- [BSV SDK Documentation](https://docs.bsvblockchain.org/sdk)
+- [BSV SDK Documentation](https://bsv-blockchain.github.io/ts-sdk/)
 - [Transaction Building](../../../sdk-components/transaction/)
 - [Script Templates](../../../sdk-components/script-templates/)
 - [OP_RETURN Metadata](../../../code-features/op-return/)

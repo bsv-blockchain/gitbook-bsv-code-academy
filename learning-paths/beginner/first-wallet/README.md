@@ -1082,7 +1082,7 @@ const testAddress = wallet.generateAddress(0)
 console.log('Testnet Address:', testAddress)
 
 // Fund this address from testnet faucet:
-// https://faucet.bsvblockchain.org/
+// Get testnet coins from MetaNet Desktop Wallet's built-in faucet or BSV Discord community
 
 // Test transaction creation (covered in next module)
 // ...

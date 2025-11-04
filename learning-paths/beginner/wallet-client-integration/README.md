@@ -726,7 +726,7 @@ function handleWalletError(error: any, context: string) {
   const errorMessages: Record<string, string> = {
     'USER_REJECTED': 'You cancelled the request',
     'INSUFFICIENT_FUNDS': 'Insufficient balance in your wallet',
-    'WALLET_NOT_FOUND': 'MetaNet Desktop Wallet not installed. Please install it from fast.brc.dev',
+    'WALLET_NOT_FOUND': 'MetaNet Desktop Wallet not installed. Please install it from desktop.bsvb.tech',
     'WALLET_LOCKED': 'Please unlock your wallet and try again',
     'NETWORK_ERROR': 'Network error. Please check your connection and try again',
     'INVALID_OUTPUT': 'Invalid transaction format',
@@ -826,7 +826,7 @@ function WalletNotFound() {
       <div className="instructions">
         <h4>Installation Steps:</h4>
         <ol>
-          <li>Visit <a href="https://fast.brc.dev" target="_blank" rel="noreferrer">fast.brc.dev</a></li>
+          <li>Visit <a href="https://desktop.bsvb.tech" target="_blank" rel="noreferrer">desktop.bsvb.tech</a></li>
           <li>Download MetaNet Desktop Wallet</li>
           <li>Install and set up your wallet</li>
           <li>Return to this page and click "Connect Wallet"</li>
@@ -835,7 +835,7 @@ function WalletNotFound() {
 
       <div className="testnet-info">
         <h4>Get Testnet BSV:</h4>
-        <p>Visit <a href="https://faucet.bsvblockchain.org/" target="_blank" rel="noreferrer">BSV Testnet Faucet</a></p>
+        <p>Get testnet coins from MetaNet Desktop Wallet's faucet or <a href="https://discord.gg/bsv" target="_blank" rel="noreferrer">BSV Discord</a></p>
       </div>
     </div>
   )
@@ -911,7 +911,7 @@ function App() {
 
       <footer>
         <p>Built with BSV SDK and WalletClient</p>
-        <a href="https://fast.brc.dev" target="_blank" rel="noreferrer">
+        <a href="https://desktop.bsvb.tech" target="_blank" rel="noreferrer">
           Learn more about MetaNet Desktop Wallet
         </a>
       </footer>
@@ -958,9 +958,10 @@ export default App
 
 ## Resources
 
-- **WalletClient API**: https://fast.brc.dev/
-- **BRC Specification**: https://fast.brc.dev/
-- **MetaNet Desktop Wallet**: https://fast.brc.dev/
+- **Wallet Toolbox API**: https://fast.brc.dev/
+- **BRC Standards**: https://hub.bsvblockchain.org/brc
+- **MetaNet Desktop Wallet**: https://desktop.bsvb.tech/
+- **Get BSV - Orange Gateway**: https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/get-bsv/orange-gateway
 - **SDK Documentation**: https://bsv-blockchain.github.io/ts-sdk/
 - **Example dApps**: [code-features/](../../../code-features/)
 

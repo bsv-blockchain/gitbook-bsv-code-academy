@@ -297,9 +297,9 @@ This course **exclusively teaches MetaNet Desktop Wallet integration**. It is th
 - ✅ Built-in transaction broadcasting
 
 **Official Resources:**
-- **Documentation**: https://fast.brc.dev/
-- **BRC Specification**: https://fast.brc.dev/
-- **Integration Guide**: https://fast.brc.dev/
+- **Wallet Toolbox Documentation**: https://fast.brc.dev/
+- **BRC Standards**: https://hub.bsvblockchain.org/brc
+- **MetaNet Desktop Wallet**: https://desktop.bsvb.tech/
 
 **Other wallets** (Panda, Yours, etc.) are **not covered** in this course. Stick with MetaNet Desktop Wallet for standardized, reliable integration.
 
@@ -463,9 +463,10 @@ Now that you understand the two paradigms, the course content is organized to te
 
 ## Resources
 
-- **WalletClient Documentation**: https://fast.brc.dev/
-- **BRC Wallet Specification**: https://fast.brc.dev/
-- **MetaNet Desktop Wallet**: https://fast.brc.dev/
+- **Wallet Toolbox Documentation**: https://fast.brc.dev/
+- **BRC Standards**: https://hub.bsvblockchain.org/brc
+- **MetaNet Desktop Wallet**: https://desktop.bsvb.tech/
+- **Get BSV - Orange Gateway**: https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/get-bsv/orange-gateway
 - **SDK Documentation**: https://bsv-blockchain.github.io/ts-sdk/
 - **Security Best Practices**: [sdk-components/private-keys/](../../../sdk-components/private-keys/)
 

@@ -2452,7 +2452,9 @@ You've built a complete payment processing system demonstrating:
 
 ## Resources
 
-- [BSV SDK Documentation](https://docs.bsvblockchain.org/sdk)
-- [BRC-29 Payment Protocol](https://brc.dev/29)
+- [BSV SDK Documentation](https://bsv-blockchain.github.io/ts-sdk/)
+- [BRC Standards](https://hub.bsvblockchain.org/brc)
+- [Wallet Toolbox Documentation](https://fast.brc.dev/)
 - [Transaction Building](../transaction-building/)
 - [WalletClient Guide](../../beginner/wallet-client-integration/)
+- [MetaNet Desktop Wallet](https://desktop.bsvb.tech/)
