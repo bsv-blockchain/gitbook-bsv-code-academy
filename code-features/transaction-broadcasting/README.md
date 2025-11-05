@@ -1,15 +1,26 @@
 # Transaction Broadcasting
 
-Complete examples for broadcasting transactions to the BSV network using ARC (Advanced Repository for Chains).
+Complete examples for broadcasting **single, independent transactions** to the BSV network using the SDK's built-in broadcasting functionality.
 
 ## Overview
 
-Broadcasting transactions is the final step in getting your transactions confirmed on the BSV blockchain. ARC is the modern transaction processing and broadcast API for BSV, replacing the legacy merchant API. This guide covers broadcast patterns, error handling, status monitoring, and broadcast optimization.
+Broadcasting transactions is the final step in getting your transactions confirmed on the BSV blockchain. This guide covers simple transaction broadcasting using `tx.broadcast()` for single, independent transactions.
+
+**For transaction chains:** See [Broadcast Arc](../broadcast-arc/README.md) for BEEF bundle broadcasting.
 
 **Related SDK Components:**
 - [ARC](../../sdk-components/arc/README.md)
 - [Transaction](../../sdk-components/transaction/README.md)
 - [BEEF](../../sdk-components/beef/README.md)
+
+## When to Use This Approach
+
+Use `tx.broadcast()` when:
+- Broadcasting a single transaction
+- Transaction doesn't depend on unconfirmed parents
+- You want simple, straightforward broadcasting
+
+**Do NOT use for transaction chains** - use BEEF broadcasting instead (see [Broadcast Arc](../broadcast-arc/README.md))
 
 ## Basic Transaction Broadcasting
 
@@ -19,17 +30,22 @@ import { Transaction, PrivateKey, P2PKH, ARC } from '@bsv/sdk'
 /**
  * Basic Transaction Broadcaster
  *
- * Broadcast transactions using ARC
+ * Broadcast single, independent transactions using SDK's built-in broadcast
  */
 class TransactionBroadcaster {
-  private arcClient: ARC
+  private arc?: ARC
 
-  constructor(arcUrl: string = 'https://arc.taal.com') {
-    this.arcClient = new ARC(arcUrl)
+  constructor(arcUrl?: string, apiKey?: string) {
+    // Optional: Configure specific ARC instance
+    // If not provided, tx.broadcast() will use default broadcaster
+    if (arcUrl) {
+      this.arc = new ARC(arcUrl, { apiKey })
+    }
   }
 
   /**
-   * Broadcast a transaction
+   * Broadcast a single transaction
+   * Uses SDK's tx.broadcast() method
    */
   async broadcastTransaction(tx: Transaction): Promise<BroadcastResult> {
     try {
@@ -37,12 +53,15 @@ class TransactionBroadcaster {
       console.log('Transaction ID:', tx.id('hex'))
       console.log('Size:', tx.toHex().length / 2, 'bytes')
 
-      // Broadcast to ARC
-      const response = await this.arcClient.broadcastTransaction(tx)
+      // Broadcast using SDK's built-in broadcast method
+      // Pass ARC instance if configured, otherwise uses default
+      const response = this.arc
+        ? await tx.broadcast(this.arc)
+        : await tx.broadcast()
 
       const result: BroadcastResult = {
         txid: response.txid,
-        status: response.txStatus,
+        status: response.status,
         timestamp: Date.now(),
         blockHash: response.blockHash,
         blockHeight: response.blockHeight
@@ -95,11 +114,15 @@ class TransactionBroadcaster {
    */
   async checkTransactionStatus(txid: string): Promise<BroadcastResult> {
     try {
-      const status = await this.arcClient.getTransactionStatus(txid)
+      if (!this.arc) {
+        throw new Error('ARC instance required for status checks. Provide arcUrl in constructor.')
+      }
+
+      const status = await this.arc.getTransactionStatus(txid)
 
       return {
         txid,
-        status: status.txStatus,
+        status: status.status,
         timestamp: Date.now(),
         blockHash: status.blockHash,
         blockHeight: status.blockHeight
