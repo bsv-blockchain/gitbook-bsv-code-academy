@@ -528,7 +528,7 @@ class ChangeManager {
 Reference: **[BEEF Component](../../../sdk-components/beef/README.md)**
 
 ```typescript
-import { Transaction, PrivateKey, P2PKH, BEEF } from '@bsv/sdk'
+import { Transaction, PrivateKey, P2PKH, Beef } from '@bsv/sdk'
 
 async function createTransactionChain(
   privateKey: PrivateKey,
@@ -582,13 +582,18 @@ console.log(`Created chain of ${chain.length} transactions`)
 Reference: **[BEEF Component - Atomic Bundles](../../../sdk-components/beef/README.md#key-features)**
 
 ```typescript
-import { BEEF, Transaction } from '@bsv/sdk'
+import { Beef, Transaction } from '@bsv/sdk'
 
 async function createAtomicBundle(
   transactions: Transaction[]
 ): Promise<number[]> {
-  // Create BEEF envelope with all dependent transactions
-  const beef = BEEF.fromTransactions(transactions)
+  // Create BEEF envelope
+  const beef = new Beef()
+
+  // Add each transaction to the BEEF
+  for (const tx of transactions) {
+    beef.mergeRawTx(tx.toBinary())
+  }
 
   // Serialize to binary format
   return beef.toBinary()

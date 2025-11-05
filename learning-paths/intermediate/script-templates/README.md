@@ -318,7 +318,7 @@ const unlockingScript = puzzle.unlock(preimage)
 Reference: **[Script Component - Time Locks](../../../sdk-components/script/README.md#common-patterns)**
 
 ```typescript
-import { Script, P2PKH, PrivateKey, PublicKey } from '@bsv/sdk'
+import { Script, P2PKH, PrivateKey, PublicKey, Utils } from '@bsv/sdk'
 
 /**
  * Time-locked P2PKH Template
@@ -342,7 +342,8 @@ class TimeLockP2PKH implements ScriptTemplate {
     script.writeOpCode(Script.OP_DUP)
     script.writeOpCode(Script.OP_HASH160)
 
-    const pubKeyHash = Base58Check.decode(address).data
+    const decoded = Utils.fromBase58Check(address)
+    const pubKeyHash = Buffer.from(decoded.data)
     script.writeBytes(pubKeyHash)
 
     script.writeOpCode(Script.OP_EQUALVERIFY)
@@ -435,7 +436,8 @@ class RelativeTimeLockP2PKH implements ScriptTemplate {
     script.writeOpCode(Script.OP_DUP)
     script.writeOpCode(Script.OP_HASH160)
 
-    const pubKeyHash = Base58Check.decode(address).data
+    const decoded = Utils.fromBase58Check(address)
+    const pubKeyHash = Buffer.from(decoded.data)
     script.writeBytes(pubKeyHash)
 
     script.writeOpCode(Script.OP_EQUALVERIFY)
@@ -791,7 +793,8 @@ class TokenTemplate implements ScriptTemplate {
     script.writeOpCode(Script.OP_DUP)
     script.writeOpCode(Script.OP_HASH160)
 
-    const pubKeyHash = Base58Check.decode(address).data
+    const decoded = Utils.fromBase58Check(address)
+    const pubKeyHash = Buffer.from(decoded.data)
     script.writeBytes(pubKeyHash)
 
     script.writeOpCode(Script.OP_EQUALVERIFY)

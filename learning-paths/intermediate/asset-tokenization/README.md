@@ -389,13 +389,13 @@ export class TokenIssuanceService {
     script.writeOpCode(0x6a) // OP_FALSE
     script.writeOpCode(0x6a) // OP_RETURN
 
-    // Protocol prefix
+    // Protocol prefix - writeBin() expects number[]
     const protocolBuffer = Buffer.from('ASSET-TOKEN-V1', 'utf8')
-    script.writeBin(protocolBuffer)
+    script.writeBin(Array.from(protocolBuffer))
 
     // Metadata JSON
     const metadataBuffer = Buffer.from(JSON.stringify(metadata), 'utf8')
-    script.writeBin(metadataBuffer)
+    script.writeBin(Array.from(metadataBuffer))
 
     return script
   }
@@ -641,11 +641,12 @@ export class TransferService {
     script.writeOpCode(0x6a) // OP_FALSE
     script.writeOpCode(0x6a) // OP_RETURN
 
+    // writeBin() expects number[] for TypeScript compatibility
     const protocolBuffer = Buffer.from('ASSET-TOKEN-V1', 'utf8')
-    script.writeBin(protocolBuffer)
+    script.writeBin(Array.from(protocolBuffer))
 
     const metadataBuffer = Buffer.from(JSON.stringify(metadata), 'utf8')
-    script.writeBin(metadataBuffer)
+    script.writeBin(Array.from(metadataBuffer))
 
     return script
   }

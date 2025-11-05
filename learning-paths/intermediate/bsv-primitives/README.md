@@ -43,11 +43,11 @@ const tx = new Transaction()
 
 // Serialize to different formats
 const hex = tx.toHex()           // Hexadecimal string
-const buffer = tx.toBuffer()     // Binary buffer
-const binary = tx.toBinary()     // Binary array
+const binary = tx.toBinary()     // Binary array (number[])
+const buffer = Buffer.from(binary) // Convert to Buffer if needed
 
 console.log('Hex:', hex)
-console.log('Size:', buffer.length, 'bytes')
+console.log('Size:', binary.length, 'bytes')
 ```
 
 ### Transaction ID Calculation
@@ -56,11 +56,11 @@ The transaction ID (txid) is the double SHA-256 hash of the serialized transacti
 
 ```typescript
 function calculateTxid(tx: Transaction): string {
-  const txBuffer = tx.toBuffer()
+  const txBinary = Buffer.from(tx.toBinary())
 
   // First SHA-256
   const hash1 = crypto.createHash('sha256')
-    .update(txBuffer)
+    .update(txBinary)
     .digest()
 
   // Second SHA-256
@@ -153,7 +153,7 @@ Direct public key payment:
 ```typescript
 const output = {
   satoshis: 10000,
-  lockingScript: Script.fromASM(`${publicKey.toHex()} OP_CHECKSIG`)
+  lockingScript: Script.fromASM(`${publicKey.toString()} OP_CHECKSIG`)
 }
 ```
 
@@ -177,9 +177,9 @@ const output = {
   satoshis: 10000,
   lockingScript: Script.fromASM(`
     OP_2
-    ${pubKey1.toHex()}
-    ${pubKey2.toHex()}
-    ${pubKey3.toHex()}
+    ${pubKey1.toString()}
+    ${pubKey2.toString()}
+    ${pubKey3.toString()}
     OP_3
     OP_CHECKMULTISIG
   `)

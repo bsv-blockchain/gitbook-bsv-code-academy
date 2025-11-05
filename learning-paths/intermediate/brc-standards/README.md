@@ -252,16 +252,17 @@ function createCertificate(
   const cert: Certificate = {
     type,
     subject: { publicKey: subjectPubKey },
-    issuer: { publicKey: issuerKey.toPublicKey().toHex() },
+    issuer: { publicKey: issuerKey.toPublicKey().toString() },
     serialNumber: generateSerialNumber(),
     validFrom: Date.now(),
     validTo: Date.now() + (365 * 24 * 60 * 60 * 1000), // 1 year
     fields
   }
 
-  // Sign certificate
+  // Sign certificate - sign() accepts strings directly
   const certData = JSON.stringify(cert)
-  cert.signature = issuerKey.sign(certData).toHex()
+  const signature = issuerKey.sign(certData)
+  cert.signature = Buffer.from(signature.toDER()).toString('hex')
 
   return cert
 }

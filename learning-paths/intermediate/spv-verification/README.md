@@ -1232,6 +1232,8 @@ if (isValid) {
 ### SPV Wallet Implementation
 
 ```typescript
+import { Utils } from '@bsv/sdk'
+
 /**
  * SPV-based wallet for lightweight clients
  */
@@ -1372,7 +1374,8 @@ class SPVWallet {
   ): boolean {
     // Simplified check - in production, properly parse P2PKH script
     const scriptHex = lockingScript.toHex()
-    const addressHash = Base58Check.decode(address).data.toString('hex')
+    const decoded = Utils.fromBase58Check(address)
+    const addressHash = Buffer.from(decoded.data).toString('hex')
     return scriptHex.includes(addressHash)
   }
 }
@@ -1398,7 +1401,7 @@ const paymentTx = await wallet.sendPayment(recipientAddress, 100000)
 Reference: **[BEEF Component - SPV Integration](../../../sdk-components/beef/README.md#key-features)**
 
 ```typescript
-import { BEEF, Transaction, MerklePath, ChainTracker } from '@bsv/sdk'
+import { Beef, Transaction, MerklePath, ChainTracker } from '@bsv/sdk'
 
 /**
  * Verify BEEF bundle with SPV proofs
@@ -1408,7 +1411,7 @@ async function verifyBEEFWithSPV(
   chainTracker: ChainTracker
 ): Promise<boolean> {
   // Parse BEEF
-  const beef = BEEF.fromHex(beefHex)
+  const beef = Beef.fromBinary(Array.from(Buffer.from(beefHex, 'hex')))
 
   // Get all transactions
   const transactions = beef.txs
@@ -1444,8 +1447,8 @@ async function verifyBEEFWithSPV(
 async function createBEEFWithSPV(
   transactions: Transaction[],
   proofs: Map<string, MerklePath>
-): Promise<BEEF> {
-  const beef = new BEEF()
+): Promise<Beef> {
+  const beef = new Beef()
 
   for (const tx of transactions) {
     const txid = tx.id('hex') as string
@@ -1456,7 +1459,7 @@ async function createBEEFWithSPV(
       tx.merklePath = proof
     }
 
-    beef.addTransaction(tx)
+    beef.mergeRawTx(tx.toBinary())
   }
 
   return beef
@@ -1464,7 +1467,7 @@ async function createBEEFWithSPV(
 
 // Usage
 const beef = await createBEEFWithSPV(transactions, merkleProofs)
-const beefHex = beef.toHex()
+const beefHex = Buffer.from(beef.toBinary()).toString('hex')
 
 // Later, verify BEEF with SPV
 const isValid = await verifyBEEFWithSPV(beefHex, chainTracker)
@@ -1586,7 +1589,7 @@ class BEEFSPVClient {
 // Usage
 const beefClient = new BEEFSPVClient(chainTracker)
 
-const beef = BEEF.fromHex(beefHex)
+const beef = Beef.fromBinary(Array.from(Buffer.from(beefHex, 'hex')))
 const isValid = await beefClient.verifyBundle(beef)
 
 if (isValid) {
@@ -1599,6 +1602,8 @@ if (isValid) {
 ### Complete SPV System
 
 ```typescript
+import { Utils } from '@bsv/sdk'
+
 /**
  * Production-ready SPV system
  * Combines header tracking, merkle verification, and transaction management
@@ -1791,7 +1796,8 @@ class ProductionSPVSystem {
   ): boolean {
     // Simplified - in production, properly parse script
     const scriptHex = lockingScript.toHex()
-    const addressHash = Base58Check.decode(address).data.toString('hex')
+    const decoded = Utils.fromBase58Check(address)
+    const addressHash = Buffer.from(decoded.data).toString('hex')
     return scriptHex.includes(addressHash)
   }
 }
