@@ -29,6 +29,7 @@ This course leverages these standardized SDK modules:
 - **[Transaction Output](../../../sdk-components/transaction-output/README.md)** - Creating outputs
 - **[UTXO Management](../../../sdk-components/utxo-management/README.md)** - UTXO selection strategies
 - **[BEEF](../../../sdk-components/beef/README.md)** - Transaction envelopes
+- **[ARC](../../../sdk-components/arc/README.md)** - Transaction broadcasting
 - **[Signatures](../../../sdk-components/signatures/README.md)** - Transaction signing
 - **[Script Templates](../../../sdk-components/script-templates/README.md)** - P2PKH and custom scripts
 
@@ -582,7 +583,7 @@ console.log(`Created chain of ${chain.length} transactions`)
 Reference: **[BEEF Component - Atomic Bundles](../../../sdk-components/beef/README.md#key-features)**
 
 ```typescript
-import { Beef, Transaction } from '@bsv/sdk'
+import { Beef, Transaction, ARC } from '@bsv/sdk'
 
 async function createAtomicBundle(
   transactions: Transaction[]
@@ -603,20 +604,20 @@ async function broadcastChainWithBEEF(
   transactions: Transaction[]
 ): Promise<void> {
   // Package as BEEF
-  const beefData = await createAtomicBundle(transactions)
+  const beefBinary = await createAtomicBundle(transactions)
 
-  // Broadcast BEEF bundle (all transactions together)
-  // ARC or other BSV node will process them atomically
-  const response = await fetch('https://arc.taal.com/v1/tx', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/octet-stream',
-      'X-DeploymentId': 'your-deployment-id'
-    },
-    body: Buffer.from(beefData)
+  // Convert to hex for broadcasting
+  const beefHex = Buffer.from(beefBinary).toString('hex')
+
+  // Broadcast BEEF bundle using the SDK's ARC client
+  const arc = new ARC('https://api.taal.com/arc', {
+    apiKey: 'your-api-key',
+    deploymentId: 'your-deployment-id'
   })
 
-  console.log('BEEF bundle broadcast:', await response.json())
+  const response = await arc.broadcastBEEF(beefHex)
+
+  console.log('BEEF bundle broadcast:', response)
 }
 ```
 
@@ -775,9 +776,9 @@ class PaymentPlatform {
       const batch = payments.slice(i, i + 100)
       const tx = await this.builder.buildBatchPayment(utxos, batch)
 
-      // Broadcast
-      const txid = await this.broadcast(tx)
-      txids.push(txid)
+      // Broadcast using SDK's built-in broadcast
+      const response = await tx.broadcast()
+      txids.push(response.txid)
     }
 
     return txids
