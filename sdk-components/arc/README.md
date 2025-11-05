@@ -14,6 +14,48 @@ The `ARC` class in the BSV TypeScript SDK provides a production-ready interface 
 - Support deployment tracking and application identification
 - Enable webhook callbacks for asynchronous transaction updates
 
+## When to Use
+
+The ARC class provides two main broadcasting approaches:
+
+### 1. Simple Transaction Broadcasting: `tx.broadcast(arc)`
+
+**Use when:**
+- Broadcasting a single, independent transaction
+- Transaction doesn't depend on unconfirmed parents
+- You want simple, straightforward broadcasting
+
+**Example:**
+```typescript
+const arc = new ARC('https://api.taal.com/arc', { apiKey: 'xxx' });
+const response = await tx.broadcast(arc);
+// Or use default broadcaster:
+const response = await tx.broadcast();
+```
+
+### 2. BEEF Bundle Broadcasting: `arc.broadcastBEEF(beefHex)`
+
+**Use when:**
+- Broadcasting transaction chains with dependencies
+- Child transactions spend from unconfirmed parent transactions
+- You need atomic broadcasting of multiple related transactions
+- You want to include merkle proofs for SPV validation
+
+**Example:**
+```typescript
+const arc = new ARC('https://api.taal.com/arc', { apiKey: 'xxx' });
+
+// Create BEEF bundle
+const beef = new Beef();
+beef.addTransaction(parentTx);
+beef.addTransaction(childTx);
+
+const beefHex = beef.toHex();
+const response = await arc.broadcastBEEF(beefHex);
+```
+
+**Important:** `tx.broadcast()` does NOT automatically handle transaction chains. For chains, you MUST use `arc.broadcastBEEF()` with a properly constructed BEEF bundle.
+
 ## Basic Usage
 
 ### Broadcasting a Transaction
@@ -518,6 +560,37 @@ Retrieves the current fee policy from ARC.
 ```typescript
 const policy = await arc.getFeePolicy();
 console.log('Standard fee:', policy.standard, 'sats/KB');
+```
+
+#### `broadcastBEEF(beefHex: string): Promise<BroadcastResponse>`
+
+Broadcasts a BEEF (Background Evaluation Extended Format) bundle containing transaction chains.
+
+**Parameters:**
+- `beefHex: string` - The BEEF bundle in hexadecimal format
+
+**Returns:** `Promise<BroadcastResponse>`
+- `txid: string` - Transaction ID of the final transaction
+- `status: string` - Transaction status
+- `timestamp: number` - Submission timestamp
+
+**Use this method when:**
+- Broadcasting transaction chains with dependencies
+- Child transactions spend from unconfirmed parents
+- You need atomic broadcasting of multiple transactions
+
+**Example:**
+```typescript
+import { Beef } from '@bsv/sdk';
+
+// Create BEEF bundle
+const beef = new Beef();
+beef.addTransaction(parentTx);
+beef.addTransaction(childTx);
+
+const beefHex = beef.toHex();
+const response = await arc.broadcastBEEF(beefHex);
+console.log('BEEF broadcast successful:', response.txid);
 ```
 
 ### Response Types
