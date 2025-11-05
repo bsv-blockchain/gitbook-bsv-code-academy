@@ -580,7 +580,9 @@ console.log(`Created chain of ${chain.length} transactions`)
 
 ### BEEF Transaction Bundles
 
-Reference: **[BEEF Component - Atomic Bundles](../../../sdk-components/beef/README.md#key-features)**
+Reference: **[BEEF Component - Atomic Bundles](../../../sdk-components/beef/README.md#key-features)** and **[ARC Component - Broadcasting Methods](../../../sdk-components/arc/README.md#when-to-use)**
+
+**Important:** For transaction chains where child transactions spend from unconfirmed parents, you MUST use BEEF format with `arc.broadcastBEEF()`. The simple `tx.broadcast()` method does NOT handle transaction dependencies and will fail for chains.
 
 ```typescript
 import { Beef, Transaction, ARC } from '@bsv/sdk'
@@ -609,7 +611,9 @@ async function broadcastChainWithBEEF(
   // Convert to hex for broadcasting
   const beefHex = Buffer.from(beefBinary).toString('hex')
 
-  // Broadcast BEEF bundle using the SDK's ARC client
+  // Broadcast BEEF bundle using ARC's broadcastBEEF method
+  // This is the ONLY way to broadcast transaction chains atomically
+  // Do NOT use tx.broadcast() for chains - it won't work correctly
   const arc = new ARC('https://api.taal.com/arc', {
     apiKey: 'your-api-key',
     deploymentId: 'your-deployment-id'
@@ -617,7 +621,9 @@ async function broadcastChainWithBEEF(
 
   const response = await arc.broadcastBEEF(beefHex)
 
-  console.log('BEEF bundle broadcast:', response)
+  console.log('BEEF bundle broadcast successful')
+  console.log('All transactions in chain broadcasted atomically')
+  console.log('Response:', response)
 }
 ```
 
@@ -776,7 +782,9 @@ class PaymentPlatform {
       const batch = payments.slice(i, i + 100)
       const tx = await this.builder.buildBatchPayment(utxos, batch)
 
-      // Broadcast using SDK's built-in broadcast
+      // Broadcast using SDK's built-in broadcast for single transactions
+      // This uses the default broadcaster (or pass an ARC instance for custom config)
+      // For transaction chains, use arc.broadcastBEEF() instead
       const response = await tx.broadcast()
       txids.push(response.txid)
     }
