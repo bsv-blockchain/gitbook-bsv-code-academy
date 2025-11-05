@@ -11,6 +11,37 @@ ARC is the next-generation transaction broadcast and processing system for BSV, 
 - [Transaction](../../sdk-components/transaction/README.md)
 - [BEEF](../../sdk-components/beef/README.md)
 
+## Two Broadcasting Approaches
+
+The BSV SDK provides two distinct ways to broadcast transactions via ARC:
+
+### 1. Simple Transaction Broadcasting (`tx.broadcast()`)
+
+**Use for:** Single, independent transactions
+
+```typescript
+// Simple approach - uses default or provided broadcaster
+const response = await tx.broadcast();
+// Or with specific ARC instance:
+const arc = new ARC('https://api.taal.com/arc', { apiKey: 'xxx' });
+const response = await tx.broadcast(arc);
+```
+
+### 2. BEEF Bundle Broadcasting (`arc.broadcastBEEF()`)
+
+**Use for:** Transaction chains with dependencies
+
+```typescript
+// BEEF approach - required for transaction chains
+const arc = new ARC('https://api.taal.com/arc', { apiKey: 'xxx' });
+const beef = new Beef();
+beef.addTransaction(parentTx);
+beef.addTransaction(childTx);
+const response = await arc.broadcastBEEF(beef.toHex());
+```
+
+**This guide covers both approaches with practical examples.**
+
 ## Basic ARC Broadcasting
 
 ```typescript
@@ -871,30 +902,41 @@ async function advancedARCExample() {
 
 ## BEEF Format Broadcasting via ARC
 
+**Important:** This section covers broadcasting transaction chains. For single transactions, use the simple `tx.broadcast()` approach shown in the previous sections.
+
 ```typescript
-import { Transaction, ARC, BEEF } from '@bsv/sdk'
+import { Transaction, ARC, Beef } from '@bsv/sdk'
 
 /**
  * BEEF Broadcaster for ARC
  *
  * Efficiently broadcast transaction chains using BEEF format
+ *
+ * Use this approach when:
+ * - Broadcasting transaction chains where child spends from unconfirmed parent
+ * - Need atomic broadcasting of multiple related transactions
+ * - Want to include merkle proofs for SPV validation
  */
 class BEEFARCBroadcaster {
   private arc: ARC
 
-  constructor(arcUrl: string = 'https://arc.taal.com') {
+  constructor(arcUrl: string = 'https://api.taal.com') {
     this.arc = new ARC(arcUrl)
   }
 
   /**
    * Broadcast transaction chain using BEEF
+   * This is the ONLY correct way to broadcast transaction chains
    */
   async broadcastBEEF(transactions: Transaction[]): Promise<BEEFBroadcastResult> {
     try {
       console.log(`Creating BEEF from ${transactions.length} transactions`)
 
       // Create BEEF structure
-      const beef = BEEF.fromTransactions(transactions)
+      const beef = new Beef()
+      for (const tx of transactions) {
+        beef.addTransaction(tx)
+      }
       const beefHex = beef.toHex()
 
       const originalSize = transactions.reduce(
@@ -907,7 +949,8 @@ class BEEFARCBroadcaster {
       console.log('BEEF size:', beefSize, 'bytes')
       console.log('Compression:', ((1 - beefSize / originalSize) * 100).toFixed(2), '%')
 
-      // Broadcast BEEF to ARC
+      // Broadcast BEEF to ARC using broadcastBEEF method
+      // Do NOT use tx.broadcast() for chains - it will NOT work
       console.log('Broadcasting BEEF to ARC...')
       const response = await this.arc.broadcastBEEF(beefHex)
 
