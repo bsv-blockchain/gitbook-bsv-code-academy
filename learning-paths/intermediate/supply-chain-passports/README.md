@@ -294,7 +294,7 @@ export interface Party {
 
 ```typescript
 // src/services/ProductRegistrationService.ts
-import { PrivateKey, Transaction, P2PKH, Script } from '@bsv/sdk'
+import { PrivateKey, Transaction, P2PKH, Script, OP } from '@bsv/sdk'
 import { Product, ProductStatus } from '../models/Product'
 import { Database } from '../utils/database'
 import * as crypto from 'crypto'
@@ -499,8 +499,8 @@ export class ProductRegistrationService {
    */
   private createMetadataScript(metadata: any): Script {
     const script = new Script()
-    script.writeOpCode(0x6a) // OP_FALSE
-    script.writeOpCode(0x6a) // OP_RETURN
+    script.writeOpCode(OP.OP_FALSE) // OP_FALSE
+    script.writeOpCode(OP.OP_RETURN) // OP_RETURN
 
     // Protocol prefix
     const protocolBuffer = Buffer.from('SUPPLY-CHAIN-PASSPORT-V1', 'utf8')
@@ -846,8 +846,8 @@ export class VerificationService {
    */
   private createMetadataScript(metadata: any): Script {
     const script = new Script()
-    script.writeOpCode(0x6a) // OP_FALSE
-    script.writeOpCode(0x6a) // OP_RETURN
+    script.writeOpCode(OP.OP_FALSE) // OP_FALSE
+    script.writeOpCode(OP.OP_RETURN) // OP_RETURN
 
     const protocolBuffer = Buffer.from('SUPPLY-CHAIN-PASSPORT-V1', 'utf8')
     script.writeBin(protocolBuffer)
