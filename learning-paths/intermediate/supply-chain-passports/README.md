@@ -2123,4 +2123,4 @@ You've built a complete supply chain digital passports system demonstrating:
 
 **Congratulations!** You've completed the Intermediate Learning Path. You now have the skills to build production-ready BSV applications with complex workflows, multi-party coordination, and real-world integration patterns.
 
-Ready for more? Explore the [Advanced Learning Path](../../advanced/) for enterprise-scale systems, advanced cryptography, and protocol design.
+
