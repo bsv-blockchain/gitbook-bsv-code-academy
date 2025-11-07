@@ -229,14 +229,6 @@ After completing this path, you will have:
 - ✅ Applied BRC standards for interoperability
 - ✅ Developed real-world blockchain solutions you can adapt for your own projects
 
-## Next Steps
-
-Ready for advanced topics? Continue to the [Advanced Learning Path](../advanced/README.md) to learn about:
-- Overlay Networks and data organization
-- Identity Certification workflows
-- Advanced SDK usage patterns
-- Enterprise integration architectures
-- High-throughput application design
 
 ## Real-World Applications
 
