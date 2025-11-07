@@ -865,4 +865,3 @@ async function advancedPatternsExample() {
 
 **Learning Paths:**
 - [Merkle Trees](../../learning-paths/intermediate/merkle-trees/README.md)
-- [Lightweight Clients](../../learning-paths/advanced/lightweight-clients/README.md)

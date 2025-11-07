@@ -844,5 +844,3 @@ async function affiliatePayoutExample() {
 
 **Learning Paths:**
 - [Payment Distribution](../../learning-paths/intermediate/payment-distribution/README.md)
-- [Business Applications](../../learning-paths/advanced/business-applications/README.md)
-- [Multi-Party Transactions](../../learning-paths/advanced/multi-party-transactions/README.md)

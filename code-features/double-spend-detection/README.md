@@ -743,5 +743,3 @@ async function paymentSecurityExample() {
 
 **Learning Paths:**
 - [Payment Security](../../learning-paths/intermediate/payment-security/README.md)
-- [Double-Spend Prevention](../../learning-paths/advanced/double-spend-prevention/README.md)
-- [Zero-Confirmation Payments](../../learning-paths/advanced/zero-conf-payments/README.md)

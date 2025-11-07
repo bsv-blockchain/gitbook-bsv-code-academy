@@ -107,9 +107,6 @@ const invoiceKey = masterKey.deriveChild(
 4. Store protocol/key IDs securely
 5. Use counterparty keys when possible for added security
 
-## Learning Path References
-
-- Advanced: [Custom Protocols](../../learning-paths/advanced/custom-protocols/README.md)
 
 ## Specification
 

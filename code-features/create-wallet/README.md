@@ -1032,4 +1032,3 @@ async function secureWalletExample() {
 **Learning Paths:**
 - [Your First Wallet](../../learning-paths/beginner/first-wallet/README.md)
 - [HD Wallets](../../learning-paths/intermediate/hd-wallets/README.md)
-- [Wallet Security](../../learning-paths/advanced/wallet-security/README.md)

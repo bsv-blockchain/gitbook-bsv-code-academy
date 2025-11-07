@@ -934,4 +934,3 @@ async function safetyExample() {
 
 **Learning Paths:**
 - [Script Programming](../../learning-paths/intermediate/script-programming/README.md)
-- [Smart Contracts](../../learning-paths/advanced/smart-contracts/README.md)

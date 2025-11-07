@@ -860,4 +860,3 @@ async function customMultisigExamples() {
 
 **Learning Paths:**
 - [Script Templates](../../learning-paths/intermediate/script-templates/README.md)
-- [Multi-Party Transactions](../../learning-paths/advanced/multi-party-transactions/README.md)

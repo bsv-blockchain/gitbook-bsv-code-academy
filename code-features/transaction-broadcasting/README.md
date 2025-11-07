@@ -762,5 +762,3 @@ async function beefBroadcastExample() {
 
 **Learning Paths:**
 - [Transaction Broadcasting](../../learning-paths/intermediate/transaction-broadcasting/README.md)
-- [ARC Integration](../../learning-paths/advanced/arc-integration/README.md)
-- [Transaction Monitoring](../../learning-paths/advanced/transaction-monitoring/README.md)

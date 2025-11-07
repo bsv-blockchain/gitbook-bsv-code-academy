@@ -1108,4 +1108,3 @@ async function advancedSigningExample() {
 **Learning Paths:**
 - [Transaction Basics](../../learning-paths/beginner/transaction-basics/README.md)
 - [Advanced Signing](../../learning-paths/intermediate/advanced-signing/README.md)
-- [Multi-Signature Transactions](../../learning-paths/advanced/multisig/README.md)

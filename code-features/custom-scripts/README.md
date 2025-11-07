@@ -850,4 +850,3 @@ async function opReturnExample() {
 
 **Learning Paths:**
 - [Script Templates](../../learning-paths/intermediate/script-templates/README.md)
-- [Bitcoin Script](../../learning-paths/advanced/bitcoin-script/README.md)

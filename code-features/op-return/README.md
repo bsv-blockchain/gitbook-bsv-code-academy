@@ -980,5 +980,3 @@ async function fileRegistryExample() {
 
 **Learning Paths:**
 - [Bitcoin Script](../../learning-paths/intermediate/bitcoin-script/README.md)
-- [Data Storage](../../learning-paths/advanced/blockchain-data-storage/README.md)
-- [Protocol Development](../../learning-paths/advanced/protocol-development/README.md)

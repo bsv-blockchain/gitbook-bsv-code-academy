@@ -844,4 +844,3 @@ function addressUtilitiesExample() {
 **Learning Paths:**
 - [First Transaction](../../learning-paths/beginner/first-transaction/README.md)
 - [Transaction Types](../../learning-paths/intermediate/transaction-types/README.md)
-- [Script Programming](../../learning-paths/advanced/script-programming/README.md)

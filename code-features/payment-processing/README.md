@@ -832,5 +832,3 @@ async function subscriptionExample() {
 
 **Learning Paths:**
 - [Payment Processing](../../learning-paths/intermediate/payment-processing/README.md)
-- [Business Applications](../../learning-paths/advanced/business-applications/README.md)
-- [Subscription Services](../../learning-paths/advanced/subscription-services/README.md)

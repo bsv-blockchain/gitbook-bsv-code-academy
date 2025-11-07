@@ -701,4 +701,3 @@ async function conditionalTemplateExample() {
 
 **Learning Paths:**
 - [Script Templates](../../learning-paths/intermediate/script-templates/README.md)
-- [Template Patterns](../../learning-paths/advanced/template-patterns/README.md)

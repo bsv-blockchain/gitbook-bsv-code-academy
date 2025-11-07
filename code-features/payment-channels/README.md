@@ -957,4 +957,3 @@ async function bidirectionalChannelExample() {
 
 **Learning Paths:**
 - [Script Programming](../../learning-paths/intermediate/script-programming/README.md)
-- [Payment Channels](../../learning-paths/advanced/payment-channels/README.md)

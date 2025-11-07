@@ -820,5 +820,3 @@ async function timeLimitedAccessExample() {
 
 **Learning Paths:**
 - [Micropayments](../../learning-paths/intermediate/micropayments/README.md)
-- [Content Monetization](../../learning-paths/advanced/content-monetization/README.md)
-- [Payment Models](../../learning-paths/advanced/payment-models/README.md)

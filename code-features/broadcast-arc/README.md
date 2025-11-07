@@ -1130,5 +1130,3 @@ async function beefARCExample() {
 
 **Learning Paths:**
 - [Broadcasting Transactions](../../learning-paths/intermediate/broadcasting/README.md)
-- [ARC Integration](../../learning-paths/advanced/arc-integration/README.md)
-- [Transaction Chains](../../learning-paths/advanced/transaction-chains/README.md)

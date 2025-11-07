@@ -771,4 +771,3 @@ async function authenticationExample() {
 
 **Learning Paths:**
 - [Digital Signatures](../../learning-paths/intermediate/digital-signatures/README.md)
-- [Authentication Patterns](../../learning-paths/advanced/authentication/README.md)

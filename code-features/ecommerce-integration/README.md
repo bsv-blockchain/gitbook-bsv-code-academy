@@ -837,5 +837,3 @@ async function orderManagementExample() {
 
 **Learning Paths:**
 - [E-commerce Integration](../../learning-paths/intermediate/ecommerce-integration/README.md)
-- [Payment Gateways](../../learning-paths/advanced/payment-gateways/README.md)
-- [Business Applications](../../learning-paths/advanced/business-applications/README.md)

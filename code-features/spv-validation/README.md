@@ -1032,4 +1032,3 @@ async function validationServiceExample() {
 
 **Learning Paths:**
 - [Transaction Validation](../../learning-paths/intermediate/transaction-validation/README.md)
-- [Security Best Practices](../../learning-paths/advanced/security/README.md)

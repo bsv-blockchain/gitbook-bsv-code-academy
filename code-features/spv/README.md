@@ -1085,5 +1085,4 @@ async function paymentVerificationExample() {
 - [Transaction](../../sdk-components/transaction/README.md) - Transaction handling
 
 **Learning Paths:**
-- [Lightweight Clients](../../learning-paths/advanced/lightweight-clients/README.md)
 - [Payment Verification](../../learning-paths/intermediate/payment-verification/README.md)

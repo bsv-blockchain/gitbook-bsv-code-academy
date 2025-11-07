@@ -908,5 +908,3 @@ async function atomicSwapExample() {
 
 **Learning Paths:**
 - [Escrow Patterns](../../learning-paths/intermediate/escrow-patterns/README.md)
-- [Marketplace Development](../../learning-paths/advanced/marketplace-development/README.md)
-- [Atomic Swaps](../../learning-paths/advanced/atomic-swaps/README.md)
