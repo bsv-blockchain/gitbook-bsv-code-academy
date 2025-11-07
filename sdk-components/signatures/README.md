@@ -471,11 +471,10 @@ console.log('2-of-3 multisig valid:', isValid);
 
 ## Related Components
 
-- [PrivateKey](../private-key/README.md) - Generate private keys for signing
-- [PublicKey](../public-key/README.md) - Verify signatures and derive addresses
+- [PrivateKey](../private-keys/README.md) - Generate private keys for signing
+- [PublicKey](../public-keys/README.md) - Verify signatures and derive addresses
 - [Transaction](../transaction/README.md) - Use signatures in transaction inputs
 - [Script](../script/README.md) - Include signatures in Bitcoin Script
-- [Hash](../hash/README.md) - Hash data before signing
 
 ## Code Examples
 
@@ -483,7 +482,6 @@ See complete working examples in:
 - [Transaction Signing](../../code-features/transaction-signing/README.md)
 - [Message Signing](../../code-features/message-signing/README.md)
 - [Multi-Signature](../../code-features/multi-signature/README.md)
-- [Custom Scripts](../../code-features/custom-scripts/README.md)
 
 ## Best Practices
 

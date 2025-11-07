@@ -6,7 +6,6 @@ Master advanced Bitcoin Script features to build complex, production-ready smart
 
 **Estimated Time:** 5-6 hours
 **Difficulty:** Advanced
-**Prerequisites:** Complete [Script Templates](../../intermediate/script-templates/README.md) and [BSV Primitives](../../intermediate/bsv-primitives/README.md)
 
 ## Learning Objectives
 

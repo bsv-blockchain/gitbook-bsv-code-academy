@@ -617,7 +617,6 @@ describe('Token Overlay', () => {
 
 - [Transaction](../../../sdk-components/transaction/README.md)
 - [SPV](../../../sdk-components/spv/README.md)
-- [Chain Tracker](../../../sdk-components/chain-tracker/README.md)
 
 ## Next Module
 

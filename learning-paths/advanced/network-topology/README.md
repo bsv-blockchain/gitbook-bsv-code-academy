@@ -782,7 +782,6 @@ class NetworkMonitor {
 Continue to:
 - **[Node Operations](../node-operations/README.md)** - Run and maintain BSV nodes
 - **[Advanced Scripting](../advanced-scripting/README.md)** - Complex smart contracts
-- **[Overlay Networks](../overlay-networks/README.md)** - Application-layer protocols
 
 ## Additional Resources
 

@@ -2105,8 +2105,8 @@ You've built a complete supply chain digital passports system demonstrating:
 
 **Continue Learning:**
 - [Advanced Multi-Signature](../../../code-features/multi-signature/)
-- [Overlay Networks](../../../sdk-components/overlay-networks/)
-- [Enterprise Deployment](../../../deployment/enterprise/)
+<!-- - [Overlay Networks](../../../sdk-components/overlay-networks/) (Pending) -->
+<!-- - [Enterprise Deployment](../../../deployment/enterprise/) (Pending) -->
 
 ---
 
@@ -2116,7 +2116,7 @@ You've built a complete supply chain digital passports system demonstrating:
 - [Transaction Building](../../../sdk-components/transaction/)
 - [Script Templates](../../../sdk-components/script-templates/)
 - [OP_RETURN Metadata](../../../code-features/op-return/)
-- [Digital Signatures](../../../code-features/signatures/)
+- [Digital Signatures](../../../code-features/message-signing/)
 - [Supply Chain Use Cases](https://wiki.bitcoinsv.io/use-cases/supply-chain)
 
 ---

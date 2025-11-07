@@ -23,49 +23,48 @@ Features are organized by functionality and use case. Each feature includes:
 
 ### Transaction Operations
 - [Transaction Creation](transaction-creation/README.md) - Create basic transactions
-- [Multi-Input Transaction](multi-input-transaction/README.md) - Combine multiple inputs
-- [Change Output Calculation](change-output/README.md) - Calculate and create change
-- [Fee Estimation](fee-estimation/README.md) - Estimate transaction fees
+- [Transaction Building](transaction-building/README.md) - Build complex transactions
+- [Transaction Signing](transaction-signing/README.md) - Sign transactions
+- [Transaction Broadcasting](transaction-broadcasting/README.md) - Broadcast transactions
+- [Transaction Chains](transaction-chains/README.md) - Create transaction chains
+- [Standard Transactions](standard-transactions/README.md) - Common transaction patterns
+- [Batch Operations](batch-operations/README.md) - Process multiple transactions
+- [UTXO Management](utxo-management/README.md) - Manage unspent outputs
 
-### Key Management
+### Key Management & Signing
 - [Generate Private Key](generate-private-key/README.md) - Create new private keys
-- [Import/Export Keys](import-export-keys/README.md) - WIF and hex formats
-- [HD Wallet Setup](hd-wallet-setup/README.md) - Create HD wallet structure
 - [BRC-42 Key Derivation](brc-42-derivation/README.md) - Derive protocol-specific keys
-
-### Signing & Verification
 - [Sign Transaction](sign-transaction/README.md) - Sign with private keys
-- [Verify Signature](verify-signature/README.md) - Verify digital signatures
 - [Message Signing](message-signing/README.md) - Sign arbitrary messages
-- [Multi-Sig Setup](multi-sig-setup/README.md) - Create multi-signature scripts
+- [Multi-Signature](multi-signature/README.md) - Multi-signature transactions
 
 ### Script Templates
 - [P2PKH Template](p2pkh-template/README.md) - Standard payment script
-- [Data Script](data-script/README.md) - OP_RETURN data storage
-- [Custom Lock Script](custom-lock-script/README.md) - Build custom scripts
-- [Script Evaluation](script-evaluation/README.md) - Test script execution
+- [Custom Scripts](custom-scripts/README.md) - Build custom locking scripts
+- [Custom Templates](custom-templates/README.md) - Custom script templates
+- [OP_RETURN](op-return/README.md) - Data storage on-chain
 
 ### Blockchain Verification
-- [SPV Proof Verification](spv-verification/README.md) - Verify merkle proofs
-- [BEEF Transaction](beef-transaction/README.md) - Create BEEF format
-- [Block Header Validation](block-header-validation/README.md) - Validate headers
+- [SPV](spv/README.md) - Simplified Payment Verification
+- [SPV Verification](spv-verification/README.md) - Verify merkle proofs
+- [SPV Validation](spv-validation/README.md) - Validate SPV proofs
 
 ### Broadcasting
 - [Broadcast with ARC](broadcast-arc/README.md) - Send transactions via ARC
-- [Direct Broadcast](direct-broadcast/README.md) - Broadcast to nodes
-- [Monitor Transaction Status](monitor-tx-status/README.md) - Track confirmations
-
-### Data Operations
-- [Encrypt Data](encrypt-data/README.md) - Encrypt with ECIES
-- [Decrypt Data](decrypt-data/README.md) - Decrypt ECIES data
-- [Store Data On-Chain](store-data-onchain/README.md) - Use OP_RETURN
-- [Hash Operations](hash-operations/README.md) - SHA256, RIPEMD160, etc.
 
 ### Wallet Operations
 - [Create Wallet](create-wallet/README.md) - Initialize new wallet
-- [Restore Wallet](restore-wallet/README.md) - Restore from mnemonic
-- [Check Balance](check-balance/README.md) - Query wallet balance
-- [List UTXOs](list-utxos/README.md) - Get available UTXOs
+
+### Advanced Features
+- [Payment Channels](payment-channels/README.md) - Bi-directional payment channels
+- [Payment Distribution](payment-distribution/README.md) - Distribute payments
+- [Payment Processing](payment-processing/README.md) - Process payments
+- [Atomic Swaps](atomic-swaps/README.md) - Trustless token exchanges
+- [Smart Contracts](smart-contracts/README.md) - Smart contract patterns
+- [Double-Spend Detection](double-spend-detection/README.md) - Detect double-spends
+- [Content Paywall](content-paywall/README.md) - Micropayment paywalls
+- [E-commerce Integration](ecommerce-integration/README.md) - Online store integration
+- [Marketplace](marketplace/README.md) - Peer-to-peer marketplace
 
 ## How to Use
 

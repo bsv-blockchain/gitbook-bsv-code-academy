@@ -1178,7 +1178,6 @@ kubectl port-forward -n monitoring svc/prometheus 9090:9090
 Continue to:
 - **[Advanced Scripting](../advanced-scripting/README.md)** - Complex smart contracts and advanced Script features
 - **[Custom Protocols](../custom-protocols/README.md)** - Design application-specific protocols
-- **[Overlay Networks](../overlay-networks/README.md)** - Build application-layer networks
 
 ## Additional Resources
 

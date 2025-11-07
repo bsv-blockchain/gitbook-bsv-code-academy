@@ -1259,7 +1259,6 @@ class MultiPartyContract {
 ## Related Examples
 
 - [Transaction Building](../transaction-building/README.md)
-- [Custom Scripts](../custom-scripts/README.md)
 - [Atomic Swaps](../atomic-swaps/README.md)
 - [Payment Channels](../payment-channels/README.md)
 
@@ -1273,5 +1272,4 @@ class MultiPartyContract {
 
 **Learning Paths:**
 - [Script Programming](../../learning-paths/intermediate/script-programming/README.md)
-- [Advanced Transactions](../../learning-paths/advanced/complex-transactions/README.md)
 - [Smart Contracts](../../learning-paths/advanced/smart-contracts/README.md)

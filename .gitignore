@@ -2,6 +2,7 @@
 node_modules/
 package-lock.json
 yarn.lock
+.claude
 /Claude
 
 # Build outputs

@@ -148,7 +148,6 @@ Implement a complete supply chain tracking system with immutable product passpor
 
 These foundational modules provide the technical knowledge needed for the projects above. You can study them in parallel with the projects or reference them as needed.
 
-### [BSV Primitives](bsv-primitives/README.md)
 **Duration**: 1.5 hours
 
 Deep dive into core BSV blockchain building blocks: transaction structure, inputs/outputs, scripts, SIGHASH types, and UTXO management.

@@ -947,7 +947,7 @@ async function robustPayment(
 - [Transaction Input](../../../sdk-components/transaction-input/README.md)
 - [Transaction Output](../../../sdk-components/transaction-output/README.md)
 - [P2PKH](../../../sdk-components/p2pkh/README.md)
-- [WalletClient](../../../sdk-components/wallet-client/README.md)
+- <!-- [WalletClient](../../../sdk-components/wallet-client/README.md) (Component pending) -->
 
 ## Related Code Features
 

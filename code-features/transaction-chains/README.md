@@ -956,6 +956,4 @@ class ChainValidator {
 - [Merkle Proofs](../../sdk-components/merkle-proofs/README.md) - Merkle proof verification
 
 **Learning Paths:**
-- [SPV Basics](../../learning-paths/intermediate/spv-basics/README.md)
-- [Advanced Transactions](../../learning-paths/advanced/complex-transactions/README.md)
 - [Transaction Chains](../../learning-paths/advanced/transaction-chains/README.md)

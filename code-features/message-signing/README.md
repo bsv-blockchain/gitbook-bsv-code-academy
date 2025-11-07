@@ -760,7 +760,6 @@ async function authenticationExample() {
 
 - [Transaction Signing](../transaction-signing/README.md)
 - [P2PKH Template](../p2pkh-template/README.md)
-- [Custom Scripts](../custom-scripts/README.md)
 
 ## See Also
 
@@ -771,6 +770,5 @@ async function authenticationExample() {
 - [ECDSA](../../sdk-components/ecdsa/README.md) - Elliptic curve cryptography
 
 **Learning Paths:**
-- [Cryptographic Primitives](../../learning-paths/beginner/cryptographic-primitives/README.md)
 - [Digital Signatures](../../learning-paths/intermediate/digital-signatures/README.md)
 - [Authentication Patterns](../../learning-paths/advanced/authentication/README.md)

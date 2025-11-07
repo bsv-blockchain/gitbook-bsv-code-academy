@@ -18,11 +18,9 @@
 ### Intermediate Path
 
 * [Intermediate Overview](learning-paths/intermediate/README.md)
-  * [BSV Primitives](learning-paths/intermediate/bsv-primitives/README.md)
   * [Transaction Building](learning-paths/intermediate/transaction-building/README.md)
   * [Script Templates](learning-paths/intermediate/script-templates/README.md)
   * [SPV Verification](learning-paths/intermediate/spv-verification/README.md)
-  * [BRC Standards](learning-paths/intermediate/brc-standards/README.md)
 
 ## SDK Components Reference
 
@@ -78,7 +76,6 @@
 ### Scripts & Templates
   * [P2PKH Template](code-features/p2pkh-template/README.md)
   * [Multi-Signature](code-features/multi-signature/README.md)
-  * [Custom Scripts](code-features/custom-scripts/README.md)
   * [Custom Templates](code-features/custom-templates/README.md)
   * [OP_RETURN](code-features/op-return/README.md)
 

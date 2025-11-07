@@ -522,7 +522,6 @@ class CrowdfundingTransaction {
 - [Transaction Building](../transaction-building/README.md)
 - [Multi-Signature](../multi-signature/README.md)
 - [Message Signing](../message-signing/README.md)
-- [Custom Scripts](../custom-scripts/README.md)
 
 ## See Also
 

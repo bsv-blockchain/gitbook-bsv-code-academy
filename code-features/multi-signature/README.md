@@ -848,7 +848,6 @@ async function customMultisigExamples() {
 
 - [Transaction Signing](../transaction-signing/README.md)
 - [P2PKH Template](../p2pkh-template/README.md)
-- [Custom Scripts](../custom-scripts/README.md)
 - [Transaction Building](../transaction-building/README.md)
 
 ## See Also
@@ -861,5 +860,4 @@ async function customMultisigExamples() {
 
 **Learning Paths:**
 - [Script Templates](../../learning-paths/intermediate/script-templates/README.md)
-- [Advanced Scripting](../../learning-paths/advanced/custom-scripts/README.md)
 - [Multi-Party Transactions](../../learning-paths/advanced/multi-party-transactions/README.md)

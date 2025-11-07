@@ -687,7 +687,6 @@ async function conditionalTemplateExample() {
 
 ## Related Examples
 
-- [Custom Scripts](../custom-scripts/README.md)
 - [P2PKH Template](../p2pkh-template/README.md)
 - [Multi-Signature](../multi-signature/README.md)
 - [Smart Contracts](../smart-contracts/README.md)
@@ -702,5 +701,4 @@ async function conditionalTemplateExample() {
 
 **Learning Paths:**
 - [Script Templates](../../learning-paths/intermediate/script-templates/README.md)
-- [Advanced Scripting](../../learning-paths/advanced/custom-scripts/README.md)
 - [Template Patterns](../../learning-paths/advanced/template-patterns/README.md)

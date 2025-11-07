@@ -493,4 +493,3 @@ async function advancedExample() {
 
 **Learning Paths:**
 - [First Wallet](../../learning-paths/beginner/first-wallet/README.md)
-- [BRC Standards](../../learning-paths/intermediate/brc-standards/README.md)

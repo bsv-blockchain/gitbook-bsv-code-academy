@@ -860,7 +860,7 @@ const isValid = await multiTracker.isValidRootForHeight(
 ## Related Components
 
 - **[Merkle Proofs](../merkle-proofs/README.md)**: Detailed merkle proof operations
-- **[Transactions](../transactions/README.md)**: Transaction structure and SPV attachment
+- **[Transactions](../transaction/README.md)**: Transaction structure and SPV attachment
 - **[BEEF](../beef/README.md)**: BEEF format for transaction packages with proofs
 
 ## Best Practices

@@ -28,9 +28,7 @@ This course leverages these standardized SDK modules:
 - **[SPV](../../../sdk-components/spv/README.md)** - SPV verification implementation
 - **[Merkle Proofs](../../../sdk-components/merkle-proofs/README.md)** - Transaction inclusion proofs
 - **[Transaction](../../../sdk-components/transaction/README.md)** - Transaction structure and validation
-- **[ChainTracker](../../../sdk-components/chain-tracker/README.md)** - Blockchain state interface
 - **[BEEF](../../../sdk-components/beef/README.md)** - Transaction envelopes with SPV
-- **[Block Headers](../../../sdk-components/block-headers/README.md)** - Header validation
 
 ## 1. Understanding SPV
 
@@ -364,7 +362,6 @@ async function verifyBatchMerkleProofs(
 
 ### Block Header Structure
 
-Reference: **[Block Headers Component](../../../sdk-components/block-headers/README.md)**
 
 A Bitcoin block header contains:
 - **Version** (4 bytes) - Block version number
@@ -598,7 +595,6 @@ class CheckpointValidator {
 
 ### Implementing ChainTracker
 
-Reference: **[ChainTracker Component](../../../sdk-components/chain-tracker/README.md)**
 
 The ChainTracker interface provides blockchain state for SPV verification:
 
@@ -2042,13 +2038,11 @@ class SPVPaymentGateway {
 
 Continue to:
 - **[Advanced Scripting](../../advanced/advanced-scripting/README.md)** - Complex smart contracts
-- **[Overlay Networks](../../advanced/overlay-networks/README.md)** - Build scalable applications
 
 ## Additional Resources
 
 - [SPV SDK Component](../../../sdk-components/spv/README.md)
 - [Merkle Proofs SDK Component](../../../sdk-components/merkle-proofs/README.md)
-- [ChainTracker SDK Component](../../../sdk-components/chain-tracker/README.md)
 - [BEEF SDK Component](../../../sdk-components/beef/README.md)
 - [BRC-8: Transaction Envelopes](https://github.com/bitcoin-sv/BRCs/blob/master/transactions/0008.md)
 - [BRC-9: SPV Implementation](https://github.com/bitcoin-sv/BRCs/blob/master/transactions/0009.md)

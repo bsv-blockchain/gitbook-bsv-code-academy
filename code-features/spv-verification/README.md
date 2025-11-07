@@ -7,10 +7,8 @@ Complete examples for Simplified Payment Verification (SPV) using merkle proofs.
 This code feature demonstrates Simplified Payment Verification (SPV), which allows lightweight clients to verify that a transaction is included in a block without downloading the entire blockchain. SPV uses merkle proofs to cryptographically prove transaction inclusion with minimal data.
 
 **Related SDK Components:**
-- [Merkle Proof](../../sdk-components/merkle-proof/README.md)
-- [Block Headers](../../sdk-components/block-headers/README.md)
+- [Merkle Proof](../../sdk-components/merkle-proofs/README.md)
 - [Transaction](../../sdk-components/transaction/README.md)
-- [Chain Tracker](../../sdk-components/chain-tracker/README.md)
 
 ## Basic Merkle Proof Verification
 
@@ -858,18 +856,13 @@ async function advancedPatternsExample() {
 ## Related Examples
 
 - [Transaction Building](../transaction-building/README.md)
-- [Block Headers](../block-headers/README.md)
-- [Chain Tracker](../chain-tracker/README.md)
 
 ## See Also
 
 **SDK Components:**
-- [Merkle Proof](../../sdk-components/merkle-proof/README.md) - Merkle proof construction and verification
-- [Block Headers](../../sdk-components/block-headers/README.md) - Block header validation
-- [Chain Tracker](../../sdk-components/chain-tracker/README.md) - Chain synchronization
+- [Merkle Proof](../../sdk-components/merkle-proofs/README.md) - Merkle proof construction and verification
 - [Transaction](../../sdk-components/transaction/README.md) - Transaction handling
 
 **Learning Paths:**
-- [SPV Basics](../../learning-paths/intermediate/spv-basics/README.md)
 - [Merkle Trees](../../learning-paths/intermediate/merkle-trees/README.md)
 - [Lightweight Clients](../../learning-paths/advanced/lightweight-clients/README.md)

@@ -1245,7 +1245,7 @@ class UTXOSetPruner {
 
 ## Related Components
 
-- **[Transactions](../transactions/README.md)**: Create transactions from UTXOs
+- **[Transactions](../transaction/README.md)**: Create transactions from UTXOs
 - **[HD Wallets](../hd-wallets/README.md)**: Derive addresses for UTXO tracking
 - **[P2PKH](../p2pkh/README.md)**: Most common locking script for UTXOs
 - **[SPV](../spv/README.md)**: Verify UTXO validity with SPV

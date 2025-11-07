@@ -827,7 +827,6 @@ console.log('Valid:', validation.valid);
 ## Code Examples
 
 See complete working examples in:
-- [Custom Scripts](../../code-features/custom-scripts/README.md)
 - [Smart Contracts](../../code-features/smart-contracts/README.md)
 - [OP_RETURN Data](../../code-features/op-return/README.md)
 - [Multi-Signature](../../code-features/multi-signature/README.md)

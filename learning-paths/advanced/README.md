@@ -21,7 +21,6 @@ Before starting this path, you should have completed the [Intermediate Learning 
 
 ## Learning Modules
 
-### 1. [Overlay Networks](overlay-networks/README.md)
 **Duration**: 3 hours
 
 Build application-specific networks on top of BSV blockchain.
@@ -347,4 +346,3 @@ Plus substantial project time. Advanced projects may take weeks or months to ful
 
 ---
 
-Ready to build advanced BSV infrastructure? Start with [Overlay Networks](overlay-networks/README.md)!

@@ -6,7 +6,6 @@ Design and implement custom application-specific protocols on BSV blockchain usi
 
 **Estimated Time:** 5-6 hours
 **Difficulty:** Advanced
-**Prerequisites:** Complete [Overlay Networks](../overlay-networks/README.md), [Advanced Scripting](../advanced-scripting/README.md), and [SPV Verification](../../intermediate/spv-verification/README.md)
 
 ## Learning Objectives
 
@@ -2486,7 +2485,6 @@ Build a production-ready token protocol with:
 
 ## Related Courses
 
-- **[Overlay Networks](../overlay-networks/README.md)** - Network infrastructure for protocols
 - **[Advanced Scripting](../advanced-scripting/README.md)** - Custom locking script patterns
 - **[Node Operations](../node-operations/README.md)** - Running infrastructure for protocols
 - **[SPV Verification](../../intermediate/spv-verification/README.md)** - Light client integration

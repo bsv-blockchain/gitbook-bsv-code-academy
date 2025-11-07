@@ -7,10 +7,8 @@ Complete examples for validating transactions, merkle proofs, and block headers 
 SPV validation involves cryptographically verifying that transactions are included in blocks without downloading the entire blockchain. This guide demonstrates merkle proof validation, block header validation, transaction verification, and building secure SPV validation systems with proper error handling.
 
 **Related SDK Components:**
-- [Merkle Proof](../../sdk-components/merkle-proof/README.md)
-- [Block Headers](../../sdk-components/block-headers/README.md)
+- [Merkle Proof](../../sdk-components/merkle-proofs/README.md)
 - [Transaction](../../sdk-components/transaction/README.md)
-- [Chain Tracker](../../sdk-components/chain-tracker/README.md)
 
 ## Basic Merkle Proof Validation
 
@@ -1025,17 +1023,13 @@ async function validationServiceExample() {
 - [SPV Implementation](../spv/README.md)
 - [SPV Verification](../spv-verification/README.md)
 - [Transaction Building](../transaction-building/README.md)
-- [Block Headers](../block-headers/README.md)
 
 ## See Also
 
 **SDK Components:**
-- [Merkle Proof](../../sdk-components/merkle-proof/README.md) - Merkle proof validation
-- [Block Headers](../../sdk-components/block-headers/README.md) - Block header validation
+- [Merkle Proof](../../sdk-components/merkle-proofs/README.md) - Merkle proof validation
 - [Transaction](../../sdk-components/transaction/README.md) - Transaction validation
-- [Chain Tracker](../../sdk-components/chain-tracker/README.md) - Chain validation
 
 **Learning Paths:**
-- [SPV Basics](../../learning-paths/intermediate/spv-basics/README.md)
 - [Transaction Validation](../../learning-paths/intermediate/transaction-validation/README.md)
 - [Security Best Practices](../../learning-paths/advanced/security/README.md)

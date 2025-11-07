@@ -832,7 +832,6 @@ function addressUtilitiesExample() {
 - [P2PKH Template](../p2pkh-template/README.md)
 - [Transaction Building](../transaction-building/README.md)
 - [UTXO Management](../utxo-management/README.md)
-- [Custom Scripts](../custom-scripts/README.md)
 
 ## See Also
 

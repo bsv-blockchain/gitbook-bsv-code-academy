@@ -892,7 +892,6 @@ console.log('With', restored.merklePaths.length, 'merkle proofs');
 - [MerklePath](../merkle-proofs/README.md) - Work with merkle proofs
 - [SPV](../spv/README.md) - Simplified Payment Verification
 - [TransactionInput](../transaction-input/README.md) - Handle transaction inputs
-- [ChainTracker](../chain-tracker/README.md) - Verify merkle roots
 
 ## Code Examples
 

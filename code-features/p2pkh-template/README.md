@@ -676,7 +676,6 @@ async function crowdfundingExample() {
 - [Transaction Building](../transaction-building/README.md)
 - [Transaction Signing](../transaction-signing/README.md)
 - [Multi-Signature](../multi-signature/README.md)
-- [Custom Scripts](../custom-scripts/README.md)
 
 ## See Also
 
@@ -689,4 +688,3 @@ async function crowdfundingExample() {
 **Learning Paths:**
 - [First Transaction](../../learning-paths/beginner/first-transaction/README.md)
 - [Script Templates](../../learning-paths/intermediate/script-templates/README.md)
-- [Advanced Scripting](../../learning-paths/advanced/custom-scripts/README.md)

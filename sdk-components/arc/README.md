@@ -1304,8 +1304,8 @@ setTimeout(() => {
 
 - [Transaction](../transaction/README.md) - Create and manage transactions
 - [BEEF](../beef/README.md) - Transaction envelope format
-- [Broadcaster](../broadcaster/README.md) - Broadcasting interface
-- [FeeModel](../fee-model/README.md) - Fee calculation strategies
+- <!-- [Broadcaster](../broadcaster/README.md) (Component pending) --> - Broadcasting interface
+- <!-- [FeeModel](../fee-model/README.md) (Component pending) --> - Fee calculation strategies
 
 ## Code Examples
 

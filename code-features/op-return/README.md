@@ -968,7 +968,6 @@ async function fileRegistryExample() {
 ## Related Examples
 
 - [Transaction Building](../transaction-building/README.md)
-- [Custom Scripts](../custom-scripts/README.md)
 - [Standard Transactions](../standard-transactions/README.md)
 - [Content Paywall](../content-paywall/README.md)
 

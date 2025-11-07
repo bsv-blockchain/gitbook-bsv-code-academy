@@ -195,7 +195,6 @@ const restoredKey = PrivateKey.fromHex(seed.privateKey.toHex())
 ## Learning Path References
 
 - Beginner: [Your First Wallet](../../learning-paths/beginner/first-wallet/README.md)
-- Intermediate: [BRC Standards](../../learning-paths/intermediate/brc-standards/README.md)
 
 ## Warning
 

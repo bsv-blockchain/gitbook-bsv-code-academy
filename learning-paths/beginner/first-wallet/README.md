@@ -1119,14 +1119,13 @@ console.log('Testnet Address:', testAddress)
 - [Private Keys](../../../sdk-components/private-keys/README.md)
 - [HD Wallets](../../../sdk-components/hd-wallets/README.md)
 - [BRC-42 Key Derivation](../../../sdk-components/brc-42/README.md)
-- [Mnemonic Generation](../../../sdk-components/mnemonic/README.md)
-- [WalletClient](../../../sdk-components/wallet-client/README.md)
+- <!-- [Mnemonic Generation](../../../sdk-components/mnemonic/README.md) (Component pending) -->
+- <!-- [WalletClient](../../../sdk-components/wallet-client/README.md) (Component pending) -->
 
 ## Related Code Features
 
 - [Generate Private Key](../../../code-features/generate-private-key/README.md)
-- [Create HD Wallet](../../../code-features/create-hd-wallet/README.md)
-- [Derive Keys with BRC-42](../../../code-features/derive-keys-brc42/README.md)
+- [BRC-42 Key Derivation](../../../code-features/brc-42-derivation/README.md)
 
 ## Next Steps
 

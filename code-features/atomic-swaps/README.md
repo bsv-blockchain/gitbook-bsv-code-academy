@@ -921,7 +921,6 @@ async function safetyExample() {
 ## Related Examples
 
 - [Transaction Building](../transaction-building/README.md)
-- [Custom Scripts](../custom-scripts/README.md)
 - [Transaction Chains](../transaction-chains/README.md)
 - [Smart Contracts](../smart-contracts/README.md)
 
@@ -935,5 +934,4 @@ async function safetyExample() {
 
 **Learning Paths:**
 - [Script Programming](../../learning-paths/intermediate/script-programming/README.md)
-- [Advanced Transactions](../../learning-paths/advanced/complex-transactions/README.md)
 - [Smart Contracts](../../learning-paths/advanced/smart-contracts/README.md)

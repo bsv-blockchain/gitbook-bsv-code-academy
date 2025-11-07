@@ -1128,10 +1128,8 @@ console.log(`Generated ${addressPool.length} addresses`);
 
 ## Related Components
 
-- **[Primitives](../primitives/README.md)**: Core `PrivateKey` and `PublicKey` classes
-- **[Transactions](../transactions/README.md)**: Use derived keys in transactions
+- **[Transactions](../transaction/README.md)**: Use derived keys in transactions
 - **[P2PKH](../p2pkh/README.md)**: P2PKH template for derived addresses
-- **[Messages](../messages/README.md)**: Encrypted messaging with symmetric keys
 - **[Signatures](../signatures/README.md)**: Sign with derived private keys
 
 ## Best Practices

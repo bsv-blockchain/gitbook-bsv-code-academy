@@ -816,4 +816,3 @@ class OptimizedBatchProcessor {
 **Learning Paths:**
 - [Transaction Building](../../learning-paths/intermediate/transaction-building/README.md)
 - [UTXO Management](../../learning-paths/intermediate/utxo-management/README.md)
-- [Advanced Transactions](../../learning-paths/advanced/complex-transactions/README.md)

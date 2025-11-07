@@ -65,8 +65,6 @@ Generate unique keys for each payment or interaction.
 
 - [Private Keys](../private-keys/README.md) - Key management fundamentals
 - [HD Wallets](../hd-wallets/README.md) - Hierarchical key derivation
-- [Encryption](../encryption/README.md) - Using derived keys for encryption
-- [BRC-43](../brc-43/README.md) - Wallet security levels
 
 ## Code Examples
 
@@ -111,7 +109,6 @@ const invoiceKey = masterKey.deriveChild(
 
 ## Learning Path References
 
-- Intermediate: [BRC Standards](../../learning-paths/intermediate/brc-standards/README.md)
 - Advanced: [Custom Protocols](../../learning-paths/advanced/custom-protocols/README.md)
 
 ## Specification
