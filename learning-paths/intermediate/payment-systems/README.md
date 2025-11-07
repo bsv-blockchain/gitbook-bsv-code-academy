@@ -2446,7 +2446,6 @@ You've built a complete payment processing system demonstrating:
 - **Enhance**: Add payment plans, discounts, promotions
 - **Scale**: Implement advanced queueing and caching
 - **Deploy**: Production infrastructure with monitoring
-- **Continue**: [Advanced Learning Path](../../advanced/)
 
 ---
 

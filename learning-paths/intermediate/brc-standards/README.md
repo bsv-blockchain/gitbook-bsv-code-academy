@@ -456,9 +456,6 @@ Build an application that:
 3. Creates BRC-29 payment requests
 4. Issues BRC-56 certificates
 
-## Next Module
-
-Continue to: [Advanced Learning Path](../../advanced/README.md) to learn about overlay networks and advanced protocols.
 
 ## Summary
 

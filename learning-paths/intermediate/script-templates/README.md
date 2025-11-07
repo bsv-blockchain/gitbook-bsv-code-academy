@@ -1099,7 +1099,7 @@ class PaymentChannelTemplate {
 
 Continue to:
 - **[SPV Verification](../spv-verification/README.md)** - Verify transactions without full blockchain
-- **[Advanced Scripting](../../advanced/advanced-scripting/README.md)** - Complex smart contracts
+
 
 ## Additional Resources
 

@@ -2034,10 +2034,6 @@ class SPVPaymentGateway {
 }
 ```
 
-## Next Steps
-
-Continue to:
-- **[Advanced Scripting](../../advanced/advanced-scripting/README.md)** - Complex smart contracts
 
 ## Additional Resources
 
