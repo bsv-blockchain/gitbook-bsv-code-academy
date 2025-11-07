@@ -201,7 +201,7 @@ async function simpleOpReturnExample() {
   // Store simple text
   const tx1 = await dataStore.storeText(
     privateKey,
-    'Hello, Bitcoin SV!',
+    'Hello, BSV!',
     utxo
   )
 

@@ -1,6 +1,6 @@
 # BSV Code Academy
 
-**Your Complete Guide to Building on Bitcoin SV**
+**Your Complete Guide to Building on BSV Blockchain**
 
 Welcome to the BSV Code Academy - a comprehensive, modular learning platform for developers at all skill levels who want to build applications on the Bitcoin Satoshi Vision (BSV) blockchain. From beginner to intermediate production-ready applications.
 

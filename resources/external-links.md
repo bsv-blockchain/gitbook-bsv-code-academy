@@ -6,11 +6,9 @@ A curated list of external resources for BSV blockchain development.
 
 ### Documentation
 - [BSV Skills Center](https://hub.bsvblockchain.org/bsv-skills-center) - Official learning platform
-- [BSV Wiki](https://wiki.bitcoinsv.io/) - Comprehensive BSV documentation
 - [BSV Blockchain](https://www.bsvblockchain.org/) - Official BSV website
 
 ### Technical Specifications
-- [Bitcoin Whitepaper](https://bitcoinsv.io/bitcoin.pdf) - Original Satoshi Nakamoto whitepaper
 - [BSV Protocol](https://wiki.bitcoinsv.io/index.php/Protocol) - Protocol documentation
 - [Script Reference](https://wiki.bitcoinsv.io/index.php/Script) - Bitcoin Script documentation
 
@@ -68,8 +66,8 @@ A curated list of external resources for BSV blockchain development.
 
 ## Node Software
 
-- [Bitcoin SV Node](https://github.com/bitcoin-sv/bitcoin-sv) - Official node implementation
-- [Bitcoin SV Docs](https://bitcoin-sv.github.io/bitcoin-sv/) - Node documentation
+- [BSV Node](https://github.com/bitcoin-sv/bitcoin-sv) - Official node implementation
+- [BSV Docs](https://bsvblockchain.org/) - Node documentation
 
 ## Libraries & Frameworks
 

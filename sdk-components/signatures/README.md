@@ -20,10 +20,10 @@ import { Signature, PrivateKey, PublicKey, Hash } from '@bsv/sdk';
 
 // Sign a message hash with a private key
 const privKey = PrivateKey.fromRandom();
-const messageHash = Hash.sha256(Buffer.from('Hello BSV'));
+const messageHash = Hash.sha256(Array.from(Buffer.from('Hello BSV')));
 
 // Create signature
-const signature = Signature.sign(messageHash, privKey);
+const signature = privKey.sign(messageHash);
 
 // Verify signature
 const pubKey = privKey.toPublicKey();
@@ -32,10 +32,13 @@ console.log('Signature valid:', isValid); // true
 
 // Get DER encoding of signature
 const derEncoded = signature.toDER();
-console.log('DER:', derEncoded.toString('hex'));
-
+console.log('DER:', Buffer.from(derEncoded).toString('hex'));
 // Parse DER encoded signature
 const parsedSig = Signature.fromDER(derEncoded);
+console.log(
+  'Parsed signature equals original:',
+  Buffer.from(parsedSig.toDER()).equals(Buffer.from(signature.toDER()))
+); // true
 ```
 
 ## Key Features
@@ -543,7 +546,7 @@ console.log('Recovery param:', signature.recoveryParam); // Should be 0-3
 ## Further Reading
 
 - [Bitcoin ECDSA Signatures](https://github.com/bitcoin-sv/BRCs/blob/master/key-derivation/0003.md) - BRC-3: Digital Signatures
-- [DER Encoding](https://wiki.bitcoinsv.io/index.php/ECDSA) - Bitcoin SV Wiki on ECDSA
+- [DER Encoding](https://wiki.bitcoinsv.io/index.php/ECDSA) - BSV Wiki on ECDSA
 - [Sighash Types](https://wiki.bitcoinsv.io/index.php/SIGHASH_flags) - Understanding signature hash types
 - [RFC 6979](https://tools.ietf.org/html/rfc6979) - Deterministic ECDSA signatures
 - [Transaction Malleability](https://wiki.bitcoinsv.io/index.php/Transaction_Malleability) - Why low-S matters
