@@ -21,6 +21,7 @@
   * [Transaction Building](learning-paths/intermediate/transaction-building/README.md)
   * [Script Templates](learning-paths/intermediate/script-templates/README.md)
   * [SPV Verification](learning-paths/intermediate/spv-verification/README.md)
+  * [Crowdfunding Platform](learning-paths/intermediate/crowdfunding-platform/README.md)
 
 ## SDK Components Reference
 
