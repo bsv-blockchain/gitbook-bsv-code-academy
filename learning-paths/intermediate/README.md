@@ -14,12 +14,12 @@ The intermediate path is **project-based**. Instead of learning concepts in isol
 
 ## What You'll Build
 
-By completing this path, you will build four production-ready applications:
+By completing this path, you will build one production-ready application:
 
-0. **Payment Systems** - Complete payment infrastructure with invoicing, subscriptions, and refunds
+<!-- 0. **Payment Systems** - Complete payment infrastructure with invoicing, subscriptions, and refunds -->
 1. **Crowdfunding Platform** - Token-based campaign funding with escrow and automated payouts
-2. **Asset Tokenization System** - Real-world asset representation with compliance workflows
-3. **Supply Chain Digital Passports** - Product lifecycle tracking with multi-party verification
+<!-- 2. **Asset Tokenization System** - Real-world asset representation with compliance workflows -->
+<!-- 3. **Supply Chain Digital Passports** - Product lifecycle tracking with multi-party verification -->
 
 ## Prerequisites
 
@@ -32,7 +32,7 @@ Before starting this path, you should have completed the [Beginner Learning Path
 
 ## Core Projects
 
-### Project 0: [Payment Systems](payment-systems/README.md)
+<!-- ### Project 0: [Payment Systems](payment-systems/README.md)
 **Duration**: 4-6 hours | **Difficulty**: Intermediate
 
 Build a complete payment processing infrastructure supporting various payment scenarios.
@@ -61,7 +61,7 @@ Build a complete payment processing infrastructure supporting various payment sc
 
 **Why Start Here**: Understanding payment flows is fundamental to most blockchain applications. This project teaches core patterns you'll use in all other projects.
 
----
+--- -->
 
 ### Project 1: [Crowdfunding Platform](crowdfunding-platform/README.md)
 **Duration**: 4-6 hours | **Difficulty**: Intermediate
@@ -90,7 +90,7 @@ Build a complete token-based crowdfunding platform with escrow mechanisms and au
 
 ---
 
-### Project 2: [Asset Tokenization System](asset-tokenization/README.md)
+<!-- ### Project 2: [Asset Tokenization System](asset-tokenization/README.md)
 **Duration**: 4-6 hours | **Difficulty**: Intermediate
 
 Create a production-ready system for representing real-world assets on the BSV blockchain.
@@ -115,9 +115,9 @@ Create a production-ready system for representing real-world assets on the BSV b
 - Certificate protocols (BRC-56)
 - SPV verification for lightweight clients
 
----
+--- -->
 
-### Project 3: [Supply Chain Digital Passports](supply-chain-passports/README.md)
+<!-- ### Project 3: [Supply Chain Digital Passports](supply-chain-passports/README.md)
 **Duration**: 4-6 hours | **Difficulty**: Intermediate
 
 Implement a complete supply chain tracking system with immutable product passports.
@@ -142,9 +142,9 @@ Implement a complete supply chain tracking system with immutable product passpor
 - SPV verification
 - BRC standards for interoperability
 
----
+--- -->
 
-## Supporting Modules
+<!-- ## Supporting Modules
 
 These foundational modules provide the technical knowledge needed for the projects above. You can study them in parallel with the projects or reference them as needed.
 
@@ -170,7 +170,7 @@ Implement Simplified Payment Verification for trustless applications: merkle pro
 ### [BRC Standards](brc-standards/README.md)
 **Duration**: 2 hours
 
-Implement Bitcoin Request for Comments standards: BRC-42 (key derivation), BRC-43 (security levels), BRC-29 (payments), BRC-56 (certificates).
+Implement Bitcoin Request for Comments standards: BRC-42 (key derivation), BRC-43 (security levels), BRC-29 (payments), BRC-56 (certificates). -->
 
 ## Development Paradigms
 
@@ -219,28 +219,28 @@ The SDK provides **ready-to-use, pre-configured components** that let you focus 
 ## Learning Path Completion
 
 After completing this path, you will have:
-- ✅ Built four production-ready, deployable BSV applications
-- ✅ Implemented complete payment infrastructure (one-time, subscriptions, invoices, refunds)
+- ✅ Built a production-ready, deployable BSV application
+<!-- - ✅ Implemented complete payment infrastructure (one-time, subscriptions, invoices, refunds) -->
 - ✅ Implemented both backend (custodial) and frontend (user-wallet) architectures
 - ✅ Mastered the BSV SDK's pre-built components and patterns
 - ✅ Created token systems, escrow mechanisms, and multi-party workflows
 - ✅ Integrated WalletClient for frontend wallet communication
-- ✅ Implemented SPV verification for lightweight clients
-- ✅ Applied BRC standards for interoperability
-- ✅ Developed real-world blockchain solutions you can adapt for your own projects
+<!-- - ✅ Implemented SPV verification for lightweight clients -->
+<!-- - ✅ Applied BRC standards for interoperability -->
+- ✅ Developed a real-world blockchain solution you can adapt for your own projects
 
 
 ## Real-World Applications
 
-The projects in this path directly prepare you to build:
+The project in this path directly prepares you to build:
 
-**From Payment Systems:**
+<!-- **From Payment Systems:**
 - E-commerce payment processing
 - Subscription and membership platforms
 - Professional invoicing systems
 - SaaS billing infrastructure
 - Marketplace payment handling
-- Digital goods purchasing
+- Digital goods purchasing -->
 
 **From Crowdfunding Platform:**
 - Campaign funding systems
@@ -248,17 +248,17 @@ The projects in this path directly prepare you to build:
 - Donation and grant management
 - Community funding applications
 
-**From Asset Tokenization:**
+<!-- **From Asset Tokenization:**
 - Real estate tokenization
 - Commodity trading platforms
 - Certificate and credential systems
-- Ownership transfer protocols
+- Ownership transfer protocols -->
 
-**From Supply Chain Passports:**
+<!-- **From Supply Chain Passports:**
 - Product authentication systems
 - Supply chain transparency platforms
 - Quality assurance tracking
-- Multi-party verification workflows
+- Multi-party verification workflows -->
 
 ## Getting Help
 
@@ -272,20 +272,20 @@ The projects in this path directly prepare you to build:
 
 ## Estimated Time
 
-**Core Projects**: 16-24 hours total
-- Payment Systems: 4-6 hours
+**Core Project**: 4-6 hours total
+<!-- - Payment Systems: 4-6 hours -->
 - Crowdfunding Platform: 4-6 hours
-- Asset Tokenization System: 4-6 hours
-- Supply Chain Digital Passports: 4-6 hours
+<!-- - Asset Tokenization System: 4-6 hours -->
+<!-- - Supply Chain Digital Passports: 4-6 hours -->
 
-**Supporting Modules**: 13-17 hours total (can be studied in parallel with projects)
+<!-- **Supporting Modules**: 13-17 hours total (can be studied in parallel with projects)
 - BSV Primitives: 2-3 hours
 - Transaction Building: 3-4 hours
 - Script Templates: 3-4 hours
 - SPV Verification: 3-4 hours
-- BRC Standards: 1.5-2 hours
+- BRC Standards: 1.5-2 hours -->
 
-**Total Path Duration**: 29-41 hours depending on depth and customization
+**Total Path Duration**: 4-6 hours depending on depth and customization
 
 This is a hands-on learning path - you'll spend most of your time writing and deploying real code, not just reading documentation.
 
@@ -293,11 +293,16 @@ This is a hands-on learning path - you'll spend most of your time writing and de
 
 ## Recommended Learning Path
 
-1. **Start with Payment Systems** - Learn fundamental payment flows that apply to all blockchain applications
+<!-- 1. **Start with Payment Systems** - Learn fundamental payment flows that apply to all blockchain applications
 2. **Choose your next project** based on your interests (Crowdfunding, Tokenization, or Supply Chain)
 3. **Reference supporting modules** as needed when you encounter new concepts
 4. **Build both implementations** (backend and frontend) for each project
 5. **Customize and deploy** your own version with unique features
-6. **Move to the next project** and repeat the process
+6. **Move to the next project** and repeat the process -->
 
-Ready to build production BSV applications? Start with [**Payment Systems**](payment-systems/README.md) to learn the fundamentals, then move to [**Crowdfunding Platform**](crowdfunding-platform/README.md), [**Asset Tokenization**](asset-tokenization/README.md), or [**Supply Chain Passports**](supply-chain-passports/README.md)!
+1. **Start with Crowdfunding Platform** - Learn token systems, escrow mechanisms, and automated payouts
+2. **Build both implementations** (backend and frontend) for the project
+3. **Customize and deploy** your own version with unique features
+
+Ready to build production BSV applications? Start with [**Crowdfunding Platform**](crowdfunding-platform/README.md)!
+<!-- to learn the fundamentals, then move to [**Crowdfunding Platform**](crowdfunding-platform/README.md), [**Asset Tokenization**](asset-tokenization/README.md), or [**Supply Chain Passports**](supply-chain-passports/README.md)! -->

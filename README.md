@@ -121,12 +121,12 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 
 | Project | Time | What You'll Build |
 |---------|------|-------------------|
-| [Payment Systems](learning-paths/intermediate/payment-systems/) | 4-6h | Complete payment infrastructure with invoices, subscriptions, refunds |
+<!-- | [Payment Systems](learning-paths/intermediate/payment-systems/) | 4-6h | Complete payment infrastructure with invoices, subscriptions, refunds | -->
 | [Crowdfunding Platform](learning-paths/intermediate/crowdfunding-platform/) | 4-6h | Token-based crowdfunding with escrow and automated payouts |
-| [Asset Tokenization](learning-paths/intermediate/asset-tokenization/) | 4-6h | Digital asset representation with compliance workflows |
-| [Supply Chain Passports](learning-paths/intermediate/supply-chain-passports/) | 4-6h | Product lifecycle tracking with multi-party verification |
+<!-- | [Asset Tokenization](learning-paths/intermediate/asset-tokenization/) | 4-6h | Digital asset representation with compliance workflows | -->
+<!-- | [Supply Chain Passports](learning-paths/intermediate/supply-chain-passports/) | 4-6h | Product lifecycle tracking with multi-party verification | -->
 
-#### Supporting Modules (Reference as Needed)
+<!-- #### Supporting Modules (Reference as Needed)
 
 | Module | Time | What You'll Learn |
 |--------|------|-------------------|
@@ -134,11 +134,11 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 | [Transaction Building](learning-paths/intermediate/transaction-building/) | 3-4h | Multi-input transactions, batch payments, fee optimization |
 | [Script Templates](learning-paths/intermediate/script-templates/) | 3-4h | Custom locking scripts, multisig, timelocks |
 | [SPV Verification](learning-paths/intermediate/spv-verification/) | 3-4h | Merkle proofs, lightweight clients, BRC-9/67 |
-| [BRC Standards](learning-paths/intermediate/brc-standards/) | 1.5-2h | BRC-29, BRC-42, protocol specifications |
+| [BRC Standards](learning-paths/intermediate/brc-standards/) | 1.5-2h | BRC-29, BRC-42, protocol specifications | -->
 
-**Total time**: 29-41 hours (16-24h projects + 13-17h modules)
+**Total time**: 4-6 hours <!-- (16-24h projects + 13-17h modules) -->
 **Prerequisites**: Complete beginner path
-**Outcome**: Build four production-ready applications with full frontend and backend
+**Outcome**: Build a production-ready application with full frontend and backend
 
 ---
 
@@ -235,33 +235,33 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 3. Code: create-wallet/, utxo-management/, brc-42-derivation/
 ```
 
-### "I want to create a token system"
+<!-- ### "I want to create a token system"
 ```
 1. Learning: intermediate/asset-tokenization/ + intermediate/script-templates/
 2. Components: script-templates/, transaction/, spv/
 3. Code: custom-scripts/, custom-templates/, transaction-building/
-```
+``` -->
 
 ### "I want to integrate payments"
 ```
-1. Learning: beginner/first-transaction/ + intermediate/transaction-building/
+1. Learning: beginner/first-transaction/
 2. Components: transaction/, arc/, brc-29/
 3. Code: payment-processing/, transaction-broadcasting/, batch-operations/
 ```
 
-### "I want to build payment infrastructure"
+<!-- ### "I want to build payment infrastructure"
 ```
 1. Learning: intermediate/payment-systems/ + intermediate/transaction-building/
 2. Components: transaction/, arc/, brc-29/
 3. Code: payment-processing/, transaction-broadcasting/, batch-operations/
-```
+``` -->
 
-### "I want to build smart contracts"
+<!-- ### "I want to build smart contracts"
 ```
 1. Learning: intermediate/script-templates/ + intermediate/bsv-primitives/
 2. Components: script/, script-templates/, signatures/
 3. Code: smart-contracts/, custom-scripts/, multi-signature/
-```
+``` -->
 
 ---
 
@@ -272,7 +272,7 @@ gitbook-bsv-code-academy/
 │
 ├── learning-paths/          # 📚 Structured courses (follow in order)
 │   ├── beginner/           # 7 courses (~16 hours)
-│   └── intermediate/       # 9 courses: 4 projects + 5 modules (~29-41 hours)
+│   └── intermediate/       # 1 project (~4-6 hours) <!-- 9 courses: 4 projects + 5 modules (~29-41 hours) -->
 │
 ├── sdk-components/         # 🔧 Technical reference (jump to as needed)
 │   ├── private-keys/       # API docs + patterns
@@ -294,9 +294,9 @@ gitbook-bsv-code-academy/
 
 ## 📊 What's Inside
 
-- **📚 16 Structured Courses** covering beginner → intermediate
+- **📚 8 Structured Courses** covering beginner → intermediate
   - 7 Beginner courses
-  - 9 Intermediate courses (4 projects + 5 modules)
+  - 1 Intermediate project <!-- 9 Intermediate courses (4 projects + 5 modules) -->
 - **🔧 17 SDK Components** with complete API documentation
 - **💻 31 Code Features** with production-ready examples
 - **📝 Comprehensive documentation** covering all aspects of BSV development
@@ -353,7 +353,7 @@ console.log('Address:', key.toPublicKey().toAddress())
 ```
 
 **Example Flow**:
-1. You're learning about transactions → Read `learning-paths/intermediate/transaction-building/`
+1. You're learning about transactions → Read `learning-paths/beginner/first-transaction/`
 2. Need API details → Reference `sdk-components/transaction/`
 3. Want working code → Copy from `code-features/transaction-building/`
 
@@ -364,18 +364,20 @@ console.log('Address:', key.toPublicKey().toAddress())
 ### Fastest Path to Production (2 weeks intensive)
 ```
 Week 1: Beginner essentials (getting-started, fundamentals, first-wallet, first-transaction)
-Week 2: Intermediate skills (transaction-building, script-templates) + Your use case
-       + code-features implementation
+Week 2: Intermediate project (crowdfunding-platform) + code-features implementation
 ```
 
-### Comprehensive Mastery (2-3 months part-time)
+### Comprehensive Mastery (3-4 weeks part-time)
 ```
-Month 1: All beginner courses (7 courses, ~16 hours)
+Week 1-2: All beginner courses (7 courses, ~16 hours)
+Week 3-4: Intermediate project (crowdfunding-platform, 4-6 hours)
+        + code-features for additional patterns
+```
+<!-- Month 1: All beginner courses (7 courses, ~16 hours)
 Month 2: Intermediate projects (payment-systems, crowdfunding-platform)
         + supporting modules as needed (BSV primitives, transaction-building)
 Month 3: More intermediate projects (asset-tokenization, supply-chain-passports)
-        + remaining modules (script-templates, SPV, BRC standards)
-```
+        + remaining modules (script-templates, SPV, BRC standards) -->
 
 ### SDK Reference User (ongoing)
 ```
