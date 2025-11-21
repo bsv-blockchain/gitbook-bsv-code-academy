@@ -45,7 +45,18 @@ Set up your complete development environment for BSV development.
 **Code Features Used**:
 - Project initialization templates
 
-### 3. [BSV Fundamentals](bsv-fundamentals/README.md)
+### 3. [Development Paradigms](development-paradigms/README.md)
+**Duration**: 30 minutes
+
+Understand the two fundamental approaches to BSV application development.
+
+**Topics**:
+- Backend/service development (custodial)
+- Frontend integration development (non-custodial)
+- When to use each paradigm
+- Security considerations
+
+### 4. [BSV Fundamentals](bsv-fundamentals/README.md)
 **Duration**: 1 hour
 
 Learn the core concepts of BSV blockchain.
@@ -63,7 +74,7 @@ Learn the core concepts of BSV blockchain.
 - [Private Keys](../../sdk-components/private-keys/README.md)
 - [Script](../../sdk-components/script/README.md)
 
-### 4. [Your First Wallet](first-wallet/README.md)
+### 5. [Your First Wallet](first-wallet/README.md)
 **Duration**: 45 minutes
 
 Create and manage a BSV wallet with the TypeScript SDK.
@@ -83,7 +94,7 @@ Create and manage a BSV wallet with the TypeScript SDK.
 - [Private Keys](../../sdk-components/private-keys/README.md)
 - [HD Wallets](../../sdk-components/hd-wallets/README.md)
 
-### 5. [Your First Transaction](first-transaction/README.md)
+### 6. [Your First Transaction](first-transaction/README.md)
 **Duration**: 1 hour
 
 Build, sign, and broadcast your first BSV transaction.
@@ -105,6 +116,25 @@ Build, sign, and broadcast your first BSV transaction.
 - [Transaction](../../sdk-components/transaction/README.md)
 - [P2PKH](../../sdk-components/p2pkh/README.md)
 - [ARC](../../sdk-components/arc/README.md)
+
+### 7. [Wallet Client Integration](wallet-client-integration/README.md)
+**Duration**: 45 minutes
+
+Integrate MetaNet Desktop Wallet into your frontend applications.
+
+**Topics**:
+- WalletClient basics
+- Connecting to user wallets
+- Requesting transactions
+- Message signing
+- Error handling
+
+**Code Features Used**:
+- [Create Wallet](../../code-features/create-wallet/README.md)
+
+**SDK Components Referenced**:
+- [HD Wallets](../../sdk-components/hd-wallets/README.md)
+- [BRC-42](../../sdk-components/brc-42/README.md)
 
 ## Hands-On Projects
 
@@ -148,7 +178,7 @@ Ready for more? Continue to the [Intermediate Learning Path](../intermediate/REA
 
 ## Estimated Time
 
-**Total Path Duration**: 4-5 hours
+**Total Path Duration**: ~5 hours
 
 This includes reading, hands-on coding, and completing the projects. Take your time and practice each concept before moving forward.
 

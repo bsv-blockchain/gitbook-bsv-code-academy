@@ -17,7 +17,7 @@ Follow progressive courses from beginner to intermediate. Each course teaches co
 
 - **When to use**: You want to learn systematically
 - **Path**: Read courses in order, following the references to components
-- **Time**: Full path ~40-60 hours
+- **Time**: Full path ~9-11 hours
 
 ### 2. 🔧 **SDK Components** (Technical Reference)
 **Use as reference documentation**
@@ -51,7 +51,7 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 4. Reference → SDK components when needed
 ```
 
-**Estimated time**: 16 hours
+**Estimated time**: ~5 hours
 **You'll learn**: Development setup, BSV fundamentals, create wallet, build transactions, integrate wallets
 
 ### For Experienced Developers
@@ -64,7 +64,7 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 4. Use → code-features/ for specific implementations
 ```
 
-**Estimated time**: 8-12 hours to get productive
+**Estimated time**: 3-4 hours to get productive
 **You'll learn**: BSV-specific features, transaction building, SPV, BRC standards, payment systems, tokenization
 
 ### For SDK Reference
@@ -102,15 +102,15 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 
 | Course | Time | What You'll Learn |
 |--------|------|-------------------|
-| [Getting Started](learning-paths/beginner/getting-started/) | 2h | Install tools, understand workflow |
-| [Development Environment](learning-paths/beginner/development-environment/) | 2h | Set up BSV development environment |
-| [Development Paradigms](learning-paths/beginner/development-paradigms/) | 2h | BSV development patterns and paradigms |
-| [BSV Fundamentals](learning-paths/beginner/bsv-fundamentals/) | 3h | Core concepts: UTXOs, transactions, scripts |
-| [First Wallet](learning-paths/beginner/first-wallet/) | 2h | Create and manage BSV wallets |
-| [First Transaction](learning-paths/beginner/first-transaction/) | 3h | Build, sign, and broadcast transactions |
-| [Wallet Client Integration](learning-paths/beginner/wallet-client-integration/) | 2h | Integrate wallets into client applications |
+| [Getting Started](learning-paths/beginner/getting-started/) | 30 min | Install tools, understand workflow |
+| [Development Environment](learning-paths/beginner/development-environment/) | 45 min | Set up BSV development environment |
+| [Development Paradigms](learning-paths/beginner/development-paradigms/) | 30 min | BSV development patterns and paradigms |
+| [BSV Fundamentals](learning-paths/beginner/bsv-fundamentals/) | 1h | Core concepts: UTXOs, transactions, scripts |
+| [First Wallet](learning-paths/beginner/first-wallet/) | 45 min | Create and manage BSV wallets |
+| [First Transaction](learning-paths/beginner/first-transaction/) | 1h | Build, sign, and broadcast transactions |
+| [Wallet Client Integration](learning-paths/beginner/wallet-client-integration/) | 45 min | Integrate wallets into client applications |
 
-**Total time**: ~16 hours
+**Total time**: ~5 hours
 **Prerequisites**: Basic programming knowledge (JavaScript/TypeScript)
 **Outcome**: Build simple BSV applications
 
@@ -136,7 +136,7 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 | [SPV Verification](learning-paths/intermediate/spv-verification/) | 3-4h | Merkle proofs, lightweight clients, BRC-9/67 |
 | [BRC Standards](learning-paths/intermediate/brc-standards/) | 1.5-2h | BRC-29, BRC-42, protocol specifications | -->
 
-**Total time**: 4-6 hours <!-- (16-24h projects + 13-17h modules) -->
+**Total time**: 4-6 hours
 **Prerequisites**: Complete beginner path
 **Outcome**: Build a production-ready application with full frontend and backend
 
@@ -271,8 +271,8 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 gitbook-bsv-code-academy/
 │
 ├── learning-paths/          # 📚 Structured courses (follow in order)
-│   ├── beginner/           # 7 courses (~16 hours)
-│   └── intermediate/       # 1 project (~4-6 hours) <!-- 9 courses: 4 projects + 5 modules (~29-41 hours) -->
+│   ├── beginner/           # 7 courses (~5 hours)
+│   └── intermediate/       # 1 project (~4-6 hours)
 │
 ├── sdk-components/         # 🔧 Technical reference (jump to as needed)
 │   ├── private-keys/       # API docs + patterns
@@ -361,16 +361,16 @@ console.log('Address:', key.toPublicKey().toAddress())
 
 ## 🎓 Recommended Learning Sequences
 
-### Fastest Path to Production (2 weeks intensive)
+### Fastest Path to Production (1 week intensive)
 ```
-Week 1: Beginner essentials (getting-started, fundamentals, first-wallet, first-transaction)
-Week 2: Intermediate project (crowdfunding-platform) + code-features implementation
+Days 1-3: Beginner essentials (getting-started, fundamentals, first-wallet, first-transaction)
+Days 4-7: Intermediate project (crowdfunding-platform) + code-features implementation
 ```
 
-### Comprehensive Mastery (3-4 weeks part-time)
+### Comprehensive Mastery (1-2 weeks part-time)
 ```
-Week 1-2: All beginner courses (7 courses, ~16 hours)
-Week 3-4: Intermediate project (crowdfunding-platform, 4-6 hours)
+Week 1: All beginner courses (7 courses, ~5 hours)
+Week 2: Intermediate project (crowdfunding-platform, 4-6 hours)
         + code-features for additional patterns
 ```
 <!-- Month 1: All beginner courses (7 courses, ~16 hours)
