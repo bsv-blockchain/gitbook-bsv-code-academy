@@ -61,16 +61,32 @@ By completing this project, you will learn:
 
 ### 1. Frontend Wallet Integration
 
-Connect to the user's BSV Desktop Wallet:
+Connect to the user's BSV Desktop Wallet using a React hook:
 
 ```typescript
+import { useState, useEffect } from 'react'
 import { WalletClient } from '@bsv/sdk'
 
-const wallet = new WalletClient()
-const { publicKey } = await wallet.getPublicKey({ identityKey: true })
+export const useWallet = () => {
+  const [wallet, setWallet] = useState<WalletClient | null>(null)
+  const [identityKey, setIdentityKey] = useState<string | null>(null)
+
+  async function initWallet() {
+    const w = new WalletClient()
+    const { publicKey } = await w.getPublicKey({ identityKey: true })
+    setWallet(w)
+    setIdentityKey(publicKey)
+  }
+
+  useEffect(() => {
+    initWallet()
+  }, [])
+
+  return { wallet, identityKey }
+}
 ```
 
-> **Reference**: [WalletClient Integration](../../beginner/wallet-client-integration/)
+> **Reference**: [WalletClient Integration](../../beginner/wallet-client-integration/README.md)
 
 ### 2. Payment Protocol (402 Flow)
 
@@ -83,13 +99,25 @@ The investment flow uses HTTP 402 Payment Required:
 5. Backend validates and internalizes payment
 
 ```typescript
-// Frontend: Create payment transaction
+// Frontend: Derive payment key and create transaction
+const { publicKey: derivedPublicKey } = await wallet.getPublicKey({
+  counterparty: backendIdentityKey,
+  protocolID: brc29ProtocolID,
+  keyID: `${derivationPrefix} ${derivationSuffix}`,
+  forSelf: false
+})
+
+const lockingScript = new P2PKH().lock(
+  PublicKey.fromString(derivedPublicKey).toAddress()
+).toHex()
+
 const result = await wallet.createAction({
   outputs: [{
-    lockingScript: new P2PKH().lock(derivedAddress).toHex(),
+    lockingScript,
     satoshis: investmentAmount,
     outputDescription: 'Crowdfunding investment'
   }],
+  description: 'Investment in crowdfunding',
   options: { randomizeOutputs: false }  // Required for middleware
 })
 ```
@@ -98,21 +126,28 @@ const result = await wallet.createAction({
 
 ### 3. BRC-29 Key Derivation
 
-Both parties derive a shared payment key:
+The protocol ID and derivation parameters are defined in the middleware:
+
+```typescript
+// lib/middleware.ts
+export const BRC29_PROTOCOL_ID: [number, string] = [2, '3241645161d8']
+export const DERIVATION_PREFIX = 'crowdfunding'
+```
+
+Frontend derives the payment key for the payee:
 
 ```typescript
 const brc29ProtocolID: WalletProtocol = [2, '3241645161d8']
 
-// Frontend (payer side)
-const { publicKey: derivedKey } = await wallet.getPublicKey({
+const { publicKey: derivedPublicKey } = await wallet.getPublicKey({
   counterparty: backendIdentityKey,
   protocolID: brc29ProtocolID,
   keyID: `${derivationPrefix} ${derivationSuffix}`,
-  forSelf: false  // Deriving for payee
+  forSelf: false  // Critical: deriving for payee
 })
 ```
 
-> **Reference**: [BRC-42](../../../sdk-components/brc-42/README.md)
+> **Reference**: [BRC-29](../../../sdk-components/brc-29/README.md)
 
 ### 4. Backend Wallet Setup
 
@@ -155,9 +190,10 @@ export async function getPaymentMiddleware() {
 
 ### 6. Token Distribution
 
-Create PushDrop tokens for investors:
+Create PushDrop tokens for investors (backend):
 
 ```typescript
+const tokenDescription = `Crowdfunding token for ${investor.amount} sats`
 const pushdrop = new PushDrop(wallet)
 
 // Encrypt token metadata
@@ -173,17 +209,33 @@ const lockingScript = await pushdrop.lock(
   [ciphertext],
   [0, 'token list'],
   '1',
-  investor.identityKey
+  identityKey  // investor's identity key
 )
 
-// Distribute token
-await wallet.createAction({
+// Create and distribute token
+const result = await wallet.createAction({
+  description: `Create token: ${tokenDescription}`,
   outputs: [{
     lockingScript: lockingScript.toHex(),
     satoshis: 1,
-    basket: 'crowdfunding'
+    basket: 'crowdfunding',
+    outputDescription: 'Crowdfunding token'
   }],
   options: { randomizeOutputs: false }
+})
+```
+
+Frontend internalizes the received token:
+
+```typescript
+await wallet.internalizeAction({
+  tx: data.tx,
+  outputs: [{
+    outputIndex: 0,
+    protocol: 'basket insertion',
+    insertionRemittance: { basket: 'crowdfunding' }
+  }],
+  description: 'Internalize crowdfunding token'
 })
 ```
 
@@ -197,10 +249,22 @@ const outputs = await wallet.listOutputs({
   include: 'locking scripts'
 })
 
+const tokens = []
 for (const output of outputs.outputs) {
+  if (!output.lockingScript) continue
+
   const script = LockingScript.fromHex(output.lockingScript)
   const decodedToken = PushDrop.decode(script)
-  // Display token data
+
+  const txid = output.outpoint.split('.')[0]
+  const vout = parseInt(output.outpoint.split('.')[1])
+
+  tokens.push({
+    txid,
+    vout,
+    satoshis: output.satoshis,
+    lockingScript: output.lockingScript
+  })
 }
 ```
 
@@ -326,6 +390,6 @@ These patterns form the foundation for building real-world BSV payment applicati
 - [WalletClient Integration](../../beginner/wallet-client-integration/README.md)
 - [Transaction Component](../../../sdk-components/transaction/README.md)
 - [BRC-29 Standard](../../../sdk-components/brc-29/README.md)
-- [BRC-42 Key Derivation](../../../sdk-components/brc-42/README.md)
 - [Private Keys](../../../sdk-components/private-keys/README.md)
-- [Wallet Toolbox Documentation](https://fast.brc.dev/README.md)
+- [HD Wallets](../../../sdk-components/hd-wallets/README.md)
+- [Wallet Toolbox Documentation](https://fast.brc.dev/)
