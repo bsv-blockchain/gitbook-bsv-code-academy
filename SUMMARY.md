@@ -11,9 +11,12 @@
 * [Beginner Overview](learning-paths/beginner/README.md)
   * [Getting Started](learning-paths/beginner/getting-started/README.md)
   * [Development Environment](learning-paths/beginner/development-environment/README.md)
+  * [Developer Paradigms](learning-paths/beginner/development-paradigms/README.md)
   * [BSV Fundamentals](learning-paths/beginner/bsv-fundamentals/README.md)
   * [Your First Wallet](learning-paths/beginner/first-wallet/README.md)
   * [Your First Transaction](learning-paths/beginner/first-transaction/README.md)
+  * [Wallet Client Integration](learning-paths/beginner/wallet-client-integration/README.md)
+
 
 ### Intermediate Path
 
