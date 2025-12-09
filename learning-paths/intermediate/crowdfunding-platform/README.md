@@ -38,20 +38,23 @@ By completing this project, you will learn:
 │         Frontend (Next.js/React)        │
 │  - WalletClient for user payments       │
 │  - createAction for transactions        │
+│  - internalizeAction for token claiming │
 │  - listOutputs for token viewing        │
 └─────────────────────────────────────────┘
                     ↓
 ┌─────────────────────────────────────────┐
 │         Backend (Next.js API)           │
+│  - Auth middleware (BRC-103)            │
 │  - Payment middleware (BRC-103/104)     │
 │  - Wallet Toolbox for server wallet     │
 │  - PushDrop token creation              │
+│  - JSON file state persistence          │
 └─────────────────────────────────────────┘
                     ↓
 ┌─────────────────────────────────────────┐
 │           BSV Blockchain                │
 │  - Investment transactions              │
-│  - Token distribution transactions      │
+│  - Individual token claim transactions  │
 └─────────────────────────────────────────┘
 ```
 
@@ -151,48 +154,130 @@ const { publicKey: derivedPublicKey } = await wallet.getPublicKey({
 
 ### 4. Backend Wallet Setup
 
-Server-side wallet using Wallet Toolbox:
+Server-side wallet using Wallet Toolbox (`src/wallet.ts`):
 
 ```typescript
-import { PrivateKey, KeyDeriver } from '@bsv/sdk'
-import { Wallet, WalletStorageManager, WalletSigner, Services, StorageClient } from '@bsv/wallet-toolbox'
+import { PrivateKey, KeyDeriver, WalletInterface } from '@bsv/sdk'
+import { Wallet, WalletStorageManager, WalletSigner, Services, StorageClient, Chain } from '@bsv/wallet-toolbox'
+import { config } from 'dotenv'
 
-const privateKey = PrivateKey.fromHex(process.env.PRIVATE_KEY)
+config() // Load .env file
+
+// Initialize wallet configuration
+const privateKeyHex = process.env.PRIVATE_KEY
+const storageUrl = process.env.STORAGE_URL || 'https://storage.babbage.systems'
+const network = (process.env.NETWORK || 'main') as Chain
+
+if (!privateKeyHex) {
+  throw new Error('PRIVATE_KEY not found in .env. Run: npm run setup')
+}
+
+// Initialize wallet from private key
+const privateKey = PrivateKey.fromHex(privateKeyHex)
 const keyDeriver = new KeyDeriver(privateKey)
 const storageManager = new WalletStorageManager(keyDeriver.identityKey)
-const signer = new WalletSigner('main', keyDeriver, storageManager)
-const services = new Services('main')
+const signer = new WalletSigner(network, keyDeriver, storageManager)
+const services = new Services(network)
+const walletInstance = new Wallet(signer, services)
 
-export const wallet = new Wallet(signer, services)
-
-// Connect to storage provider
-const client = new StorageClient(wallet, 'https://storage.babbage.systems')
+// Setup storage
+const client = new StorageClient(walletInstance, storageUrl)
 await client.makeAvailable()
 await storageManager.addWalletStorageProvider(client)
+
+console.log('✓ Backend wallet initialized')
+console.log(`✓ Identity: ${keyDeriver.identityKey}`)
+
+export const wallet: WalletInterface = walletInstance
 ```
 
 > **Reference**: [Private Keys](../../../sdk-components/private-keys/README.md) | [HD Wallets](../../../sdk-components/hd-wallets/README.md)
 
 ### 5. Payment Middleware
 
-Express middleware for handling 402 payments:
+Express middleware for handling 402 payments (`lib/middleware.ts`):
 
 ```typescript
 import { createPaymentMiddleware, createAuthMiddleware } from '@bsv/payment-express-middleware'
+import { wallet } from '../src/wallet'
 
+// Price calculator for payment middleware
+// Returns 1 sat minimum to trigger the payment flow
+// The actual amount validation happens after internalization
+export function calculateInvestmentPrice(req: any): number {
+  // Try to extract amount from payment header if it exists
+  const paymentHeader = req.headers['x-bsv-payment']
+  if (paymentHeader && typeof paymentHeader === 'string') {
+    try {
+      const paymentData = JSON.parse(paymentHeader)
+      if (paymentData.amount && typeof paymentData.amount === 'number') {
+        return paymentData.amount
+      }
+    } catch (e) {
+      console.error('Failed to parse payment header:', e)
+    }
+  }
+  // Return 1 sat minimum to trigger the payment flow
+  return 1
+}
+
+// Derivation parameters for BRC-29
+export const BRC29_PROTOCOL_ID: [number, string] = [2, '3241645161d8']
+export const DERIVATION_PREFIX = 'crowdfunding'
+
+// Create auth middleware instance
+export async function getAuthMiddleware() {
+  return createAuthMiddleware({
+    wallet,
+    allowUnauthenticated: true, // Allow unauthenticated - we'll get identity from payment
+    logger: console,
+    logLevel: 'info'
+  })
+}
+
+// Create payment middleware instance
 export async function getPaymentMiddleware() {
   return createPaymentMiddleware({
     wallet,
-    calculateRequestPrice: () => 1  // Minimum to trigger flow
+    calculateRequestPrice: calculateInvestmentPrice
   })
 }
 ```
 
 ### 6. Token Distribution
 
-Create PushDrop tokens for investors (backend):
+Individual token claiming flow (pages/api/complete.ts):
+
+When the crowdfunding goal is reached, each investor can claim their token individually:
+
+**Backend** (`pages/api/complete.ts`):
 
 ```typescript
+import { PushDrop, Utils } from '@bsv/sdk'
+
+// Verify goal is reached
+if (crowdfunding.raised < crowdfunding.goal) {
+  return res.status(400).json({
+    error: 'Goal not reached',
+    raised: crowdfunding.raised,
+    goal: crowdfunding.goal
+  })
+}
+
+// Find investor and check if already redeemed
+const investor = crowdfunding.investors.find(
+  (inv) => inv.identityKey === identityKey
+)
+
+if (!investor) {
+  return res.status(400).json({ error: 'Investor not found' })
+}
+
+if (investor.redeemed === true) {
+  return res.status(400).json({ error: 'Investor already redeemed' })
+}
+
+// Create PushDrop token for investor
 const tokenDescription = `Crowdfunding token for ${investor.amount} sats`
 const pushdrop = new PushDrop(wallet)
 
@@ -212,7 +297,7 @@ const lockingScript = await pushdrop.lock(
   identityKey  // investor's identity key
 )
 
-// Create and distribute token
+// Create and send token
 const result = await wallet.createAction({
   description: `Create token: ${tokenDescription}`,
   outputs: [{
@@ -223,23 +308,103 @@ const result = await wallet.createAction({
   }],
   options: { randomizeOutputs: false }
 })
+
+// Mark investor as redeemed
+investor.redeemed = true
+saveCrowdfundingData(walletIdentity.publicKey, crowdfunding)
+
+// Check if all investors have redeemed
+const allRedeemed = crowdfunding.investors.every(inv => inv.redeemed)
+if (allRedeemed) {
+  crowdfunding.isComplete = true
+  crowdfunding.completionTxid = result?.txid
+  saveCrowdfundingData(walletIdentity.publicKey, crowdfunding)
+}
 ```
 
-Frontend internalizes the received token:
+**Frontend** (`pages/index.tsx`) internalizes the received token:
 
 ```typescript
-await wallet.internalizeAction({
-  tx: data.tx,
-  outputs: [{
-    outputIndex: 0,
-    protocol: 'basket insertion',
-    insertionRemittance: { basket: 'crowdfunding' }
-  }],
-  description: 'Internalize crowdfunding token'
+const response = await fetch('/api/complete', {
+  method: 'POST',
+  body: JSON.stringify({ identityKey: investorKey, paymentKey }),
+  headers: { 'Content-Type': 'application/json' }
 })
+
+const data = await response.json()
+
+if (response.ok) {
+  await wallet.internalizeAction({
+    tx: data.tx,
+    outputs: [{
+      outputIndex: 0,
+      protocol: 'basket insertion',
+      insertionRemittance: { basket: 'crowdfunding' }
+    }],
+    description: 'Internalize crowdfunding token'
+  })
+}
 ```
 
-### 7. Token Viewing
+### 7. State Persistence
+
+Crowdfunding state is saved to a JSON file (`lib/storage.ts`):
+
+```typescript
+import { readFileSync, writeFileSync, existsSync } from 'fs'
+import { CrowdfundingState } from '../src/types'
+
+const DATA_FILE = 'crowdfunding-data.json'
+
+interface StoredData {
+  walletIdentity: string
+  crowdfunding: CrowdfundingState
+}
+
+export function loadCrowdfundingData(walletIdentity: string): CrowdfundingState {
+  if (existsSync(DATA_FILE)) {
+    try {
+      const data = readFileSync(DATA_FILE, 'utf-8')
+      const stored: StoredData = JSON.parse(data)
+
+      // Check if wallet matches
+      if (stored.walletIdentity === walletIdentity) {
+        console.log('Loaded existing crowdfunding data for current wallet')
+        return stored.crowdfunding
+      } else {
+        console.log('Wallet changed - starting fresh crowdfunding')
+      }
+    } catch (error) {
+      console.error('Error loading crowdfunding data:', error)
+    }
+  }
+
+  // Default state
+  return {
+    goal: 100,
+    raised: 0,
+    investors: [],
+    isComplete: false,
+    completionTxid: undefined
+  }
+}
+
+export function saveCrowdfundingData(walletIdentity: string, state: CrowdfundingState): void {
+  const stored: StoredData = {
+    walletIdentity,
+    crowdfunding: state
+  }
+  writeFileSync(DATA_FILE, JSON.stringify(stored, null, 2), 'utf-8')
+}
+```
+
+This ensures:
+- State survives server restarts
+- Multiple wallets can run on same system
+- Historical data is preserved
+- Completion transaction TXID is saved
+
+### 8. Token Viewing
 
 Investors view their tokens using `listOutputs`:
 
@@ -274,15 +439,50 @@ for (const output of outputs.outputs) {
 
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
-| `/api/wallet-info` | GET | Backend wallet identity |
-| `/api/invest` | POST | Submit investment (402 flow) |
-| `/api/status` | GET | Campaign status |
-| `/api/complete` | POST | Distribute tokens |
-| `/api/my-tokens` | GET | User's tokens |
+| `/api/wallet-info` | GET | Backend wallet identity key |
+| `/api/invest` | POST | Submit investment (402 payment flow) |
+| `/api/status` | GET | Campaign progress and investor list |
+| `/api/complete` | POST | Claim individual investor token |
 
 ---
 
 ## Important Concepts
+
+### TypeScript Types
+
+The application uses well-defined TypeScript types (`src/types.ts`):
+
+```typescript
+export interface Investor {
+  identityKey: string
+  amount: number
+  timestamp: number
+  redeemed?: boolean  // Tracks if investor has claimed their token
+}
+
+export interface CrowdfundingState {
+  goal: number
+  raised: number
+  investors: Investor[]
+  isComplete: boolean
+  completionTxid?: string
+}
+```
+
+### Individual Token Claiming
+
+Unlike batch distributions, this implementation uses an **individual claiming pattern**:
+
+1. Investors make investments via the 402 payment flow
+2. When goal is reached, each investor can claim their token
+3. Backend creates one token per claim request
+4. Each investor is marked as `redeemed` after claiming
+5. Campaign is marked complete when all investors have redeemed
+
+This approach:
+- Reduces backend transaction fees (spread across investors)
+- Gives investors control over when they claim
+- Prevents a single large transaction failure from blocking all tokens
 
 ### randomizeOutputs: false
 
@@ -304,9 +504,10 @@ PushDrop tokens use **P2PK** (Pay-to-Public-Key), not P2PKH:
 
 ### Transaction Internalization
 
-When the backend receives a payment, it internalizes the transaction to track the UTXO:
+When the backend receives a payment, it internalizes the transaction to track the UTXO. The payment middleware handles this automatically:
 
 ```typescript
+// Payment middleware automatically internalizes with these parameters
 await wallet.internalizeAction({
   tx: atomicBEEF,
   outputs: [{
@@ -331,16 +532,19 @@ crowdfunding-project/
 │   ├── index.tsx           # Main UI
 │   ├── tokens.tsx          # Token viewer
 │   └── api/
-│       ├── invest.ts       # Payment endpoint
-│       ├── complete.ts     # Token distribution
-│       └── my-tokens.ts    # Token discovery
+│       ├── invest.ts       # Investment endpoint with payment middleware
+│       ├── complete.ts     # Individual token claiming
+│       ├── status.ts       # Campaign status
+│       └── wallet-info.ts  # Backend wallet identity
 ├── src/
-│   ├── wallet.ts           # Backend wallet
-│   └── pushdrop.ts         # Token creation
+│   ├── wallet.ts           # Backend wallet initialization
+│   ├── setupWallet.ts      # Setup script for backend wallet
+│   └── types.ts            # TypeScript type definitions
 ├── lib/
 │   ├── wallet.ts           # Frontend wallet hook
-│   ├── middleware.ts       # Payment middleware
-│   └── storage.ts          # State persistence
+│   ├── middleware.ts       # Auth & payment middleware
+│   ├── crowdfunding.ts     # Crowdfunding state management
+│   └── storage.ts          # JSON file persistence
 └── .env                    # Configuration
 ```
 
@@ -355,17 +559,27 @@ crowdfunding-project/
    npm install
    ```
 
-2. **Configure environment**
-   ```env
-   PRIVATE_KEY=<your-private-key-hex>
-   STORAGE_URL=https://storage.babbage.systems
-   NETWORK=main
+2. **Setup Backend Wallet**
+
+   This creates a backend wallet and funds it with 10,000 satoshis from your local wallet:
+
+   ```bash
+   npm run setup
    ```
 
-3. **Run the application**
+   **What this does:**
+   - Creates a new private key (or uses existing from `.env`)
+   - Initializes a backend wallet using BSV Wallet Toolbox
+   - Connects to your BSV Desktop Wallet
+   - Sends 10,000 satoshis to the backend wallet via BRC-29 payment
+   - Saves wallet configuration to `.env`
+
+3. **Start the application**
    ```bash
    npm run dev
    ```
+
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 4. **Connect BSV Desktop Wallet** and start investing
 
@@ -375,13 +589,15 @@ crowdfunding-project/
 
 This project demonstrates:
 
-- **402 Payment Protocol** - HTTP-based micropayments
-- **BRC-29 Key Derivation** - Secure payment addressing
-- **WalletClient** - Frontend wallet integration
-- **Wallet Toolbox** - Server-side wallet management
-- **PushDrop Tokens** - Token creation and distribution
+- **402 Payment Protocol (BRC-103/104)** - HTTP-based micropayments with auth and payment middleware
+- **BRC-29 Key Derivation** - Secure payment addressing with protocol ID `[2, '3241645161d8']`
+- **WalletClient** - Frontend wallet integration with `createAction` and `internalizeAction`
+- **Wallet Toolbox** - Server-side wallet management with storage providers
+- **PushDrop Tokens** - Individual token claiming pattern for investors
+- **State Persistence** - JSON file storage keyed by wallet identity
+- **Individual Token Claiming** - Distributed fee model where investors claim tokens individually
 
-These patterns form the foundation for building real-world BSV payment applications.
+These patterns form the foundation for building real-world BSV payment applications with proper state management and token distribution.
 
 ---
 
