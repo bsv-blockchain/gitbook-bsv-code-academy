@@ -24,9 +24,11 @@ This file provides the official duration estimates for all courses in the BSV Co
 
 | # | Project | Duration | Description |
 |---|---------|----------|-------------|
-| 1 | Crowdfunding Platform | 4-6 hours | Full-stack app with escrow, payouts |
+| 1 | Desktop Wallet Management | 2-3 hours | Wallet data integration, key derivation, baskets |
+| 2 | Crowdfunding Platform | 4-6 hours | Full-stack app with escrow, payouts |
 
-**Intermediate Path Total: 4-6 hours**
+
+**Intermediate Path Total: 6-9 hours**
 
 ---
 
@@ -35,8 +37,8 @@ This file provides the official duration estimates for all courses in the BSV Co
 | Path | Duration | Courses/Projects |
 |------|----------|------------------|
 | Beginner | ~5 hours | 7 courses |
-| Intermediate | 4-6 hours | 1 project |
-| **Total** | **~9-11 hours** | 8 total |
+| Intermediate | 6-9 hours | 2 projects |
+| **Total** | **~11-14 hours** | 9 total |
 
 ---
 
@@ -52,8 +54,8 @@ This file provides the official duration estimates for all courses in the BSV Co
 
 ### Comprehensive Mastery
 - **Week 1**: Beginner courses (~5 hours)
-- **Week 2**: Intermediate project (4-6 hours)
-- **Total**: ~9-11 hours
+- **Week 2**: Intermediate projects (6-9 hours)
+- **Total**: ~11-14 hours
 
 ---
 

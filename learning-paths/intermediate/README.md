@@ -14,12 +14,13 @@ The intermediate path is **project-based**. Instead of learning concepts in isol
 
 ## What You'll Build
 
-By completing this path, you will build one production-ready application:
+By completing this path, you will build two production-ready applications:
 
 <!-- 0. **Payment Systems** - Complete payment infrastructure with invoicing, subscriptions, and refunds -->
-1. **Crowdfunding Platform** - Token-based campaign funding with escrow and automated payouts
-<!-- 2. **Asset Tokenization System** - Real-world asset representation with compliance workflows -->
-<!-- 3. **Supply Chain Digital Passports** - Product lifecycle tracking with multi-party verification -->
+1. **Desktop Wallet Management** - Comprehensive wallet data integration with identity keys, key derivation, and basket management
+2. **Crowdfunding Platform** - Token-based campaign funding with escrow and automated payouts
+<!-- 3. **Asset Tokenization System** - Real-world asset representation with compliance workflows -->
+<!-- 4. **Supply Chain Digital Passports** - Product lifecycle tracking with multi-party verification -->
 
 ## Prerequisites
 
@@ -31,6 +32,41 @@ Before starting this path, you should have completed the [Beginner Learning Path
 - Using WalletClient for frontend wallet integration
 
 ## Core Projects
+
+### Project 1: [Desktop Wallet Management](desktop-wallet-management/README.md)
+**Duration**: 2-3 hours | **Difficulty**: Intermediate
+
+Build a comprehensive wallet information dashboard that connects to the BSV Desktop Wallet to retrieve and display wallet data.
+
+**What You'll Build**:
+- Wallet connection and authentication flow
+- Identity key retrieval and display
+- Public key derivation (Identity, Payment, Data)
+- Address generation from public keys
+- Custom key derivation with different protocols
+- Network status detection (mainnet/testnet)
+- Balance checking for multiple addresses
+- Basket management and output listing
+- Wallet capabilities discovery
+
+**Key Features**:
+- WalletClient integration for frontend wallet communication
+- Multiple key type derivation (Identity, Payment, Data)
+- Protocol-based key derivation (BRC-42)
+- Address generation and balance queries
+- Basket organization for wallet outputs
+- Real-time network detection
+- Comprehensive capability discovery (encryption, signing, certificates, HMAC, etc.)
+
+**SDK Components Used**:
+- WalletClient for wallet integration
+- PublicKey for key management and address generation
+- Key derivation protocols (BRC-42)
+- Balance and UTXO queries
+
+**Why Start Here**: Understanding wallet integration and key management is fundamental to building user-facing blockchain applications. This project teaches core patterns for working with user-controlled wallets that you'll use in all frontend blockchain applications.
+
+---
 
 <!-- ### Project 0: [Payment Systems](payment-systems/README.md)
 **Duration**: 4-6 hours | **Difficulty**: Intermediate
@@ -63,7 +99,7 @@ Build a complete payment processing infrastructure supporting various payment sc
 
 --- -->
 
-### Project 1: [Crowdfunding Platform](crowdfunding-platform/README.md)
+### Project 2: [Crowdfunding Platform](crowdfunding-platform/README.md)
 **Duration**: 4-6 hours | **Difficulty**: Intermediate
 
 Build a complete token-based crowdfunding platform with escrow mechanisms and automated payouts.
@@ -219,20 +255,30 @@ The SDK provides **ready-to-use, pre-configured components** that let you focus 
 ## Learning Path Completion
 
 After completing this path, you will have:
-- ✅ Built a production-ready, deployable BSV application
+- ✅ Built two production-ready, deployable BSV applications
 <!-- - ✅ Implemented complete payment infrastructure (one-time, subscriptions, invoices, refunds) -->
+- ✅ Mastered WalletClient integration for user-controlled wallets
+- ✅ Implemented key derivation, address generation, and basket management
 - ✅ Implemented both backend (custodial) and frontend (user-wallet) architectures
 - ✅ Mastered the BSV SDK's pre-built components and patterns
 - ✅ Created token systems, escrow mechanisms, and multi-party workflows
 - ✅ Integrated WalletClient for frontend wallet communication
 <!-- - ✅ Implemented SPV verification for lightweight clients -->
 <!-- - ✅ Applied BRC standards for interoperability -->
-- ✅ Developed a real-world blockchain solution you can adapt for your own projects
+- ✅ Developed real-world blockchain solutions you can adapt for your own projects
 
 
 ## Real-World Applications
 
-The project in this path directly prepares you to build:
+The projects in this path directly prepare you to build:
+
+**From Desktop Wallet Management:**
+- Wallet information dashboards
+- Multi-key management applications
+- Developer tools and debugging interfaces
+- Portfolio management systems
+- Identity verification applications
+- Basket-based output organization tools
 
 <!-- **From Payment Systems:**
 - E-commerce payment processing
@@ -272,7 +318,8 @@ The project in this path directly prepares you to build:
 
 ## Estimated Time
 
-**Core Project**: 4-6 hours total
+**Core Projects**: 6-9 hours total
+- Desktop Wallet Management: 2-3 hours
 <!-- - Payment Systems: 4-6 hours -->
 - Crowdfunding Platform: 4-6 hours
 <!-- - Asset Tokenization System: 4-6 hours -->
@@ -285,7 +332,7 @@ The project in this path directly prepares you to build:
 - SPV Verification: 3-4 hours
 - BRC Standards: 1.5-2 hours -->
 
-**Total Path Duration**: 4-6 hours depending on depth and customization
+**Total Path Duration**: 6-9 hours depending on depth and customization
 
 This is a hands-on learning path - you'll spend most of your time writing and deploying real code, not just reading documentation.
 
@@ -300,9 +347,10 @@ This is a hands-on learning path - you'll spend most of your time writing and de
 5. **Customize and deploy** your own version with unique features
 6. **Move to the next project** and repeat the process -->
 
-1. **Start with Crowdfunding Platform** - Learn token systems, escrow mechanisms, and automated payouts
-2. **Build both implementations** (backend and frontend) for the project
-3. **Customize and deploy** your own version with unique features
+1. **Start with Desktop Wallet Management** - Learn WalletClient integration, key derivation, and wallet data management
+2. **Move to Crowdfunding Platform** - Build on your wallet knowledge to create token systems, escrow mechanisms, and automated payouts
+3. **Build both implementations** (backend and frontend) for each project
+4. **Customize and deploy** your own versions with unique features
 
-Ready to build production BSV applications? Start with [**Crowdfunding Platform**](crowdfunding-platform/README.md)!
+Ready to build production BSV applications? Start with [**Desktop Wallet Management**](desktop-wallet-management/README.md) to master wallet integration, then move to [**Crowdfunding Platform**](crowdfunding-platform/README.md) to build complete applications!
 <!-- to learn the fundamentals, then move to [**Crowdfunding Platform**](crowdfunding-platform/README.md), [**Asset Tokenization**](asset-tokenization/README.md), or [**Supply Chain Passports**](supply-chain-passports/README.md)! -->
