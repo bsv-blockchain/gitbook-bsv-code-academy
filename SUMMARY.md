@@ -21,6 +21,7 @@
 ### Intermediate Path
 
 * [Intermediate Overview](learning-paths/intermediate/README.md)
+  * [Desktop Wallet Management](learning-paths/intermediate/desktop-wallet-management/README.md)
   * [Crowdfunding Platform](learning-paths/intermediate/crowdfunding-platform/README.md)
 
 ## SDK Components Reference
