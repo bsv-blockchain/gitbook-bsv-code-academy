@@ -11,12 +11,28 @@ This module teaches you how to integrate MetaNet Desktop Wallet into your dApp u
 ## What is WalletClient?
 
 `WalletClient` is a pre-built SDK component that:
-- ✅ Connects your dApp to MetaNet Desktop Wallet (BSV Desktop)
+- ✅ Connects your dApp to **BSV Desktop** (MetaNet Desktop Wallet)
 - ✅ Requests user signatures for transactions
 - ✅ Handles all wallet communication via BRC protocol
 - ✅ Manages UTXO selection (wallet handles)
 - ✅ Calculates fees automatically (wallet handles)
 - ✅ Broadcasts transactions (wallet handles)
+
+## What is BSV Desktop?
+
+**BSV Desktop** is the modern, standard wallet for BSV blockchain development. It provides:
+
+- 🔐 Secure key management with phone-based recovery
+- 🔄 Multi-network support (mainnet/testnet switching)
+- 🎁 Welcome gift: 99,991 Satoshis to start exploring
+- 🔗 Seamless app integration for blockchain applications
+- 📱 Identity Key management for dApp authentication
+- 💧 Built-in testnet faucet for developers
+
+**Download BSV Desktop:** https://desktop.bsvb.tech/
+
+**Complete Onboarding Guide:**
+https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/metanet-desktop-mainnet
 
 **You don't need to**:
 - ❌ Manage private keys
@@ -33,9 +49,16 @@ This module teaches you how to integrate MetaNet Desktop Wallet into your dApp u
 
 Before starting:
 - ✅ Completed [Development Environment Setup](../development-environment/)
-- ✅ MetaNet Desktop Wallet installed and set up
+- ✅ **BSV Desktop installed and set up**
+  - Download from: https://desktop.bsvb.tech/
+  - Complete setup wizard
+  - Switch to testnet mode for development
+  - Get free testnet BSV from built-in faucet
 - ✅ Basic understanding of React or your frontend framework
-- ✅ Testnet BSV in your wallet (from faucet)
+- ✅ Node.js and npm installed
+
+**First time using BSV Desktop?**
+Follow the complete guide: https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/metanet-desktop-mainnet
 
 ---
 
@@ -820,22 +843,46 @@ async function requestPayment(wallet: WalletClient, recipient: string, amount: n
 function WalletNotFound() {
   return (
     <div className="wallet-not-found">
-      <h3>MetaNet Desktop Wallet Required</h3>
-      <p>This dApp requires MetaNet Desktop Wallet to function.</p>
+      <h3>BSV Desktop Required</h3>
+      <p>This dApp requires BSV Desktop (MetaNet Desktop Wallet) to function.</p>
+
+      <div className="wallet-info">
+        <h4>What is BSV Desktop?</h4>
+        <p>BSV Desktop is a modern wallet designed to make your experience with BSV Blockchain simple, secure, and powerful. It features:</p>
+        <ul>
+          <li>🔐 Secure key management with advanced security</li>
+          <li>🔄 Multi-network support (mainnet/testnet)</li>
+          <li>🎁 Welcome gift: 99,991 Satoshis</li>
+          <li>🔗 Seamless dApp integration</li>
+          <li>💧 Built-in testnet faucet for developers</li>
+        </ul>
+      </div>
 
       <div className="instructions">
         <h4>Installation Steps:</h4>
         <ol>
           <li>Visit <a href="https://desktop.bsvb.tech" target="_blank" rel="noreferrer">desktop.bsvb.tech</a></li>
-          <li>Download MetaNet Desktop Wallet</li>
-          <li>Install and set up your wallet</li>
+          <li>Download BSV Desktop for your operating system</li>
+          <li>Run the installer and follow the setup wizard</li>
+          <li>Create a new wallet or import existing one</li>
+          <li>For development: Switch to testnet mode (Settings → Network)</li>
+          <li>Get free testnet BSV using the built-in faucet</li>
           <li>Return to this page and click "Connect Wallet"</li>
         </ol>
       </div>
 
-      <div className="testnet-info">
-        <h4>Get Testnet BSV:</h4>
-        <p>Get testnet coins from MetaNet Desktop Wallet's faucet or <a href="https://discord.gg/bsv" target="_blank" rel="noreferrer">BSV Discord</a></p>
+      <div className="help-links">
+        <h4>Need Help?</h4>
+        <p>
+          <a href="https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/metanet-desktop-mainnet" target="_blank" rel="noreferrer">
+            📖 Complete Onboarding Guide
+          </a>
+        </p>
+        <p>
+          <a href="https://discord.gg/bsv" target="_blank" rel="noreferrer">
+            💬 BSV Discord Community
+          </a>
+        </p>
       </div>
     </div>
   )

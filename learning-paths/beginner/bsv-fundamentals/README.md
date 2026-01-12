@@ -123,11 +123,15 @@ import { PrivateKey } from '@bsv/sdk'
 
 // Generate random private key
 const privateKey = PrivateKey.fromRandom()
+console.log('Generated Private Key (WIF):', privateKey.toWif())
+console.log('Private Key (Hex):', privateKey.toHex())
 
 // From WIF (Wallet Import Format)
-const privateKey2 = PrivateKey.fromWif('L1234...')
+const privateKey2 = PrivateKey.fromWif('L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1')
+console.log('Loaded private key from WIF')
 
 // Never share your private key!
+// Run this example: npx ts-node privatekey-example.ts
 ```
 
 #### Public Key
@@ -137,10 +141,18 @@ const privateKey2 = PrivateKey.fromWif('L1234...')
 - 33 bytes (compressed) or 65 bytes (uncompressed)
 
 ```typescript
+import { PrivateKey } from '@bsv/sdk'
+
+// Generate a private key
+const privateKey = PrivateKey.fromRandom()
+
 // Derive public key from private key
 const publicKey = privateKey.toPublicKey()
 
-console.log(publicKey.toString()) // 02a1b2c3...
+console.log('Public Key (Hex):', publicKey.toString())
+console.log('Public Key (DER):', publicKey.toDER())
+
+// Run this example: npx ts-node publickey-example.ts
 ```
 
 #### Key Properties
@@ -168,11 +180,25 @@ Address
 
 #### Creating Addresses
 ```typescript
+import { PrivateKey } from '@bsv/sdk'
+
+// Complete address generation example
 const privateKey = PrivateKey.fromRandom()
 const publicKey = privateKey.toPublicKey()
 const address = publicKey.toAddress()
 
-console.log(address) // 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+console.log('Private Key (WIF):', privateKey.toWif())
+console.log('Public Key:', publicKey.toString())
+console.log('Address:', address) // 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+
+// Generate multiple addresses from different keys
+for (let i = 0; i < 3; i++) {
+  const key = PrivateKey.fromRandom()
+  const addr = key.toPublicKey().toAddress()
+  console.log(`Address ${i + 1}:`, addr)
+}
+
+// Run this example: npx ts-node address-example.ts
 ```
 
 #### Address Formats
@@ -215,6 +241,14 @@ function bsvToSatoshis(bsv: number): number {
 function satoshisToBsv(sats: number): number {
   return sats / 100000000
 }
+
+// Test the conversion functions
+console.log('1 BSV =', bsvToSatoshis(1), 'satoshis')
+console.log('0.001 BSV =', bsvToSatoshis(0.001), 'satoshis')
+console.log('50000 satoshis =', satoshisToBsv(50000), 'BSV')
+console.log('100000000 satoshis =', satoshisToBsv(100000000), 'BSV')
+
+// Run this example: npx ts-node satoshis-example.ts
 ```
 
 #### Why Satoshis?
@@ -366,7 +400,7 @@ Your Transaction
 The example below demonstrates how SPV verification enables you to cryptographically prove that a transaction is included in a block without downloading the entire block. You only need the block header and a Merkle proof.
 
 ```typescript
-import { MerkleProof } from '@bsv/sdk'
+import { MerkleProof, BlockHeader } from '@bsv/sdk'
 
 // Verify a transaction is in a block using its merkle proof
 // merkleProof: cryptographic proof from SPV server showing tx is in block
@@ -383,6 +417,26 @@ function verifyTxInBlock(
   // If they match, the transaction is proven to be in the block
   return calculatedRoot === blockHeader.merkleRoot
 }
+
+// Example usage:
+// In practice, you would get the merkle proof from an SPV server
+// and the block header from a blockchain API
+async function demonstrateSPV() {
+  // This is conceptual - in practice you'd fetch these from services
+  const txid = 'your-transaction-id'
+  // const merkleProof = await spvServer.getMerkleProof(txid)
+  // const blockHeader = await blockchainAPI.getBlockHeader(blockHeight)
+
+  // const isValid = verifyTxInBlock(txid, merkleProof, blockHeader)
+  // console.log('Transaction is in block:', isValid)
+
+  console.log('SPV allows lightweight clients to verify transactions')
+  console.log('without downloading the entire blockchain!')
+}
+
+demonstrateSPV()
+
+// Run this example: npx ts-node spv-example.ts
 ```
 
 ## Putting It All Together
