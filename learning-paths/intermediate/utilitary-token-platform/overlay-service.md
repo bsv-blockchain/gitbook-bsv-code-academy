@@ -18,6 +18,22 @@ A production-ready overlay service featuring:
 
 ---
 
+## 📦 Complete Code Example
+
+The full working implementation of this overlay service is available on GitHub:
+
+**Repository**: [github.com/sirdeggen/demo-day/tree/main/tokenization/overlay](https://github.com/sirdeggen/demo-day/tree/main/tokenization/overlay)
+
+This repository contains the complete overlay service implementation with Topic Manager, Lookup Service, and MongoDB integration. You can clone and run it alongside this tutorial.
+
+```bash
+git clone https://github.com/sirdeggen/demo-day.git
+cd demo-day/tokenization/overlay
+npm install
+```
+
+---
+
 ## Learning Objectives
 
 By completing this project, you will learn:

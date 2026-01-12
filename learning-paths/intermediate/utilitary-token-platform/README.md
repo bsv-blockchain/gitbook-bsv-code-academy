@@ -18,6 +18,25 @@ A production-ready token platform featuring:
 
 ---
 
+## 📦 Complete Code Example
+
+The full working implementation of this token platform is available on GitHub:
+
+**Repository**: [github.com/sirdeggen/demo-day/tree/main/tokenization](https://github.com/sirdeggen/demo-day/tree/main/tokenization)
+
+This repository contains:
+- **`/frontend`** - Complete React application for token management
+- **`/overlay`** - Full overlay service with Topic Manager and Lookup Service
+
+You can clone the repository to explore the complete, production-ready implementation alongside the tutorials below.
+
+```bash
+git clone https://github.com/sirdeggen/demo-day.git
+cd demo-day/tokenization
+```
+
+---
+
 ## Learning Objectives
 
 By completing this project, you will learn:

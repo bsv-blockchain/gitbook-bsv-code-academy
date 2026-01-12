@@ -18,6 +18,19 @@ Build a token validation overlay using BSV SDK's overlay architecture, Topic Man
 
 ---
 
+## 📦 Complete Code Example
+
+The full working implementation of this overlay service is available on GitHub:
+
+**Repository**: [github.com/sirdeggen/demo-day/tree/main/tokenization](https://github.com/sirdeggen/demo-day/tree/main/tokenization)
+
+- **Overlay Service Code**: `/overlay` folder
+- **Frontend Code**: `/frontend` folder
+
+You can clone the repository and explore the complete implementation alongside this tutorial.
+
+---
+
 ## Setup
 
 ```bash

@@ -18,6 +18,22 @@ A production-ready token management interface featuring:
 
 ---
 
+## 📦 Complete Code Example
+
+The full working implementation of this token frontend is available on GitHub:
+
+**Repository**: [github.com/sirdeggen/demo-day/tree/main/tokenization/frontend](https://github.com/sirdeggen/demo-day/tree/main/tokenization/frontend)
+
+This repository contains the complete React application with token minting, transfers, MessageBox integration, and overlay validation. You can clone and run it alongside this tutorial.
+
+```bash
+git clone https://github.com/sirdeggen/demo-day.git
+cd demo-day/tokenization/frontend
+npm install
+```
+
+---
+
 ## Learning Objectives
 
 By completing this project, you will learn:
