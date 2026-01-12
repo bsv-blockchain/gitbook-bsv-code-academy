@@ -21,8 +21,11 @@
 ### Intermediate Path
 
 * [Intermediate Overview](learning-paths/intermediate/README.md)
+  * [Token Fundamentals](learning-paths/intermediate/token-fundamentals/README.md)
+  * [Overlay Services](learning-paths/intermediate/overlay-services/README.md)
   * [Desktop Wallet Management](learning-paths/intermediate/desktop-wallet-management/README.md)
   * [Crowdfunding Platform](learning-paths/intermediate/crowdfunding-platform/README.md)
+  * [Utilitary Token Platform](learning-paths/intermediate/utilitary-token-platform/README.md)
 
 ## SDK Components Reference
 
