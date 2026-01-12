@@ -81,8 +81,14 @@ async function sendPayment(
   recipientAddress: string,
   amountSatoshis: number
 ): Promise<string> {
+  console.log('=== Creating Payment Transaction ===')
+  console.log('Recipient:', recipientAddress)
+  console.log('Amount:', amountSatoshis, 'satoshis')
+
   // Initialize your private key
   const privateKey = PrivateKey.fromWif(privateKeyWif)
+  const myAddress = privateKey.toPublicKey().toAddress()
+  console.log('Sending from:', myAddress)
 
   // Create a transaction
   const tx = new Transaction()
@@ -101,22 +107,34 @@ async function sendPayment(
     lockingScript: new P2PKH().lock(recipientAddress)
   })
 
-  // SDK automatically:
-  // - Calculates required fee based on transaction size
-  // - Creates change output back to your address
-  // - Handles dust limits
+  console.log('\n⚙️  SDK automatically handles:')
+  console.log('   - Fee calculation based on transaction size')
+  console.log('   - Change output back to your address')
+  console.log('   - Dust limit validation')
 
   // Calculate fees and change amounts
   await tx.fee()
+  console.log('\n✅ Fees calculated')
 
   // Sign the transaction
   await tx.sign()
+  console.log('✅ Transaction signed')
 
   // Broadcast using SDK method
   const result = await tx.broadcast()
+  console.log('✅ Transaction broadcast!')
+  console.log('TXID:', result.txid)
+  console.log('\n🔗 View on explorer:')
+  console.log('   https://test.whatsonchain.com/tx/' + result.txid)
 
   return result.txid
 }
+
+// Run this example: npx ts-node send-payment.ts
+//
+// ⚠️  Note: You need testnet BSV first!
+// Get it from BSV Desktop: https://desktop.bsvb.tech/
+// Or request from BSV Discord: https://discord.gg/bsv
 ```
 
 ### What You Write vs What Happens
@@ -214,21 +232,47 @@ async function createAndSendPayment(
   }
 }
 
-// Usage
-try {
-  const result = await createAndSendPayment({
-    privateKeyWif: 'your-testnet-private-key-wif',
-    recipientAddress: '1RecipientAddressGoesHere...',
-    amountSatoshis: 10000  // 0.0001 BSV
-  })
+// Usage Example
+async function main() {
+  try {
+    // ⚠️  Replace with your testnet private key!
+    // Generate one with: npx ts-node -e "import {PrivateKey} from '@bsv/sdk'; console.log(PrivateKey.fromRandom().toWif())"
+    const myPrivateKey = 'YOUR-TESTNET-PRIVATE-KEY-WIF-HERE'
 
-  console.log('Success!')
-  console.log('Transaction ID:', result.txid)
-  console.log('Fee paid:', result.fee, 'satoshis')
-  console.log('View on explorer:', `https://test.whatsonchain.com/tx/${result.txid}`)
-} catch (error) {
-  console.error('Transaction failed:', error.message)
+    // ⚠️  Replace with recipient address
+    const recipient = '1RecipientAddressGoesHere...'
+
+    console.log('💡 Before running: Fund your address with testnet BSV')
+    console.log('   1. Get BSV Desktop: https://desktop.bsvb.tech/')
+    console.log('   2. Switch to testnet mode')
+    console.log('   3. Use the built-in faucet to get free testnet BSV')
+    console.log('   4. Your address:', PrivateKey.fromWif(myPrivateKey).toPublicKey().toAddress())
+    console.log('\n Press Ctrl+C to exit if you need to fund your address first\n')
+
+    const result = await createAndSendPayment({
+      privateKeyWif: myPrivateKey,
+      recipientAddress: recipient,
+      amountSatoshis: 10000  // 0.0001 BSV
+    })
+
+    console.log('\n🎉 Success!')
+    console.log('Transaction ID:', result.txid)
+    console.log('Fee paid:', result.fee, 'satoshis')
+    console.log('\n🔗 View on testnet explorer:')
+    console.log(`   https://test.whatsonchain.com/tx/${result.txid}`)
+
+  } catch (error: any) {
+    console.error('\n❌ Transaction failed:', error.message)
+    console.log('\n💡 Common issues:')
+    console.log('   - No testnet BSV? Get from BSV Desktop faucet')
+    console.log('   - Invalid address? Check recipient address format')
+    console.log('   - Insufficient funds? Need more than amount + fees (~500 sats)')
+  }
 }
+
+main()
+
+// Run this complete example: npx ts-node complete-transaction.ts
 ```
 
 ### Backend: Multiple Recipients
@@ -270,14 +314,32 @@ async function sendToMultipleRecipients(
 }
 
 // Usage: send to 3 recipients in one transaction
-const txid = await sendToMultipleRecipients(
-  privateKeyWif,
-  [
-    { address: 'recipient1...', amount: 5000 },
-    { address: 'recipient2...', amount: 10000 },
-    { address: 'recipient3...', amount: 15000 }
-  ]
-)
+async function runBatchPayment() {
+  console.log('=== Batch Payment Example ===')
+  console.log('Sending to 3 recipients in a single transaction\n')
+
+  try {
+    const txid = await sendToMultipleRecipients(
+      privateKeyWif,
+      [
+        { address: 'recipient1...', amount: 5000 },
+        { address: 'recipient2...', amount: 10000 },
+        { address: 'recipient3...', amount: 15000 }
+      ]
+    )
+
+    console.log('\n✅ Batch payment successful!')
+    console.log('TXID:', txid)
+    console.log('Total sent: 30,000 satoshis to 3 recipients')
+    console.log('\nView: https://test.whatsonchain.com/tx/' + txid)
+  } catch (error: any) {
+    console.error('❌ Batch payment failed:', error.message)
+  }
+}
+
+runBatchPayment()
+
+// Run this: npx ts-node batch-payment.ts
 ```
 
 ## Frontend Approach: WalletClient

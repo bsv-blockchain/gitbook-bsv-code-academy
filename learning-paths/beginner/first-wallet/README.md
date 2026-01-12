@@ -107,35 +107,88 @@ import { PrivateKey } from '@bsv/sdk'
 const privateKey = PrivateKey.fromRandom()
 
 // Export in different formats
+console.log('=== Private Key Generation ===')
 console.log('Private Key (WIF):', privateKey.toWif())
 console.log('Private Key (Hex):', privateKey.toHex())
+console.log('\n⚠️ Never share your private key!')
+console.log('⚠️ This example is for learning purposes only')
+
+// Save this code to a file and run it:
+// npx ts-node generate-key.ts
 ```
 
 **Output Example**:
 ```
+=== Private Key Generation ===
 Private Key (WIF): L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1
 Private Key (Hex): e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+
+⚠️ Never share your private key!
+⚠️ This example is for learning purposes only
 ```
 
 **Security Note**: Never log private keys in production. This is for educational purposes only.
 
+**To run this example:**
+```bash
+# Create the file
+echo 'import { PrivateKey } from "@bsv/sdk"
+const privateKey = PrivateKey.fromRandom()
+console.log("Private Key (WIF):", privateKey.toWif())
+console.log("Address:", privateKey.toPublicKey().toAddress())' > generate-key.ts
+
+# Run it
+npx ts-node generate-key.ts
+```
+
 ### Step 2: Derive Public Key and Address
 
 ```typescript
+import { PrivateKey } from '@bsv/sdk'
+
+// Generate or load a private key
+const privateKey = PrivateKey.fromRandom()
+
 // Derive public key from private key (using elliptic curve cryptography)
 const publicKey = privateKey.toPublicKey()
 
 // Generate Bitcoin address from public key
 const address = publicKey.toAddress()
 
+console.log('=== Key Derivation ===')
+console.log('Private Key (WIF):', privateKey.toWif())
 console.log('Public Key (Hex):', publicKey.toString())
 console.log('Address:', address)
+console.log('\n✅ You can share the address to receive payments!')
+console.log('💡 Fund this address with testnet BSV from BSV Desktop')
+console.log('   Download: https://desktop.bsvb.tech/')
+
+// Run this example: npx ts-node derive-address.ts
 ```
 
 **Key Concepts**:
 - **Private Key**: Secret number (256 bits). Must be kept secure.
 - **Public Key**: Derived from private key via ECDSA. Can be shared publicly.
 - **Address**: Hash of public key. Used for receiving payments.
+
+**To run this example:**
+```bash
+# Create and run the complete example
+cat > derive-address.ts << 'EOF'
+import { PrivateKey } from '@bsv/sdk'
+
+const privateKey = PrivateKey.fromRandom()
+const publicKey = privateKey.toPublicKey()
+const address = publicKey.toAddress()
+
+console.log('Private Key (WIF):', privateKey.toWif())
+console.log('Public Key:', publicKey.toString())
+console.log('Address:', address)
+console.log('\nFund at: https://desktop.bsvb.tech/')
+EOF
+
+npx ts-node derive-address.ts
+```
 
 ### Step 3: Create a Basic Wallet Class
 
@@ -187,16 +240,27 @@ class SimpleWallet {
   }
 }
 
-// Usage
+// Usage Example
 const wallet = new SimpleWallet()
+console.log('=== Simple Wallet Created ===')
 console.log('Wallet Address:', wallet.address)
+console.log('Public Key:', wallet.publicKey)
 
 // Backup (encrypt this in production!)
 const backupWIF = wallet.exportPrivateKey()
+console.log('\n=== Backup (Keep Secure!) ===')
+console.log('Private Key (WIF):', backupWIF)
 
 // Restore from backup
 const restoredWallet = SimpleWallet.fromWIF(backupWIF)
+console.log('\n=== Wallet Restored ===')
 console.log('Restored Address:', restoredWallet.address)
+console.log('✅ Addresses match:', wallet.address === restoredWallet.address)
+
+console.log('\n💡 Fund this address with testnet BSV from BSV Desktop')
+console.log('   Download: https://desktop.bsvb.tech/')
+
+// Run this example: npx ts-node simple-wallet.ts
 ```
 
 ## Creating an HD Wallet with BRC-42
@@ -384,21 +448,43 @@ class HDWallet {
 // Example Usage
 const wallet = new HDWallet()
 
+console.log('=== HD Wallet Created ===')
+console.log('Protocol ID:', wallet.getInfo().protocolID)
+console.log('First Address:', wallet.getInfo().firstAddress)
+
 // Generate receiving addresses
+console.log('\n=== Generated Addresses ===')
 const addresses = wallet.generateAddresses(5)
-console.log('Generated Addresses:', addresses)
+addresses.forEach((addr, idx) => {
+  console.log(`Address ${idx}:`, addr)
+})
 
 // Derive specialized keys
+console.log('\n=== Specialized Keys ===')
 const signingKey = wallet.deriveSigningKey('document-signing')
+console.log('Signing Key Address:', signingKey.toPublicKey().toAddress())
+
 const encryptionKey = wallet.deriveEncryptionKey('message-encryption')
+console.log('Encryption Key Address:', encryptionKey.toPublicKey().toAddress())
 
 // Backup wallet (encrypt this!)
 const backupPhrase = wallet.exportMnemonic()
-console.log('Backup Phrase (KEEP SECURE):', backupPhrase)
+console.log('\n=== Backup (KEEP SECURE!) ===')
+console.log('Mnemonic:', backupPhrase)
+console.log('⚠️ Write this down and store it safely!')
 
 // Restore wallet from backup
+console.log('\n=== Testing Restore ===')
 const restored = HDWallet.fromMnemonic(backupPhrase)
 console.log('Restored First Address:', restored.generateAddress(0))
+console.log('✅ Addresses match:', wallet.generateAddress(0) === restored.generateAddress(0))
+
+console.log('\n💡 Fund any of these addresses with testnet BSV from BSV Desktop')
+console.log('   Download: https://desktop.bsvb.tech/')
+console.log('\n📖 Complete onboarding guide:')
+console.log('   https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/metanet-desktop-mainnet')
+
+// Run this example: npx ts-node hd-wallet-example.ts
 ```
 
 ### Advanced: Using KeyDeriver for Complex Hierarchies

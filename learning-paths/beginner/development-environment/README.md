@@ -252,21 +252,34 @@ async function testBackendSetup() {
 
   // Generate a private key (in production, load from secure storage)
   const privateKey = PrivateKey.fromRandom()
-  const address = privateKey.toPublicKey().toAddress()
+  const publicKey = privateKey.toPublicKey()
+  const address = publicKey.toAddress()
 
   console.log('✅ Private key generated')
+  console.log('Private Key (WIF):', privateKey.toWif())
+  console.log('Public Key:', publicKey.toString())
   console.log('Address:', address)
   console.log('Network:', process.env.NETWORK || 'testnet')
 
   // Test transaction creation (won't broadcast without UTXOs)
   const tx = new Transaction()
-
   console.log('\n✅ Transaction object created')
-  console.log('✅ BSV SDK is working correctly!')
-  console.log('\n🚀 Ready for backend development')
+  console.log('Transaction Version:', tx.version)
+
+  // Test P2PKH template
+  const p2pkh = new P2PKH()
+  const lockingScript = p2pkh.lock(address)
+  console.log('✅ P2PKH locking script created')
+
+  console.log('\n✅ BSV SDK is working correctly!')
+  console.log('🚀 Ready for backend development')
+  console.log('\n💡 Next: Fund this address with testnet BSV from BSV Desktop wallet')
+  console.log('   Download BSV Desktop: https://desktop.bsvb.tech/')
 }
 
 testBackendSetup().catch(console.error)
+
+// Run this test: npm run test
 ```
 
 ### Backend NPM Scripts
@@ -490,16 +503,35 @@ npm start
 # After authorization, should show "✅ Wallet connected successfully!"
 ```
 
-### MetaNet Desktop Wallet Installation
+### MetaNet Desktop Wallet Installation (BSV Desktop)
 
 **Required for frontend development:**
 
-1. Download MetaNet Desktop Wallet from: https://desktop.bsvb.tech/
-2. Install and set up wallet
-3. Fund your wallet with BSV:
-   - **Mainnet**: [Orange Gateway](https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/get-bsv/orange-gateway) (buy with fiat)
-   - **Testnet**: Use the built-in wallet faucet feature or contact BSV community for testnet coins
-4. Your dApp will connect to this wallet via WalletClient
+**What is BSV Desktop?**
+BSV Desktop (formerly MetaNet Desktop Wallet) is a modern wallet designed to make your experience with BSV Blockchain simple, secure, and powerful—whether you're a beginner or an advanced user. It's the standard wallet for BSV application development.
+
+**Download and Setup:**
+1. Visit: **https://desktop.bsvb.tech/**
+2. Download for your OS (Windows, macOS, or Linux)
+3. Run the installer and follow the setup wizard
+4. Create a new wallet or import existing one
+5. Switch to testnet mode for development (Settings → Network → Testnet)
+
+**Getting BSV for Development:**
+- **Testnet BSV** (for development): Use the built-in wallet faucet feature or request from [BSV Discord](https://discord.gg/bsv)
+- **Mainnet BSV** (for production): [Orange Gateway](https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/get-bsv/orange-gateway) (buy with fiat)
+
+**Key Features for Developers:**
+- Multi-network support (mainnet/testnet switching)
+- App integration for blockchain applications
+- Welcome gift: 99,991 Satoshis to start exploring
+- Advanced security with phone-based recovery
+- Identity Key and Private Key management for app integration
+
+**Your dApp will connect to this wallet via WalletClient**
+
+**Complete Onboarding Guide:**
+- https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/metanet-desktop-mainnet
 
 **Documentation:**
 - Wallet Toolbox API: https://fast.brc.dev/
