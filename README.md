@@ -17,7 +17,7 @@ Follow progressive courses from beginner to intermediate. Each course teaches co
 
 - **When to use**: You want to learn systematically
 - **Path**: Read courses in order, following the references to components
-- **Time**: Full path ~9-11 hours
+- **Time**: Full path ~19-24 hours
 
 ### 2. 🔧 **SDK Components** (Technical Reference)
 **Use as reference documentation**
@@ -117,28 +117,24 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 ### 🟡 Intermediate Path
 **Goal**: Build production applications
 
-#### Core Projects (Build Real Applications)
+#### Core Concepts (Learn Key Technologies)
+
+| Course | Time | What You'll Learn |
+|--------|------|-------------------|
+| [Token Fundamentals](learning-paths/intermediate/token-fundamentals/) | 45-60m | PushDrop tokens, two-phase signing, MessageBox transfers |
+| [Overlay Services](learning-paths/intermediate/overlay-services/) | 45-60m | Topic Managers, Lookup Services, protocol validation |
+
+#### Hands-On Projects (Build Real Applications)
 
 | Project | Time | What You'll Build |
 |---------|------|-------------------|
-<!-- | [Payment Systems](learning-paths/intermediate/payment-systems/) | 4-6h | Complete payment infrastructure with invoices, subscriptions, refunds | -->
+| [Desktop Wallet Management](learning-paths/intermediate/desktop-wallet-management/) | 2-3h | Wallet data integration, key derivation, baskets |
 | [Crowdfunding Platform](learning-paths/intermediate/crowdfunding-platform/) | 4-6h | Token-based crowdfunding with escrow and automated payouts |
-<!-- | [Asset Tokenization](learning-paths/intermediate/asset-tokenization/) | 4-6h | Digital asset representation with compliance workflows | -->
-<!-- | [Supply Chain Passports](learning-paths/intermediate/supply-chain-passports/) | 4-6h | Product lifecycle tracking with multi-party verification | -->
+| [Utilitary Token Platform](learning-paths/intermediate/utilitary-token-platform/) | 6-8h | Full-stack token system with overlay validation and MongoDB indexing |
 
-<!-- #### Supporting Modules (Reference as Needed)
-
-| Module | Time | What You'll Learn |
-|--------|------|-------------------|
-| [BSV Primitives](learning-paths/intermediate/bsv-primitives/) | 2-3h | Deep dive into transaction structure, opcodes, UTXO management |
-| [Transaction Building](learning-paths/intermediate/transaction-building/) | 3-4h | Multi-input transactions, batch payments, fee optimization |
-| [Script Templates](learning-paths/intermediate/script-templates/) | 3-4h | Custom locking scripts, multisig, timelocks |
-| [SPV Verification](learning-paths/intermediate/spv-verification/) | 3-4h | Merkle proofs, lightweight clients, BRC-9/67 |
-| [BRC Standards](learning-paths/intermediate/brc-standards/) | 1.5-2h | BRC-29, BRC-42, protocol specifications | -->
-
-**Total time**: 4-6 hours
+**Total time**: 14-19 hours
 **Prerequisites**: Complete beginner path
-**Outcome**: Build a production-ready application with full frontend and backend
+**Outcome**: Build production-ready applications with full frontend and backend
 
 ---
 
@@ -272,7 +268,7 @@ gitbook-bsv-code-academy/
 │
 ├── learning-paths/          # 📚 Structured courses (follow in order)
 │   ├── beginner/           # 7 courses (~5 hours)
-│   └── intermediate/       # 1 project (~4-6 hours)
+│   └── intermediate/       # 2 courses + 3 projects (~14-19 hours)
 │
 ├── sdk-components/         # 🔧 Technical reference (jump to as needed)
 │   ├── private-keys/       # API docs + patterns
@@ -294,9 +290,10 @@ gitbook-bsv-code-academy/
 
 ## 📊 What's Inside
 
-- **📚 8 Structured Courses** covering beginner → intermediate
+- **📚 12 Structured Courses** covering beginner → intermediate
   - 7 Beginner courses
-  - 1 Intermediate project <!-- 9 Intermediate courses (4 projects + 5 modules) -->
+  - 2 Intermediate concept courses
+  - 3 Intermediate hands-on projects
 - **🔧 17 SDK Components** with complete API documentation
 - **💻 31 Code Features** with production-ready examples
 - **📝 Comprehensive documentation** covering all aspects of BSV development
@@ -361,23 +358,28 @@ console.log('Address:', key.toPublicKey().toAddress())
 
 ## 🎓 Recommended Learning Sequences
 
-### Fastest Path to Production (1 week intensive)
+### Fastest Path to Production (2 weeks intensive)
 ```
-Days 1-3: Beginner essentials (getting-started, fundamentals, first-wallet, first-transaction)
-Days 4-7: Intermediate project (crowdfunding-platform) + code-features implementation
+Week 1: Beginner essentials (7 courses, ~5 hours)
+Week 2: Intermediate concepts (token-fundamentals, overlay-services, ~2 hours)
+        + Start hands-on projects (desktop-wallet-management or crowdfunding-platform)
 ```
 
-### Comprehensive Mastery (1-2 weeks part-time)
+### Comprehensive Mastery (3-4 weeks part-time)
 ```
 Week 1: All beginner courses (7 courses, ~5 hours)
-Week 2: Intermediate project (crowdfunding-platform, 4-6 hours)
-        + code-features for additional patterns
+Week 2: Intermediate concepts (token-fundamentals, overlay-services, ~2 hours)
+        + Desktop Wallet Management project (2-3 hours)
+Week 3: Crowdfunding Platform project (4-6 hours)
+Week 4: Utilitary Token Platform project (6-8 hours)
 ```
-<!-- Month 1: All beginner courses (7 courses, ~16 hours)
-Month 2: Intermediate projects (payment-systems, crowdfunding-platform)
-        + supporting modules as needed (BSV primitives, transaction-building)
-Month 3: More intermediate projects (asset-tokenization, supply-chain-passports)
-        + remaining modules (script-templates, SPV, BRC standards) -->
+
+### Token-Focused Path
+```
+Week 1: Beginner essentials (focus on transactions and wallets)
+Week 2: Token Fundamentals + Overlay Services concepts
+Week 3-4: Utilitary Token Platform project (full-stack token system)
+```
 
 ### SDK Reference User (ongoing)
 ```
