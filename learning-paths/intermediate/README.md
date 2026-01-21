@@ -14,13 +14,14 @@ The intermediate path is **project-based**. Instead of learning concepts in isol
 
 ## What You'll Build
 
-By completing this path, you will build two production-ready applications:
+By completing this path, you will build three production-ready applications:
 
 <!-- 0. **Payment Systems** - Complete payment infrastructure with invoicing, subscriptions, and refunds -->
 1. **Desktop Wallet Management** - Comprehensive wallet data integration with identity keys, key derivation, and basket management
-2. **Crowdfunding Platform** - Token-based campaign funding with escrow and automated payouts
-<!-- 3. **Asset Tokenization System** - Real-world asset representation with compliance workflows -->
-<!-- 4. **Supply Chain Digital Passports** - Product lifecycle tracking with multi-party verification -->
+2. **Inscription Platform** - On-chain data storage with OP_RETURN patterns, basket organization, and file hashing
+3. **Crowdfunding Platform** - Token-based campaign funding with escrow and automated payouts
+<!-- 4. **Asset Tokenization System** - Real-world asset representation with compliance workflows -->
+<!-- 5. **Supply Chain Digital Passports** - Product lifecycle tracking with multi-party verification -->
 
 ## Prerequisites
 
@@ -68,6 +69,35 @@ Build a comprehensive wallet information dashboard that connects to the BSV Desk
 
 ---
 
+### Project 2: [Inscription Platform](inscription-platform/README.md)
+**Duration**: 2-3 hours | **Difficulty**: Intermediate
+
+Build a minimal inscriptions platform that stores data permanently on the BSV blockchain using OP_RETURN outputs.
+
+**What You'll Build**:
+- Text and JSON data inscriptions on-chain
+- Document and image hash storage for verification
+- Basket-based inscription organization (text, json, hash-document, hash-image)
+- Transaction history with localStorage persistence
+- Frontend-only implementation with WalletClient
+
+**Key Features**:
+- OP_RETURN data storage with OP_FALSE OP_RETURN pattern
+- Multiple inscription types with basket organization
+- SHA-256 file hashing for document/image verification
+- Client-side transaction history
+- Data permanence and timestamping
+
+**SDK Components Used**:
+- WalletClient for wallet integration
+- Script for OP_RETURN construction
+- Utils for data encoding
+- Transaction building with basket organization
+
+**Why This Project**: Learn fundamental patterns for storing arbitrary data on-chain. This project demonstrates immutable data storage, proof of existence, and timestamping - core concepts for building verification systems, document registries, and data anchoring applications.
+
+---
+
 <!-- ### Project 0: [Payment Systems](payment-systems/README.md)
 **Duration**: 4-6 hours | **Difficulty**: Intermediate
 
@@ -99,7 +129,7 @@ Build a complete payment processing infrastructure supporting various payment sc
 
 --- -->
 
-### Project 2: [Crowdfunding Platform](crowdfunding-platform/README.md)
+### Project 3: [Crowdfunding Platform](crowdfunding-platform/README.md)
 **Duration**: 4-6 hours | **Difficulty**: Intermediate
 
 Build a complete token-based crowdfunding platform with escrow mechanisms and automated payouts.
@@ -255,13 +285,15 @@ The SDK provides **ready-to-use, pre-configured components** that let you focus 
 ## Learning Path Completion
 
 After completing this path, you will have:
-- ✅ Built two production-ready, deployable BSV applications
+- ✅ Built three production-ready, deployable BSV applications
 <!-- - ✅ Implemented complete payment infrastructure (one-time, subscriptions, invoices, refunds) -->
 - ✅ Mastered WalletClient integration for user-controlled wallets
 - ✅ Implemented key derivation, address generation, and basket management
+- ✅ Implemented on-chain data storage with OP_RETURN inscriptions
 - ✅ Implemented both backend (custodial) and frontend (user-wallet) architectures
 - ✅ Mastered the BSV SDK's pre-built components and patterns
 - ✅ Created token systems, escrow mechanisms, and multi-party workflows
+- ✅ Built data verification and timestamping systems
 - ✅ Integrated WalletClient for frontend wallet communication
 <!-- - ✅ Implemented SPV verification for lightweight clients -->
 <!-- - ✅ Applied BRC standards for interoperability -->
@@ -287,6 +319,14 @@ The projects in this path directly prepare you to build:
 - SaaS billing infrastructure
 - Marketplace payment handling
 - Digital goods purchasing -->
+
+**From Inscription Platform:**
+- Document timestamping services
+- Copyright registration systems
+- Data anchoring applications
+- Public statement platforms
+- Verification and proof-of-existence systems
+- NFT metadata storage
 
 **From Crowdfunding Platform:**
 - Campaign funding systems
@@ -318,8 +358,9 @@ The projects in this path directly prepare you to build:
 
 ## Estimated Time
 
-**Core Projects**: 6-9 hours total
+**Core Projects**: 8-12 hours total
 - Desktop Wallet Management: 2-3 hours
+- Inscription Platform: 2-3 hours
 <!-- - Payment Systems: 4-6 hours -->
 - Crowdfunding Platform: 4-6 hours
 <!-- - Asset Tokenization System: 4-6 hours -->
@@ -332,7 +373,7 @@ The projects in this path directly prepare you to build:
 - SPV Verification: 3-4 hours
 - BRC Standards: 1.5-2 hours -->
 
-**Total Path Duration**: 6-9 hours depending on depth and customization
+**Total Path Duration**: 8-12 hours depending on depth and customization
 
 This is a hands-on learning path - you'll spend most of your time writing and deploying real code, not just reading documentation.
 
@@ -348,9 +389,10 @@ This is a hands-on learning path - you'll spend most of your time writing and de
 6. **Move to the next project** and repeat the process -->
 
 1. **Start with Desktop Wallet Management** - Learn WalletClient integration, key derivation, and wallet data management
-2. **Move to Crowdfunding Platform** - Build on your wallet knowledge to create token systems, escrow mechanisms, and automated payouts
-3. **Build both implementations** (backend and frontend) for each project
-4. **Customize and deploy** your own versions with unique features
+2. **Continue with Inscription Platform** - Master on-chain data storage, OP_RETURN patterns, and basket organization
+3. **Move to Crowdfunding Platform** - Build on your knowledge to create token systems, escrow mechanisms, and automated payouts
+4. **Build both implementations** (backend and frontend) for projects that support it
+5. **Customize and deploy** your own versions with unique features
 
-Ready to build production BSV applications? Start with [**Desktop Wallet Management**](desktop-wallet-management/README.md) to master wallet integration, then move to [**Crowdfunding Platform**](crowdfunding-platform/README.md) to build complete applications!
+Ready to build production BSV applications? Start with [**Desktop Wallet Management**](desktop-wallet-management/README.md) to master wallet integration, then move to [**Inscription Platform**](inscription-platform/README.md) for data storage patterns, and finally [**Crowdfunding Platform**](crowdfunding-platform/README.md) to build complete token applications!
 <!-- to learn the fundamentals, then move to [**Crowdfunding Platform**](crowdfunding-platform/README.md), [**Asset Tokenization**](asset-tokenization/README.md), or [**Supply Chain Passports**](supply-chain-passports/README.md)! -->
