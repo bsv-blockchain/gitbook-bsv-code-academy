@@ -34,11 +34,12 @@ This file provides the official duration estimates for all courses in the BSV Co
 | # | Project | Duration | Description |
 |---|---------|----------|-------------|
 | 1 | Desktop Wallet Management | 2-3 hours | Wallet data integration, key derivation, baskets |
-| 2 | Crowdfunding Platform | 4-6 hours | Full-stack app with escrow, payouts |
-| 3 | Utilitary Token Platform | 6-8 hours | Token system with overlay validation, MongoDB indexing |
+| 2 | Inscription Platform | 2-3 hours | On-chain data storage with OP_RETURN, basket organization |
+| 3 | Crowdfunding Platform | 4-6 hours | Full-stack app with escrow, payouts |
+| 4 | Utilitary Token Platform | 6-8 hours | Token system with overlay validation, MongoDB indexing |
 
 
-**Intermediate Path Total: 14-19 hours**
+**Intermediate Path Total: 16-22 hours**
 
 ---
 
@@ -47,8 +48,8 @@ This file provides the official duration estimates for all courses in the BSV Co
 | Path | Duration | Courses/Projects |
 |------|----------|------------------|
 | Beginner | ~5 hours | 7 courses |
-| Intermediate | 14-19 hours | 2 courses + 3 projects |
-| **Total** | **~19-24 hours** | 12 total |
+| Intermediate | 16-22 hours | 2 courses + 4 projects |
+| **Total** | **~21-27 hours** | 13 total |
 
 ---
 
@@ -64,8 +65,8 @@ This file provides the official duration estimates for all courses in the BSV Co
 
 ### Comprehensive Mastery
 - **Week 1**: Beginner courses (~5 hours)
-- **Week 2-3**: Intermediate concepts and projects (14-19 hours)
-- **Total**: ~19-24 hours
+- **Week 2-3**: Intermediate concepts and projects (16-22 hours)
+- **Total**: ~21-27 hours
 
 ---
 
