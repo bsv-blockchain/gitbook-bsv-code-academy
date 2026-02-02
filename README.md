@@ -2,7 +2,7 @@
 
 **Your Complete Guide to Building on BSV Blockchain**
 
-Welcome to the BSV Code Academy - a comprehensive, modular learning platform for developers at all skill levels who want to build applications on the Bitcoin Satoshi Vision (BSV) blockchain. From beginner to intermediate production-ready applications.
+Welcome to the BSV Code Academy - a comprehensive, modular learning platform for developers at all skill levels who want to build applications on the Bitcoin Satoshi Vision (BSV) blockchain. This academy includes **14 structured courses** (7 beginner + 2 intermediate concepts + 5 hands-on projects), **17 SDK components**, and **31 code features** covering ~24-31 hours of content from fundamentals to production-ready applications.
 
 ---
 
@@ -17,7 +17,7 @@ Follow progressive courses from beginner to intermediate. Each course teaches co
 
 - **When to use**: You want to learn systematically
 - **Path**: Read courses in order, following the references to components
-- **Time**: Full path ~21-27 hours
+- **Time**: Full path ~24-31 hours
 
 ### 2. 🔧 **SDK Components** (Technical Reference)
 **Use as reference documentation**
@@ -130,10 +130,11 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 |---------|------|-------------------|
 | [Desktop Wallet Management](learning-paths/intermediate/desktop-wallet-management/) | 2-3h | Wallet data integration, key derivation, baskets |
 | [Inscription Platform](learning-paths/intermediate/inscription-platform/) | 2-3h | On-chain data storage with OP_RETURN, basket organization, file hashing |
+| [MessageBox Platform](learning-paths/intermediate/messagebox-platform/) | 3-4h | P2P encrypted messaging, identity certification, BRC-29 payments |
 | [Crowdfunding Platform](learning-paths/intermediate/crowdfunding-platform/) | 4-6h | Token-based crowdfunding with escrow and automated payouts |
 | [Utilitary Token Platform](learning-paths/intermediate/utilitary-token-platform/) | 6-8h | Full-stack token system with overlay validation and MongoDB indexing |
 
-**Total time**: 16-22 hours
+**Total time**: 19-26 hours
 **Prerequisites**: Complete beginner path
 **Outcome**: Build production-ready applications with full frontend and backend
 
@@ -269,7 +270,7 @@ gitbook-bsv-code-academy/
 │
 ├── learning-paths/          # 📚 Structured courses (follow in order)
 │   ├── beginner/           # 7 courses (~5 hours)
-│   └── intermediate/       # 2 courses + 4 projects (~16-22 hours)
+│   └── intermediate/       # 2 courses + 5 projects (~19-26 hours)
 │
 ├── sdk-components/         # 🔧 Technical reference (jump to as needed)
 │   ├── private-keys/       # API docs + patterns
@@ -291,10 +292,10 @@ gitbook-bsv-code-academy/
 
 ## 📊 What's Inside
 
-- **📚 13 Structured Courses** covering beginner → intermediate
+- **📚 14 Structured Courses** covering beginner → intermediate
   - 7 Beginner courses
   - 2 Intermediate concept courses
-  - 4 Intermediate hands-on projects
+  - 5 Intermediate hands-on projects
 - **🔧 17 SDK Components** with complete API documentation
 - **💻 31 Code Features** with production-ready examples
 - **📝 Comprehensive documentation** covering all aspects of BSV development
@@ -366,14 +367,15 @@ Week 2: Intermediate concepts (token-fundamentals, overlay-services, ~2 hours)
         + Start hands-on projects (desktop-wallet-management or inscription-platform)
 ```
 
-### Comprehensive Mastery (3-4 weeks part-time)
+### Comprehensive Mastery (4-5 weeks part-time)
 ```
 Week 1: All beginner courses (7 courses, ~5 hours)
 Week 2: Intermediate concepts (token-fundamentals, overlay-services, ~2 hours)
         + Desktop Wallet Management project (2-3 hours)
 Week 3: Inscription Platform project (2-3 hours)
-        + Crowdfunding Platform project (4-6 hours)
-Week 4: Utilitary Token Platform project (6-8 hours)
+        + MessageBox Platform project (3-4 hours)
+Week 4: Crowdfunding Platform project (4-6 hours)
+Week 5: Utilitary Token Platform project (6-8 hours)
 ```
 
 ### Token-Focused Path
