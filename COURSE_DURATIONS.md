@@ -43,13 +43,36 @@ This file provides the official duration estimates for all courses in the BSV Co
 
 ---
 
+## Advanced Path
+
+### Hands-On Projects
+
+| # | Project | Duration | Description |
+|---|---------|----------|-------------|
+| 1 | Certification Platform | 4-6 hours | Self-hosted certificate issuance, field encryption, mutual auth (BRC-31/52/53) |
+
+### Learning Modules
+
+| # | Module | Duration | Description |
+|---|--------|----------|-------------|
+| 1 | Overlay Networks | 3 hours | Application-specific networks, UTXO state management |
+| 2 | Network Topology | 2.5 hours | P2P protocols, peer discovery, network security |
+| 3 | Node Operations | 3 hours | Node setup, configuration, monitoring |
+| 4 | Advanced Scripting | 2.5 hours | Complex Bitcoin Script, oracle integration |
+| 5 | Custom Protocols | 3 hours | Protocol design, versioning, interoperability |
+
+**Advanced Path Total: 18-22 hours**
+
+---
+
 ## Summary Totals
 
 | Path | Duration | Courses/Projects |
 |------|----------|------------------|
 | Beginner | ~5 hours | 7 courses |
 | Intermediate | 16-22 hours | 2 courses + 4 projects |
-| **Total** | **~21-27 hours** | 13 total |
+| Advanced | 18-22 hours | 5 modules + 1 project |
+| **Total** | **~39-49 hours** | 20 total |
 
 ---
 
@@ -66,7 +89,8 @@ This file provides the official duration estimates for all courses in the BSV Co
 ### Comprehensive Mastery
 - **Week 1**: Beginner courses (~5 hours)
 - **Week 2-3**: Intermediate concepts and projects (16-22 hours)
-- **Total**: ~21-27 hours
+- **Week 4-5**: Advanced modules and projects (18-22 hours)
+- **Total**: ~39-49 hours
 
 ---
 
