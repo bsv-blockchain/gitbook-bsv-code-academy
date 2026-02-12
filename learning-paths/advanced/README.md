@@ -149,9 +149,42 @@ Design and implement your own protocols on BSV.
 - Migration strategies
 - Network effects
 
-## Advanced Projects
+## Hands-On Projects
 
-### Project 1: Decentralized Exchange (DEX) Overlay
+### Project 1: [Certification Platform](certification-platform/README.md)
+**Duration**: 4-6 hours | **Difficulty**: Advanced
+
+Build a self-hosted certification platform that issues signed, encrypted certificates and gates protected content behind server-verified mutual authentication.
+
+**What You'll Build**:
+- Self-hosted certificate issuance using `MasterCertificate` (BRC-52)
+- Field-level encryption with ECDH key agreement (BRC-42)
+- Mutual authentication with `AuthFetch` and Express auth middleware (BRC-31)
+- Certificate-gated dashboard with server-side verification (BRC-53)
+- Certificate revocation and session management
+- Full frontend (Next.js) and backend (Express) implementation
+
+**Key Features**:
+- Three wallet tiers: ProtoWallet (signing), Wallet (auth middleware), WalletClient (browser)
+- Direct acquisition protocol for wallet certificate storage
+- `VerifiableCertificate` field decryption on the server
+- `SessionManager` for authenticated connection state
+- Whitelabel-ready deployment
+
+**SDK Components Used**:
+- `@bsv/sdk` — MasterCertificate, VerifiableCertificate, AuthFetch, WalletClient, SessionManager, ProtoWallet, KeyDeriver
+- `@bsv/wallet-toolbox-client` — Wallet, WalletSigner, StorageClient, Services
+- `@bsv/auth-express-middleware` — createAuthMiddleware, AuthRequest
+
+**BRC Standards**: BRC-31 (Auth Protocol), BRC-42 (Key Derivation), BRC-43 (Security Levels), BRC-52 (Certificate Creation), BRC-53 (Certificate Verification), BRC-56 (Wallet Wire Protocol)
+
+**Complete Code Repository**: [certification-platform](https://github.com/bsv-blockchain-demos/certification-platform)
+
+---
+
+### Advanced Projects
+
+### Project 2: Decentralized Exchange (DEX) Overlay
 Build a trustless exchange overlay network:
 - Custom UTXO tagging for orders
 - Atomic swap contracts
@@ -165,7 +198,7 @@ Build a trustless exchange overlay network:
 - Custom protocol design
 - P2P networking
 
-### Project 2: Enterprise Node Infrastructure
+### Project 3: Enterprise Node Infrastructure
 Deploy production-grade node infrastructure:
 - Multi-node cluster
 - Load balancing
@@ -180,7 +213,7 @@ Deploy production-grade node infrastructure:
 - Infrastructure automation
 - Monitoring tools
 
-### Project 3: Stateful Smart Contract System
+### Project 4: Stateful Smart Contract System
 Create a complex stateful contract:
 - Multi-round game or auction
 - State transitions on-chain
@@ -194,7 +227,7 @@ Create a complex stateful contract:
 - State machine design
 - Security analysis
 
-### Project 4: Custom Overlay Protocol
+### Project 5: Custom Overlay Protocol
 Design a complete protocol specification:
 - Transaction format definition
 - State management rules
@@ -264,6 +297,8 @@ Design a complete protocol specification:
 ## Learning Path Completion
 
 After completing this path, you should be able to:
+- ✅ Build certificate issuance platforms with field-level encryption
+- ✅ Implement mutual authentication with AuthFetch and Express middleware
 - ✅ Design and implement overlay networks
 - ✅ Understand BSV network internals
 - ✅ Operate production BSV nodes
@@ -284,6 +319,7 @@ Skills from this path prepare you for:
 ## Real-World Applications
 
 Advanced skills enable:
+- **Certification Platforms**: Whitelabel certificate issuance with field encryption and gated access
 - **Enterprise Solutions**: Large-scale corporate blockchain systems
 - **DeFi Platforms**: Decentralized financial services
 - **Supply Chain**: Global tracking and verification
@@ -321,7 +357,7 @@ At this level, consider:
 
 ## Estimated Time
 
-**Total Path Duration**: 14-16 hours
+**Total Path Duration**: 18-22 hours (including Certification Platform project)
 
 Plus substantial project time. Advanced projects may take weeks or months to fully develop and deploy.
 

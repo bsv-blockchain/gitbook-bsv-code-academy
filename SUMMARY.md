@@ -31,6 +31,13 @@
   * [Crowdfunding Platform](learning-paths/intermediate/crowdfunding-platform/README.md)
   * [Utilitary Token Platform](learning-paths/intermediate/utilitary-token-platform/README.md)
 
+### Advanced Path
+
+* [Advanced Overview](learning-paths/advanced/README.md)
+  * [Certification Platform](learning-paths/advanced/certification-platform/README.md)
+    * [Frontend Guide](learning-paths/advanced/certification-platform/frontend.md)
+    * [Backend Guide](learning-paths/advanced/certification-platform/backend.md)
+
 ## SDK Components Reference
 
 * [SDK Components Overview](sdk-components/README.md)

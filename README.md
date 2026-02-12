@@ -2,7 +2,7 @@
 
 **Your Complete Guide to Building on BSV Blockchain**
 
-Welcome to the BSV Code Academy - a comprehensive, modular learning platform for developers at all skill levels who want to build applications on the Bitcoin Satoshi Vision (BSV) blockchain. This academy includes **14 structured courses** (7 beginner + 2 intermediate concepts + 5 hands-on projects), **17 SDK components**, and **31 code features** covering ~24-31 hours of content from fundamentals to production-ready applications.
+Welcome to the BSV Code Academy - a comprehensive, modular learning platform for developers at all skill levels who want to build applications on the Bitcoin Satoshi Vision (BSV) blockchain. This academy includes **20 structured courses** (7 beginner + 2 intermediate concepts + 5 intermediate projects + 5 advanced modules + 1 advanced project), **17 SDK components**, and **31 code features** covering ~39-49 hours of content from fundamentals to production-ready applications.
 
 ---
 
@@ -13,11 +13,11 @@ This academy is organized into **three complementary systems** that work togethe
 ### 1. 🎓 **Learning Paths** (Structured Courses)
 **Start here for guided learning**
 
-Follow progressive courses from beginner to intermediate. Each course teaches concepts and references the SDK Components and Code Features below.
+Follow progressive courses from beginner to advanced. Each course teaches concepts and references the SDK Components and Code Features below.
 
 - **When to use**: You want to learn systematically
 - **Path**: Read courses in order, following the references to components
-- **Time**: Full path ~24-31 hours
+- **Time**: Full path ~39-49 hours
 
 ### 2. 🔧 **SDK Components** (Technical Reference)
 **Use as reference documentation**
@@ -137,6 +137,29 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 **Total time**: 19-26 hours
 **Prerequisites**: Complete beginner path
 **Outcome**: Build production-ready applications with full frontend and backend
+
+### 🔴 Advanced Path
+**Goal**: Build enterprise-grade systems with authentication and custom protocols
+
+#### Hands-On Projects
+
+| Project | Time | What You'll Build |
+|---------|------|-------------------|
+| [Certification Platform](learning-paths/advanced/certification-platform/) | 4-6h | Self-hosted certificate issuance, field encryption, mutual auth, gated access |
+
+#### Learning Modules
+
+| Module | Time | What You'll Learn |
+|--------|------|-------------------|
+| [Overlay Networks](learning-paths/advanced/overlay-networks/) | 3h | Application-specific networks, UTXO state management |
+| [Network Topology](learning-paths/advanced/network-topology/) | 2.5h | P2P protocols, peer discovery, network security |
+| [Node Operations](learning-paths/advanced/node-operations/) | 3h | Node setup, configuration, monitoring |
+| [Advanced Scripting](learning-paths/advanced/advanced-scripting/) | 2.5h | Complex Bitcoin Script, oracle integration |
+| [Custom Protocols](learning-paths/advanced/custom-protocols/) | 3h | Protocol design, versioning, interoperability |
+
+**Total time**: 18-22 hours
+**Prerequisites**: Complete intermediate path
+**Outcome**: Build enterprise certification systems, overlay networks, and custom protocols
 
 ---
 
@@ -270,7 +293,8 @@ gitbook-bsv-code-academy/
 │
 ├── learning-paths/          # 📚 Structured courses (follow in order)
 │   ├── beginner/           # 7 courses (~5 hours)
-│   └── intermediate/       # 2 courses + 5 projects (~19-26 hours)
+│   ├── intermediate/       # 2 courses + 5 projects (~19-26 hours)
+│   └── advanced/           # 5 modules + 1 project (~18-22 hours)
 │
 ├── sdk-components/         # 🔧 Technical reference (jump to as needed)
 │   ├── private-keys/       # API docs + patterns
@@ -292,10 +316,12 @@ gitbook-bsv-code-academy/
 
 ## 📊 What's Inside
 
-- **📚 14 Structured Courses** covering beginner → intermediate
+- **📚 20 Structured Courses** covering beginner → advanced
   - 7 Beginner courses
   - 2 Intermediate concept courses
   - 5 Intermediate hands-on projects
+  - 5 Advanced learning modules
+  - 1 Advanced hands-on project (Certification Platform)
 - **🔧 17 SDK Components** with complete API documentation
 - **💻 31 Code Features** with production-ready examples
 - **📝 Comprehensive documentation** covering all aspects of BSV development
@@ -367,7 +393,7 @@ Week 2: Intermediate concepts (token-fundamentals, overlay-services, ~2 hours)
         + Start hands-on projects (desktop-wallet-management or inscription-platform)
 ```
 
-### Comprehensive Mastery (4-5 weeks part-time)
+### Comprehensive Mastery (6-7 weeks part-time)
 ```
 Week 1: All beginner courses (7 courses, ~5 hours)
 Week 2: Intermediate concepts (token-fundamentals, overlay-services, ~2 hours)
@@ -376,6 +402,9 @@ Week 3: Inscription Platform project (2-3 hours)
         + MessageBox Platform project (3-4 hours)
 Week 4: Crowdfunding Platform project (4-6 hours)
 Week 5: Utilitary Token Platform project (6-8 hours)
+Week 6: Certification Platform project (4-6 hours)
+        + Advanced modules (overlay networks, scripting)
+Week 7: Remaining advanced modules + advanced projects
 ```
 
 ### Token-Focused Path
