@@ -625,7 +625,7 @@ Continue to: [Your First Wallet (Backend)](../first-wallet/) - Learn server-side
 ### Frontend Development (Non-Custodial)
 **Users control their own keys via wallet**
 
-Continue to: [WalletClient Integration](../wallet-client-integration/) - Learn to connect to MetaNet Desktop Wallet and request user signatures.
+Continue to: [WalletClient Integration](../wallet-client-integration/) - Learn to connect to BSV Desktop and request user signatures.
 
 ---
 

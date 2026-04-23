@@ -120,7 +120,7 @@ Build, sign, and broadcast your first BSV transaction.
 ### 7. [Wallet Client Integration](wallet-client-integration/README.md)
 **Duration**: 45 minutes
 
-Integrate MetaNet Desktop Wallet into your frontend applications.
+Integrate BSV Desktop into your frontend applications.
 
 **Topics**:
 - WalletClient basics

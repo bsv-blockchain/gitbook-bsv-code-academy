@@ -356,7 +356,7 @@ These patterns form the foundation for building access-controlled applications, 
 
 ### Documentation
 - [BSV SDK Documentation](https://docs.bsvblockchain.org/)
-- [BSV Desktop Wallet](https://desktop.bsvb.tech/)
+- [BSV Desktop](https://github.com/bsv-blockchain/bsv-desktop/releases)
 
 ### Prerequisites
 - [WalletClient Integration](../../beginner/wallet-client-integration/README.md)

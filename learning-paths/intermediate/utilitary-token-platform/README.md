@@ -103,7 +103,7 @@ Build the user-facing token management interface:
 
 ```
 ┌─────────────────────────────────────────┐
-│      BSV Desktop Wallet (User)          │
+│      BSV Desktop (User)          │
 │  - Private key management               │
 │  - Transaction signing                  │
 │  - UTXO tracking                        │
@@ -162,11 +162,11 @@ Build the user-facing token management interface:
 **System Requirements**:
 - Node.js 18+
 - MongoDB 5.0+
-- BSV Desktop Wallet
+- BSV Desktop
 - TypeScript 4.9+
 
 **BSV Requirements**:
-- BSV Desktop Wallet installed and unlocked
+- BSV Desktop installed and unlocked
 - Test BSV for transaction fees (get from [faucet](https://faucet.bsvb.tech/))
 
 ---
@@ -268,7 +268,7 @@ npm run dev
 ## Troubleshooting
 
 **"Failed to connect to wallet"**
-- Install BSV Desktop Wallet from [https://desktop.bsvb.tech/](https://desktop.bsvb.tech/)
+- Install BSV Desktop from [https://github.com/bsv-blockchain/bsv-desktop/releases](https://github.com/bsv-blockchain/bsv-desktop/releases)
 - Unlock wallet before using frontend
 
 **"Overlay rejected transaction"**
@@ -355,7 +355,7 @@ These patterns form the foundation for building production-grade token systems, 
 - [BSV SDK Documentation](https://docs.bsvblockchain.org/)
 - [Overlay Tools](https://github.com/bitcoin-sv/overlay-tools)
 - [MongoDB Documentation](https://www.mongodb.com/docs/)
-- [BSV Desktop Wallet](https://desktop.bsvb.tech/)
+- [BSV Desktop](https://github.com/bsv-blockchain/bsv-desktop/releases)
 
 ### Prerequisites
 - [Token Fundamentals](../token-fundamentals/README.md)

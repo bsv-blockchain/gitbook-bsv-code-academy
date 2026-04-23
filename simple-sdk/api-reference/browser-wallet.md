@@ -36,7 +36,7 @@ Factory function that creates a fully-composed `BrowserWallet`.
 | `defaults` | `Partial<WalletDefaults>` | No | Override default configuration |
 
 **What happens:**
-1. Creates a `WalletClient` (prompts user to connect via MetaNet Client or browser extension)
+1. Creates a `WalletClient` (prompts user to connect via BSV Desktop or browser extension)
 2. Retrieves the user's identity key
 3. Instantiates `_BrowserWallet` (extends `WalletCore`)
 4. Mixes in all module methods: tokens, inscriptions, messagebox, certification, overlay, DID, credentials
@@ -89,7 +89,7 @@ export {
 
 ## Underlying Client
 
-`BrowserWallet` uses `WalletClient` from `@bsv/sdk` under the hood, which communicates with the user's wallet extension (MetaNet Client). All operations that require signing or key access prompt the user through the extension.
+`BrowserWallet` uses `WalletClient` from `@bsv/sdk` under the hood, which communicates with the user's wallet extension (BSV Desktop). All operations that require signing or key access prompt the user through the extension.
 
 ```typescript
 const client = wallet.getClient() // WalletInterface (WalletClient)

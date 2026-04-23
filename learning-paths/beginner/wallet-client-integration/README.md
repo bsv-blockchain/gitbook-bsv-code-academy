@@ -2,7 +2,7 @@
 
 **Module 3B: Connecting to User Wallets (Frontend Paradigm)**
 
-This module teaches you how to integrate MetaNet Desktop Wallet into your dApp using the BSV SDK's WalletClient component. This is the **standard approach** for building non-custodial BSV applications where users control their own keys.
+This module teaches you how to integrate BSV Desktop into your dApp using the BSV SDK's WalletClient component. This is the **standard approach** for building non-custodial BSV applications where users control their own keys.
 
 > **Note**: This module is for **Frontend Integration Development**. If you're building backend services where you control keys, see [Managing Wallets Server-Side](../first-wallet/) instead.
 
@@ -11,7 +11,7 @@ This module teaches you how to integrate MetaNet Desktop Wallet into your dApp u
 ## What is WalletClient?
 
 `WalletClient` is a pre-built SDK component that:
-- ✅ Connects your dApp to **BSV Desktop** (MetaNet Desktop Wallet)
+- ✅ Connects your dApp to **BSV Desktop** (BSV Desktop)
 - ✅ Requests user signatures for transactions
 - ✅ Handles all wallet communication via BRC protocol
 - ✅ Manages UTXO selection (wallet handles)
@@ -29,7 +29,7 @@ This module teaches you how to integrate MetaNet Desktop Wallet into your dApp u
 - 📱 Identity Key management for dApp authentication
 - 💧 Built-in testnet faucet for developers
 
-**Download BSV Desktop:** https://desktop.bsvb.tech/
+**Download BSV Desktop:** https://github.com/bsv-blockchain/bsv-desktop/releases
 
 **Complete Onboarding Guide:**
 https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/metanet-desktop-mainnet
@@ -50,7 +50,7 @@ https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catal
 Before starting:
 - ✅ Completed [Development Environment Setup](../development-environment/)
 - ✅ **BSV Desktop installed and set up**
-  - Download from: https://desktop.bsvb.tech/
+  - Download from: https://github.com/bsv-blockchain/bsv-desktop/releases
   - Complete setup wizard
   - Switch to testnet mode for development
   - Get free testnet BSV from built-in faucet
@@ -108,7 +108,7 @@ const txid = result.txid
 
 ---
 
-## Part 2: Connecting to MetaNet Desktop Wallet
+## Part 2: Connecting to BSV Desktop
 
 ### Basic Connection
 
@@ -133,7 +133,7 @@ async function connectWallet() {
     if (error.code === 'USER_REJECTED') {
       console.log('User rejected connection')
     } else if (error.code === 'WALLET_NOT_FOUND') {
-      console.log('MetaNet Desktop Wallet not installed')
+      console.log('BSV Desktop not installed')
     } else {
       console.error('Connection failed:', error.message)
     }
@@ -145,7 +145,7 @@ async function connectWallet() {
 ### Connection Flow
 
 ```
-Your dApp                    MetaNet Desktop Wallet
+Your dApp                    BSV Desktop
     │                                │
     │  connectToSubstrate()          │
     ├───────────────────────────────>│
@@ -295,7 +295,7 @@ export const WalletConnect: React.FC = () => {
         <div className="wallet-instructions">
           <p>To connect:</p>
           <ul>
-            <li>Install MetaNet Desktop Wallet</li>
+            <li>Install BSV Desktop</li>
             <li>Create or import a wallet</li>
             <li>Click "Connect Wallet"</li>
           </ul>
@@ -357,7 +357,7 @@ const txid = await sendPayment(wallet, '1A1zP1...', 1000)
 
 When you call `wallet.createAction()`:
 
-1. **WalletClient** sends transaction request to MetaNet Desktop Wallet
+1. **WalletClient** sends transaction request to BSV Desktop
 2. **Wallet popup** appears showing transaction details
 3. **User reviews**:
    - Recipient address
@@ -712,9 +712,9 @@ try {
       break
 
     case 'WALLET_NOT_FOUND':
-      // MetaNet Desktop Wallet not installed
+      // BSV Desktop not installed
       console.log('Wallet not installed')
-      alert('Please install MetaNet Desktop Wallet')
+      alert('Please install BSV Desktop')
       break
 
     case 'WALLET_LOCKED':
@@ -749,7 +749,7 @@ function handleWalletError(error: any, context: string) {
   const errorMessages: Record<string, string> = {
     'USER_REJECTED': 'You cancelled the request',
     'INSUFFICIENT_FUNDS': 'Insufficient balance in your wallet',
-    'WALLET_NOT_FOUND': 'MetaNet Desktop Wallet not installed. Please install it from desktop.bsvb.tech',
+    'WALLET_NOT_FOUND': 'BSV Desktop not installed. Please install it from GitHub releases',
     'WALLET_LOCKED': 'Please unlock your wallet and try again',
     'NETWORK_ERROR': 'Network error. Please check your connection and try again',
     'INVALID_OUTPUT': 'Invalid transaction format',
@@ -844,7 +844,7 @@ function WalletNotFound() {
   return (
     <div className="wallet-not-found">
       <h3>BSV Desktop Required</h3>
-      <p>This dApp requires BSV Desktop (MetaNet Desktop Wallet) to function.</p>
+      <p>This dApp requires BSV Desktop to function.</p>
 
       <div className="wallet-info">
         <h4>What is BSV Desktop?</h4>
@@ -861,7 +861,7 @@ function WalletNotFound() {
       <div className="instructions">
         <h4>Installation Steps:</h4>
         <ol>
-          <li>Visit <a href="https://desktop.bsvb.tech" target="_blank" rel="noreferrer">desktop.bsvb.tech</a></li>
+          <li>Visit <a href="https://GitHub releases" target="_blank" rel="noreferrer">GitHub releases</a></li>
           <li>Download BSV Desktop for your operating system</li>
           <li>Run the installer and follow the setup wizard</li>
           <li>Create a new wallet or import existing one</li>
@@ -950,7 +950,7 @@ function App() {
         ) : (
           <div className="connect-prompt">
             <h2>Welcome to My BSV dApp</h2>
-            <p>Connect your MetaNet Desktop Wallet to get started</p>
+            <p>Connect your BSV Desktop to get started</p>
             {error && <p className="error">{error}</p>}
           </div>
         )}
@@ -958,8 +958,8 @@ function App() {
 
       <footer>
         <p>Built with BSV SDK and WalletClient</p>
-        <a href="https://desktop.bsvb.tech" target="_blank" rel="noreferrer">
-          Learn more about MetaNet Desktop Wallet
+        <a href="https://GitHub releases" target="_blank" rel="noreferrer">
+          Learn more about BSV Desktop
         </a>
       </footer>
     </div>
@@ -975,7 +975,7 @@ export default App
 
 **What You Learned:**
 
-- ✅ WalletClient connects your dApp to MetaNet Desktop Wallet
+- ✅ WalletClient connects your dApp to BSV Desktop
 - ✅ Wallet handles all key management, UTXO selection, fees, and broadcasting
 - ✅ Your dApp requests user approval for transactions
 - ✅ Error handling for user rejections and failures
@@ -1007,7 +1007,7 @@ export default App
 
 - **Wallet Toolbox API**: https://fast.brc.dev/
 - **BRC Standards**: https://hub.bsvblockchain.org/brc
-- **MetaNet Desktop Wallet**: https://desktop.bsvb.tech/
+- **BSV Desktop**: https://github.com/bsv-blockchain/bsv-desktop/releases
 - **Get BSV - Orange Gateway**: https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/get-bsv/orange-gateway
 - **SDK Documentation**: https://bsv-blockchain.github.io/ts-sdk/
 - **Example dApps**: [code-features/](../../../code-features/)

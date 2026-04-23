@@ -161,7 +161,7 @@ console.log('Public Key (Hex):', publicKey.toString())
 console.log('Address:', address)
 console.log('\n✅ You can share the address to receive payments!')
 console.log('💡 Fund this address with testnet BSV from BSV Desktop')
-console.log('   Download: https://desktop.bsvb.tech/')
+console.log('   Download: https://github.com/bsv-blockchain/bsv-desktop/releases')
 
 // Run this example: npx ts-node derive-address.ts
 ```
@@ -184,7 +184,7 @@ const address = publicKey.toAddress()
 console.log('Private Key (WIF):', privateKey.toWif())
 console.log('Public Key:', publicKey.toString())
 console.log('Address:', address)
-console.log('\nFund at: https://desktop.bsvb.tech/')
+console.log('\nFund at: https://github.com/bsv-blockchain/bsv-desktop/releases')
 EOF
 
 npx ts-node derive-address.ts
@@ -258,7 +258,7 @@ console.log('Restored Address:', restoredWallet.address)
 console.log('✅ Addresses match:', wallet.address === restoredWallet.address)
 
 console.log('\n💡 Fund this address with testnet BSV from BSV Desktop')
-console.log('   Download: https://desktop.bsvb.tech/')
+console.log('   Download: https://github.com/bsv-blockchain/bsv-desktop/releases')
 
 // Run this example: npx ts-node simple-wallet.ts
 ```
@@ -480,7 +480,7 @@ console.log('Restored First Address:', restored.generateAddress(0))
 console.log('✅ Addresses match:', wallet.generateAddress(0) === restored.generateAddress(0))
 
 console.log('\n💡 Fund any of these addresses with testnet BSV from BSV Desktop')
-console.log('   Download: https://desktop.bsvb.tech/')
+console.log('   Download: https://github.com/bsv-blockchain/bsv-desktop/releases')
 console.log('\n📖 Complete onboarding guide:')
 console.log('   https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/metanet-desktop-mainnet')
 
@@ -1168,7 +1168,7 @@ const testAddress = wallet.generateAddress(0)
 console.log('Testnet Address:', testAddress)
 
 // Fund this address from testnet faucet:
-// Get testnet coins from MetaNet Desktop Wallet's built-in faucet or BSV Discord community
+// Get testnet coins from BSV Desktop's built-in faucet or BSV Discord community
 
 // Test transaction creation (covered in next module)
 // ...
