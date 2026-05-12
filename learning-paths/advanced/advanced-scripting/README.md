@@ -667,40 +667,6 @@ function createHashLock(secretHash: Buffer): Script {
     .writeOpCode(OP.OP_EQUAL)
 }
 
-// Create hash lock with fallback (timeout)
-function createHashLockWithTimeout(
-  secretHash: Buffer,
-  timeoutBlock: number,
-  fallbackPubKeyHash: Buffer
-): Script {
-  return new Script()
-    // Try hash lock first
-    .writeOpCode(OP.OP_DUP)
-    .writeOpCode(OP.OP_SHA256)
-    .writeBin(secretHash)
-    .writeOpCode(OP.OP_EQUAL)
-
-    .writeOpCode(OP.OP_IF)
-    // Hash matches - allow spend
-    .writeOpCode(OP.OP_DROP)
-    .writeOpCode(OP.OP_1)
-
-    .writeOpCode(OP.OP_ELSE)
-    // Hash doesn't match - check timeout
-    .writeOpCode(OP.OP_DROP)
-    .writeBin(Buffer.from([timeoutBlock >> 24, timeoutBlock >> 16, timeoutBlock >> 8, timeoutBlock]))
-    .writeOpCode(OP.OP_CHECKLOCKTIMEVERIFY)
-    .writeOpCode(OP.OP_DROP)
-
-    // Verify fallback signature
-    .writeOpCode(OP.OP_DUP)
-    .writeOpCode(OP.OP_HASH160)
-    .writeBin(fallbackPubKeyHash)
-    .writeOpCode(OP.OP_EQUALVERIFY)
-    .writeOpCode(OP.OP_CHECKSIG)
-
-    .writeOpCode(OP.OP_ENDIF)
-}
 ```
 
 ### Hash Chains
@@ -825,17 +791,10 @@ class PreimageContract {
    */
   createLock(
     secretHash: Buffer,
-    rewardRecipient: Buffer, // pubKeyHash
-    bountyPoster: Buffer,    // pubKeyHash
-    timeoutBlock: number
+    rewardRecipient: Buffer // pubKeyHash
   ): Script {
     return new Script()
-      // Two spending paths:
-      // 1. Reveal preimage before timeout
-      // 2. Refund to bounty poster after timeout
-
-      .writeOpCode(OP.OP_IF)
-      // Path 1: Preimage revelation
+      // Reveal preimage to claim reward
       .writeOpCode(OP.OP_SHA256)
       .writeBin(secretHash)
       .writeOpCode(OP.OP_EQUALVERIFY)
@@ -846,21 +805,6 @@ class PreimageContract {
       .writeBin(rewardRecipient)
       .writeOpCode(OP.OP_EQUALVERIFY)
       .writeOpCode(OP.OP_CHECKSIG)
-
-      .writeOpCode(OP.OP_ELSE)
-      // Path 2: Timeout refund
-      .writeBin(Buffer.from([timeoutBlock >> 24, timeoutBlock >> 16, timeoutBlock >> 8, timeoutBlock]))
-      .writeOpCode(OP.OP_CHECKLOCKTIMEVERIFY)
-      .writeOpCode(OP.OP_DROP)
-
-      // Pay back to bounty poster
-      .writeOpCode(OP.OP_DUP)
-      .writeOpCode(OP.OP_HASH160)
-      .writeBin(bountyPoster)
-      .writeOpCode(OP.OP_EQUALVERIFY)
-      .writeOpCode(OP.OP_CHECKSIG)
-
-      .writeOpCode(OP.OP_ENDIF)
   }
 
   /**
@@ -875,20 +819,6 @@ class PreimageContract {
       .writeBin(signature)
       .writeBin(publicKey)
       .writeBin(preimage)
-      .writeOpCode(OP.OP_1)  // Choose IF branch
-  }
-
-  /**
-   * Create unlocking script for timeout refund
-   */
-  createRefundUnlock(
-    signature: Buffer,
-    publicKey: Buffer
-  ): Script {
-    return new Script()
-      .writeBin(signature)
-      .writeBin(publicKey)
-      .writeOpCode(OP.OP_0)  // Choose ELSE branch
   }
 }
 
@@ -1586,44 +1516,6 @@ class EscrowContract {
   }
 
   /**
-   * Create escrow with timeout fallback
-   */
-  createTimedEscrow(
-    buyerPubKey: Buffer,
-    sellerPubKey: Buffer,
-    arbiterPubKey: Buffer,
-    timeoutBlock: number,
-    refundPubKey: Buffer
-  ): Script {
-    return new Script()
-      // Check if we're using timeout refund
-      .writeOpCode(OP.OP_IF)
-
-      // Normal escrow: 2-of-3
-      .writeOpCode(OP.OP_2)
-      .writeBin(buyerPubKey)
-      .writeBin(sellerPubKey)
-      .writeBin(arbiterPubKey)
-      .writeOpCode(OP.OP_3)
-      .writeOpCode(OP.OP_CHECKMULTISIG)
-
-      .writeOpCode(OP.OP_ELSE)
-
-      // Timeout refund
-      .writeBin(Buffer.from([timeoutBlock >> 24, timeoutBlock >> 16, timeoutBlock >> 8, timeoutBlock]))
-      .writeOpCode(OP.OP_CHECKLOCKTIMEVERIFY)
-      .writeOpCode(OP.OP_DROP)
-
-      .writeOpCode(OP.OP_DUP)
-      .writeOpCode(OP.OP_HASH160)
-      .writeBin(Hash.hash160(refundPubKey))
-      .writeOpCode(OP.OP_EQUALVERIFY)
-      .writeOpCode(OP.OP_CHECKSIG)
-
-      .writeOpCode(OP.OP_ENDIF)
-  }
-
-  /**
    * Create unlocking script for escrow release
    */
   createReleaseUnlock(
@@ -1634,20 +1526,6 @@ class EscrowContract {
       .writeOpCode(OP.OP_0)  // Bug workaround
       .writeBin(signature1)
       .writeBin(signature2)
-      .writeOpCode(OP.OP_1)  // Choose IF branch
-  }
-
-  /**
-   * Create unlocking script for timeout refund
-   */
-  createRefundUnlock(
-    signature: Buffer,
-    publicKey: Buffer
-  ): Script {
-    return new Script()
-      .writeBin(signature)
-      .writeBin(publicKey)
-      .writeOpCode(OP.OP_0)  // Choose ELSE branch
   }
 }
 
@@ -1659,322 +1537,17 @@ async function escrowExample() {
 
   const escrow = new EscrowContract()
 
-  const lockingScript = escrow.createTimedEscrow(
+  const lockingScript = escrow.createTwoOfThreeEscrow(
     buyer.toPublicKey().encode(true),
     seller.toPublicKey().encode(true),
-    arbiter.toPublicKey().encode(true),
-    800000,  // Timeout block
-    buyer.toPublicKey().encode(true)  // Refund to buyer
+    arbiter.toPublicKey().encode(true)
   )
 
   console.log('Escrow created with 2-of-3 multisig')
-  console.log('Timeout refund available at block 800000')
 }
 ```
 
-## 7. Atomic Swaps and HTLCs
-
-### Hash Time-Locked Contracts (HTLCs)
-
-```typescript
-import { Script, OP, Hash } from '@bsv/sdk'
-
-/**
- * HTLC Implementation
- *
- * Enables cross-chain atomic swaps
- */
-
-class HTLC {
-  /**
-   * Create HTLC locking script
-   */
-  createLock(
-    recipientPubKeyHash: Buffer,
-    senderPubKeyHash: Buffer,
-    secretHash: Buffer,
-    locktime: number
-  ): Script {
-    return new Script()
-      // Two spending paths:
-      // 1. Recipient with secret before locktime
-      // 2. Sender refund after locktime
-
-      .writeOpCode(OP.OP_IF)
-
-      // Path 1: Recipient claims with secret
-      .writeOpCode(OP.OP_SHA256)
-      .writeBin(secretHash)
-      .writeOpCode(OP.OP_EQUALVERIFY)
-
-      .writeOpCode(OP.OP_DUP)
-      .writeOpCode(OP.OP_HASH160)
-      .writeBin(recipientPubKeyHash)
-
-      .writeOpCode(OP.OP_ELSE)
-
-      // Path 2: Sender refund after locktime
-      .writeBin(Buffer.from([locktime >> 24, locktime >> 16, locktime >> 8, locktime]))
-      .writeOpCode(OP.OP_CHECKLOCKTIMEVERIFY)
-      .writeOpCode(OP.OP_DROP)
-
-      .writeOpCode(OP.OP_DUP)
-      .writeOpCode(OP.OP_HASH160)
-      .writeBin(senderPubKeyHash)
-
-      .writeOpCode(OP.OP_ENDIF)
-
-      .writeOpCode(OP.OP_EQUALVERIFY)
-      .writeOpCode(OP.OP_CHECKSIG)
-  }
-
-  /**
-   * Create claim unlocking script
-   */
-  createClaimUnlock(
-    signature: Buffer,
-    publicKey: Buffer,
-    secret: Buffer
-  ): Script {
-    return new Script()
-      .writeBin(signature)
-      .writeBin(publicKey)
-      .writeBin(secret)
-      .writeOpCode(OP.OP_1)  // Choose IF branch
-  }
-
-  /**
-   * Create refund unlocking script
-   */
-  createRefundUnlock(
-    signature: Buffer,
-    publicKey: Buffer
-  ): Script {
-    return new Script()
-      .writeBin(signature)
-      .writeBin(publicKey)
-      .writeOpCode(OP.OP_0)  // Choose ELSE branch
-  }
-}
-```
-
-### Atomic Swap Protocol
-
-```typescript
-/**
- * Atomic Swap Coordinator
- *
- * Coordinates cross-chain atomic swaps using HTLCs
- */
-
-class AtomicSwap {
-  private htlc: HTLC
-
-  constructor() {
-    this.htlc = new HTLC()
-  }
-
-  /**
-   * Initiate atomic swap
-   *
-   * Alice wants to swap BSV for BTC with Bob
-   */
-  async initiateSwap(params: {
-    aliceBSVKey: PrivateKey
-    bobBSVKey: PrivateKey
-    aliceBTCAddress: string
-    bobBTCAddress: string
-    bsvAmount: number
-    btcAmount: number
-    locktime: number
-  }): Promise<{
-    secret: Buffer
-    secretHash: Buffer
-    bsvHTLC: Script
-    btcHTLC: Script
-  }> {
-    // Generate secret
-    const secret = Hash.sha256(Buffer.from(Math.random().toString()))
-    const secretHash = Hash.sha256(secret)
-
-    // Create BSV HTLC (Alice locks BSV)
-    const alicePubKeyHash = Hash.hash160(params.aliceBSVKey.toPublicKey().encode(true))
-    const bobPubKeyHash = Hash.hash160(params.bobBSVKey.toPublicKey().encode(true))
-
-    const bsvHTLC = this.htlc.createLock(
-      bobPubKeyHash,      // Bob can claim
-      alicePubKeyHash,    // Alice can refund
-      secretHash,
-      params.locktime
-    )
-
-    // Create BTC HTLC (Bob locks BTC)
-    // Note: This would use Bitcoin Core script, shown here in BSV format
-    const btcHTLC = this.htlc.createLock(
-      Buffer.from(params.aliceBTCAddress, 'hex'),  // Alice can claim
-      Buffer.from(params.bobBTCAddress, 'hex'),    // Bob can refund
-      secretHash,
-      params.locktime - 3600  // Earlier timeout for BTC
-    )
-
-    return {
-      secret,
-      secretHash,
-      bsvHTLC,
-      btcHTLC
-    }
-  }
-
-  /**
-   * Complete swap protocol
-   */
-  async executeSwap(): Promise<void> {
-    // Step 1: Alice creates BSV HTLC and funds it
-    console.log('Alice: Create and fund BSV HTLC')
-
-    // Step 2: Bob verifies BSV HTLC and creates BTC HTLC
-    console.log('Bob: Verify BSV HTLC and create BTC HTLC')
-
-    // Step 3: Alice verifies BTC HTLC
-    console.log('Alice: Verify BTC HTLC')
-
-    // Step 4: Alice claims BTC by revealing secret
-    console.log('Alice: Claim BTC by revealing secret')
-
-    // Step 5: Bob sees secret on BTC chain and claims BSV
-    console.log('Bob: See secret and claim BSV')
-
-    // Swap complete!
-    console.log('Atomic swap completed successfully')
-  }
-}
-
-// Usage example
-async function atomicSwapExample() {
-  const swap = new AtomicSwap()
-
-  const aliceBSV = PrivateKey.fromRandom()
-  const bobBSV = PrivateKey.fromRandom()
-
-  const swapParams = await swap.initiateSwap({
-    aliceBSVKey: aliceBSV,
-    bobBSVKey: bobBSV,
-    aliceBTCAddress: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
-    bobBTCAddress: '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2',
-    bsvAmount: 100000000,  // 1 BSV
-    btcAmount: 50000000,   // 0.5 BTC
-    locktime: 800000
-  })
-
-  console.log('Secret hash:', swapParams.secretHash.toString('hex'))
-  console.log('Swap parameters created')
-
-  await swap.executeSwap()
-}
-```
-
-### Payment Channels with HTLCs
-
-```typescript
-/**
- * Bidirectional Payment Channel with HTLCs
- *
- * Enables instant, low-cost payments between parties
- */
-
-class PaymentChannel {
-  private channelId: Buffer
-  private stateNumber: number = 0
-
-  constructor(channelId: Buffer) {
-    this.channelId = channelId
-  }
-
-  /**
-   * Create channel funding transaction
-   */
-  createFundingTx(
-    party1Key: PrivateKey,
-    party2Key: PrivateKey,
-    party1Amount: number,
-    party2Amount: number
-  ): Script {
-    return new Script()
-      // 2-of-2 multisig
-      .writeOpCode(OP.OP_2)
-      .writeBin(party1Key.toPublicKey().encode(true))
-      .writeBin(party2Key.toPublicKey().encode(true))
-      .writeOpCode(OP.OP_2)
-      .writeOpCode(OP.OP_CHECKMULTISIG)
-  }
-
-  /**
-   * Create commitment transaction for current state
-   */
-  createCommitmentTx(
-    party1Balance: number,
-    party2Balance: number,
-    party1Key: PrivateKey,
-    party2Key: PrivateKey
-  ): {
-    stateNumber: number
-    party1Output: Script
-    party2Output: Script
-  } {
-    this.stateNumber++
-
-    const party1PubKeyHash = Hash.hash160(party1Key.toPublicKey().encode(true))
-    const party2PubKeyHash = Hash.hash160(party2Key.toPublicKey().encode(true))
-
-    // Each party gets their balance via HTLC
-    // This allows instant revocation of old states
-
-    return {
-      stateNumber: this.stateNumber,
-      party1Output: this.createCommitmentOutput(party1PubKeyHash, party2PubKeyHash),
-      party2Output: this.createCommitmentOutput(party2PubKeyHash, party1PubKeyHash)
-    }
-  }
-
-  /**
-   * Create commitment output with revocation
-   */
-  private createCommitmentOutput(
-    ownerPubKeyHash: Buffer,
-    counterpartyPubKeyHash: Buffer
-  ): Script {
-    // Owner can claim after timelock
-    // Counterparty can claim immediately with revocation key
-
-    return new Script()
-      .writeOpCode(OP.OP_IF)
-
-      // Counterparty with revocation key
-      .writeOpCode(OP.OP_DUP)
-      .writeOpCode(OP.OP_HASH160)
-      .writeBin(counterpartyPubKeyHash)
-      .writeOpCode(OP.OP_EQUALVERIFY)
-      .writeOpCode(OP.OP_CHECKSIG)
-
-      .writeOpCode(OP.OP_ELSE)
-
-      // Owner after timelock
-      .writeBin(Buffer.from([144, 0, 0, 0]))  // ~24 hour delay
-      .writeOpCode(OP.OP_CHECKSEQUENCEVERIFY)
-      .writeOpCode(OP.OP_DROP)
-
-      .writeOpCode(OP.OP_DUP)
-      .writeOpCode(OP.OP_HASH160)
-      .writeBin(ownerPubKeyHash)
-      .writeOpCode(OP.OP_EQUALVERIFY)
-      .writeOpCode(OP.OP_CHECKSIG)
-
-      .writeOpCode(OP.OP_ENDIF)
-  }
-}
-```
-
-## 8. Covenants
+## 7. Covenants
 
 ### Understanding Covenants
 
@@ -2039,119 +1612,7 @@ class CovenantContract {
 }
 ```
 
-### Vault Covenant
-
-```typescript
-/**
- * Vault Covenant
- *
- * Implements a vault with time-delayed withdrawals
- * Allows cancellation if compromise detected
- */
-
-class VaultCovenant {
-  /**
-   * Create vault locking script
-   */
-  createVaultLock(
-    ownerPubKeyHash: Buffer,
-    emergencyPubKeyHash: Buffer,
-    withdrawalDelay: number
-  ): Script {
-    return new Script()
-      .writeOpCode(OP.OP_IF)
-
-      // Path 1: Initiate withdrawal (goes to intermediate output)
-      .writeOpCode(OP.OP_DUP)
-      .writeOpCode(OP.OP_HASH160)
-      .writeBin(ownerPubKeyHash)
-      .writeOpCode(OP.OP_EQUALVERIFY)
-      .writeOpCode(OP.OP_CHECKSIG)
-
-      // Enforce output to withdrawal script
-      // (Would use covenant opcodes in production)
-
-      .writeOpCode(OP.OP_ELSE)
-
-      // Path 2: Emergency recovery
-      .writeOpCode(OP.OP_DUP)
-      .writeOpCode(OP.OP_HASH160)
-      .writeBin(emergencyPubKeyHash)
-      .writeOpCode(OP.OP_EQUALVERIFY)
-      .writeOpCode(OP.OP_CHECKSIG)
-
-      .writeOpCode(OP.OP_ENDIF)
-  }
-
-  /**
-   * Create withdrawal intermediate script
-   * (funds must wait here before final withdrawal)
-   */
-  createWithdrawalLock(
-    ownerPubKeyHash: Buffer,
-    cancelPubKeyHash: Buffer,
-    delay: number
-  ): Script {
-    return new Script()
-      .writeOpCode(OP.OP_IF)
-
-      // Path 1: Complete withdrawal after delay
-      .writeBin(Buffer.from([delay >> 24, delay >> 16, delay >> 8, delay]))
-      .writeOpCode(OP.OP_CHECKSEQUENCEVERIFY)
-      .writeOpCode(OP.OP_DROP)
-
-      .writeOpCode(OP.OP_DUP)
-      .writeOpCode(OP.OP_HASH160)
-      .writeBin(ownerPubKeyHash)
-      .writeOpCode(OP.OP_EQUALVERIFY)
-      .writeOpCode(OP.OP_CHECKSIG)
-
-      .writeOpCode(OP.OP_ELSE)
-
-      // Path 2: Cancel withdrawal (return to vault)
-      .writeOpCode(OP.OP_DUP)
-      .writeOpCode(OP.OP_HASH160)
-      .writeBin(cancelPubKeyHash)
-      .writeOpCode(OP.OP_EQUALVERIFY)
-      .writeOpCode(OP.OP_CHECKSIG)
-
-      // Must return to vault script (covenant)
-
-      .writeOpCode(OP.OP_ENDIF)
-  }
-}
-
-// Usage example
-async function vaultExample() {
-  const owner = PrivateKey.fromRandom()
-  const emergency = PrivateKey.fromRandom()
-
-  const ownerPubKeyHash = Hash.hash160(owner.toPublicKey().encode(true))
-  const emergencyPubKeyHash = Hash.hash160(emergency.toPublicKey().encode(true))
-
-  const vault = new VaultCovenant()
-
-  // Create vault with 24-hour withdrawal delay
-  const vaultLock = vault.createVaultLock(
-    ownerPubKeyHash,
-    emergencyPubKeyHash,
-    144  // ~24 hours in blocks
-  )
-
-  console.log('Vault created with 24-hour withdrawal delay')
-
-  // Create withdrawal lock
-  const withdrawalLock = vault.createWithdrawalLock(
-    ownerPubKeyHash,
-    ownerPubKeyHash,
-    144
-  )
-
-  console.log('Withdrawal initiated - must wait 24 hours')
-}
-```
-
-## 9. Script Optimization
+## 8. Script Optimization
 
 ### Size Optimization
 
@@ -2377,7 +1838,7 @@ class ExecutionOptimizer {
 }
 ```
 
-## 10. Testing and Debugging
+## 9. Testing and Debugging
 
 ### Script Testing Framework
 
@@ -3079,9 +2540,8 @@ Build a complete multi-party escrow system with oracle integration for dispute r
 
 1. **Three-Party Escrow**: Buyer, seller, and arbiter
 2. **Oracle Integration**: Price feed for conditional release
-3. **Time Locks**: Automatic refund after timeout
-4. **State Management**: Track escrow states
-5. **Multi-Signature**: Require 2-of-3 for release
+3. **State Management**: Track escrow states
+4. **Multi-Signature**: Require 2-of-3 for release
 
 ### Implementation
 
@@ -3118,7 +2578,6 @@ class AdvancedEscrowSystem {
     amount: number
     minimumPrice: number
     assetPair: string
-    timeoutBlocks: number
   }): Promise<{
     lockingScript: Script
     fundingTx: Transaction
@@ -3127,12 +2586,8 @@ class AdvancedEscrowSystem {
     const sellerPubKey = params.sellerKey.toPublicKey().encode(true)
     const arbiterPubKey = params.arbiterKey.toPublicKey().encode(true)
 
-    // Create compound locking script
+    // Release requires oracle price verification AND 2-of-3 multisig
     const lockingScript = new Script()
-      // Check spending path
-      .writeOpCode(OP.OP_IF)
-
-      // Path 1: Release with oracle price verification
       .writeOpCode(OP.OP_DUP)
       .writeOpCode(params.minimumPrice)
       .writeOpCode(OP.OP_GREATERTHANOREQUAL)
@@ -3151,26 +2606,6 @@ class AdvancedEscrowSystem {
       .writeBin(arbiterPubKey)
       .writeOpCode(OP.OP_3)
       .writeOpCode(OP.OP_CHECKMULTISIG)
-
-      .writeOpCode(OP.OP_ELSE)
-
-      // Path 2: Timeout refund to buyer
-      .writeBin(Buffer.from([
-        params.timeoutBlocks >> 24,
-        (params.timeoutBlocks >> 16) & 0xff,
-        (params.timeoutBlocks >> 8) & 0xff,
-        params.timeoutBlocks & 0xff
-      ]))
-      .writeOpCode(OP.OP_CHECKLOCKTIMEVERIFY)
-      .writeOpCode(OP.OP_DROP)
-
-      .writeOpCode(OP.OP_DUP)
-      .writeOpCode(OP.OP_HASH160)
-      .writeBin(Hash.hash160(buyerPubKey))
-      .writeOpCode(OP.OP_EQUALVERIFY)
-      .writeOpCode(OP.OP_CHECKSIG)
-
-      .writeOpCode(OP.OP_ENDIF)
 
     // Create funding transaction
     const fundingTx = new Transaction()
@@ -3238,49 +2673,6 @@ class AdvancedEscrowSystem {
     return spendingTx
   }
 
-  /**
-   * Refund escrow after timeout
-   */
-  async refundEscrow(params: {
-    fundingTx: Transaction
-    buyerKey: PrivateKey
-  }): Promise<Transaction> {
-    const spendingTx = new Transaction()
-
-    const signature = Buffer.alloc(72)  // Placeholder
-    const publicKey = params.buyerKey.toPublicKey().encode(true)
-
-    const unlockingScript = new Script()
-      .writeBin(signature)
-      .writeBin(publicKey)
-      .writeOpCode(OP.OP_0)  // Choose ELSE branch
-
-    spendingTx.addInput({
-      sourceTransaction: params.fundingTx,
-      sourceOutputIndex: 0,
-      unlockingScriptTemplate: {
-        sign: async () => unlockingScript as any,
-        estimateLength: async () => unlockingScript.toBinary().length
-      }
-    })
-
-    // Refund to buyer
-    const buyerPubKeyHash = Hash.hash160(publicKey)
-    spendingTx.addOutput({
-      lockingScript: new Script()
-        .writeOpCode(OP.OP_DUP)
-        .writeOpCode(OP.OP_HASH160)
-        .writeBin(buyerPubKeyHash)
-        .writeOpCode(OP.OP_EQUALVERIFY)
-        .writeOpCode(OP.OP_CHECKSIG),
-      satoshis: params.fundingTx.outputs[0].satoshis - 500
-    })
-
-    await spendingTx.fee()
-    await spendingTx.sign()
-
-    return spendingTx
-  }
 }
 
 // Usage example
@@ -3303,8 +2695,7 @@ async function escrowProjectExample() {
     arbiterKey,
     amount: 100000000,  // 1 BSV
     minimumPrice: 5000,  // $50.00
-    assetPair: 'BSV/USD',
-    timeoutBlocks: 144  // ~24 hours
+    assetPair: 'BSV/USD'
   })
 
   console.log('Escrow created')

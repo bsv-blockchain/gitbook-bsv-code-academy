@@ -119,8 +119,6 @@
   * [SPV Validation](code-features/spv-validation/README.md)
   * [Double Spend Detection](code-features/double-spend-detection/README.md)
   * [Smart Contracts](code-features/smart-contracts/README.md)
-  * [Atomic Swaps](code-features/atomic-swaps/README.md)
-  * [Payment Channels](code-features/payment-channels/README.md)
   * [Payment Processing](code-features/payment-processing/README.md)
   * [Payment Distribution](code-features/payment-distribution/README.md)
   * [E-commerce Integration](code-features/ecommerce-integration/README.md)

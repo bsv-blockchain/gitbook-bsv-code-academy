@@ -56,10 +56,8 @@ Features are organized by functionality and use case. Each feature includes:
 - [Create Wallet](create-wallet/README.md) - Initialize new wallet
 
 ### Advanced Features
-- [Payment Channels](payment-channels/README.md) - Bi-directional payment channels
 - [Payment Distribution](payment-distribution/README.md) - Distribute payments
 - [Payment Processing](payment-processing/README.md) - Process payments
-- [Atomic Swaps](atomic-swaps/README.md) - Trustless token exchanges
 - [Smart Contracts](smart-contracts/README.md) - Smart contract patterns
 - [Double-Spend Detection](double-spend-detection/README.md) - Detect double-spends
 - [Content Paywall](content-paywall/README.md) - Micropayment paywalls
