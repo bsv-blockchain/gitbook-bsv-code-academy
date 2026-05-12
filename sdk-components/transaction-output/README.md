@@ -197,21 +197,6 @@ tx.addOutput({
   satoshis: 10000
 });
 
-// Time-locked output (can only spend after block height/time)
-const lockTime = 1700000000; // Unix timestamp
-tx.addOutput({
-  lockingScript: new Script()
-    .writeBin(Buffer.from(lockTime.toString(16), 'hex'))
-    .writeOpCode(OP.OP_CHECKLOCKTIMEVERIFY)
-    .writeOpCode(OP.OP_DROP)
-    .writeOpCode(OP.OP_DUP)
-    .writeOpCode(OP.OP_HASH160)
-    .writeBin(Buffer.from('pubkeyhash', 'hex'))
-    .writeOpCode(OP.OP_EQUALVERIFY)
-    .writeOpCode(OP.OP_CHECKSIG),
-  satoshis: 50000
-});
-
 // Multi-signature output (2-of-3)
 const pubKey1 = Buffer.from('02abc...', 'hex');
 const pubKey2 = Buffer.from('03def...', 'hex');
@@ -404,95 +389,6 @@ const tx = DataPaymentTransaction.create(
 
 // Add input and finalize
 // ... add inputs, calculate fee, sign ...
-```
-
-### Pattern 3: Atomic Swap Output Structure
-
-Create outputs for atomic swap transactions:
-
-```typescript
-import { Transaction, Script, OP, Hash } from '@bsv/sdk';
-
-class AtomicSwapOutput {
-  /**
-   * Create Hash Time Locked Contract (HTLC) output for atomic swap
-   */
-  static createHTLC(
-    payeeHash: Buffer,
-    payerHash: Buffer,
-    secret: Buffer,
-    lockTime: number,
-    amount: number
-  ): TransactionOutput {
-    const secretHash = Hash.sha256(secret);
-
-    const lockingScript = new Script()
-      // Path 1: Payee provides secret
-      .writeOpCode(OP.OP_IF)
-        .writeOpCode(OP.OP_HASH256)
-        .writeBin(Array.from(secretHash))
-        .writeOpCode(OP.OP_EQUALVERIFY)
-        .writeOpCode(OP.OP_DUP)
-        .writeOpCode(OP.OP_HASH160)
-        .writeBin(payeeHash)
-      .writeOpCode(OP.OP_ELSE)
-        // Path 2: Payer reclaims after timeout
-        .writeBin(Buffer.from(lockTime.toString(16), 'hex'))
-        .writeOpCode(OP.OP_CHECKLOCKTIMEVERIFY)
-        .writeOpCode(OP.OP_DROP)
-        .writeOpCode(OP.OP_DUP)
-        .writeOpCode(OP.OP_HASH160)
-        .writeBin(payerHash)
-      .writeOpCode(OP.OP_ENDIF)
-      .writeOpCode(OP.OP_EQUALVERIFY)
-      .writeOpCode(OP.OP_CHECKSIG);
-
-    return {
-      lockingScript,
-      satoshis: amount
-    };
-  }
-
-  /**
-   * Create both sides of atomic swap
-   */
-  static createSwapTransactions(
-    party1: { hash: Buffer; amount: number },
-    party2: { hash: Buffer; amount: number },
-    secret: Buffer,
-    lockTime1: number,
-    lockTime2: number
-  ): { tx1: Transaction; tx2: Transaction } {
-    // Transaction 1: Party 1 locks funds
-    const tx1 = new Transaction();
-    tx1.addOutput(
-      this.createHTLC(party2.hash, party1.hash, secret, lockTime1, party1.amount)
-    );
-
-    // Transaction 2: Party 2 locks funds (same secret hash)
-    const tx2 = new Transaction();
-    tx2.addOutput(
-      this.createHTLC(party1.hash, party2.hash, secret, lockTime2, party2.amount)
-    );
-
-    return { tx1, tx2 };
-  }
-}
-
-// Usage: Create atomic swap between two parties
-const secret = Buffer.from('shared_secret_12345');
-const party1Hash = Buffer.from('party1_pubkey_hash', 'hex');
-const party2Hash = Buffer.from('party2_pubkey_hash', 'hex');
-
-const { tx1, tx2 } = AtomicSwapOutput.createSwapTransactions(
-  { hash: party1Hash, amount: 100000 },
-  { hash: party2Hash, amount: 200000 },
-  secret,
-  Math.floor(Date.now() / 1000) + 86400, // 24 hours
-  Math.floor(Date.now() / 1000) + 86400
-);
-
-console.log('Atomic swap transactions created');
 ```
 
 ## Security Considerations

@@ -898,8 +898,6 @@ console.log('With', restored.merklePaths.length, 'merkle proofs');
 See complete working examples in:
 - [SPV Validation](../../code-features/spv-validation/README.md)
 - [Transaction Chains](../../code-features/transaction-chains/README.md)
-- [Payment Channels](../../code-features/payment-channels/README.md)
-- [Atomic Swaps](../../code-features/atomic-swaps/README.md)
 
 ## Best Practices
 

@@ -232,8 +232,6 @@ Production-ready code examples for specific features. Copy, modify, and use in y
 
 ### Advanced Patterns
 - [Smart Contracts](code-features/smart-contracts/) - Escrow, vesting, oracles
-- [Atomic Swaps](code-features/atomic-swaps/) - Trustless exchanges
-- [Payment Channels](code-features/payment-channels/) - Off-chain payments
 - [OP_RETURN](code-features/op-return/) - Data embedding
 
 ### Business Applications

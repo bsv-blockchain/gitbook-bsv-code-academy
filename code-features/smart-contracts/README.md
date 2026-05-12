@@ -35,23 +35,15 @@ class EscrowContract {
    * @param buyerPubKey - Public key of the buyer
    * @param sellerPubKey - Public key of the seller
    * @param arbiterPubKey - Public key of the arbiter
-   * @param timeout - Timeout after which seller can claim (unix timestamp)
    * @returns Escrow locking script
    */
   createEscrowScript(
     buyerPubKey: PublicKey,
     sellerPubKey: PublicKey,
-    arbiterPubKey: PublicKey,
-    timeout?: number
+    arbiterPubKey: PublicKey
   ): Script {
     try {
-      // 2-of-3 multisig with optional timeout
       const script = new Script()
-
-      if (timeout) {
-        // If timeout is specified, add timeout branch
-        script.chunks.push({ op: OP.OP_IF })
-      }
 
       // 2-of-3 multisig: any two of buyer, seller, arbiter
       script.chunks.push({ op: OP.OP_2 })
@@ -60,17 +52,6 @@ class EscrowContract {
       script.chunks.push({ data: arbiterPubKey.toBuffer() })
       script.chunks.push({ op: OP.OP_3 })
       script.chunks.push({ op: OP.OP_CHECKMULTISIG })
-
-      if (timeout) {
-        // Timeout branch: seller can claim after timeout
-        script.chunks.push({ op: OP.OP_ELSE })
-        script.chunks.push({ data: this.numberToBuffer(timeout) })
-        script.chunks.push({ op: OP.OP_CHECKLOCKTIMEVERIFY })
-        script.chunks.push({ op: OP.OP_DROP })
-        script.chunks.push({ data: sellerPubKey.toBuffer() })
-        script.chunks.push({ op: OP.OP_CHECKSIG })
-        script.chunks.push({ op: OP.OP_ENDIF })
-      }
 
       return script
     } catch (error) {
@@ -86,7 +67,6 @@ class EscrowContract {
    * @param arbiter - Arbiter's public key
    * @param amount - Escrow amount
    * @param utxo - Funding UTXO
-   * @param timeoutDays - Optional timeout in days
    * @returns Escrow transaction and script
    */
   async createEscrow(
@@ -99,14 +79,12 @@ class EscrowContract {
       vout: number
       satoshis: number
       script: Script
-    },
-    timeoutDays?: number
+    }
   ): Promise<{
     transaction: Transaction
     escrowScript: Script
     escrowDetails: {
       amount: number
-      timeout?: number
       participants: {
         buyer: string
         seller: string
@@ -119,16 +97,12 @@ class EscrowContract {
         throw new Error('Escrow amount too small')
       }
 
-      const timeout = timeoutDays
-        ? Math.floor(Date.now() / 1000) + (timeoutDays * 24 * 60 * 60)
-        : undefined
 
       // Create escrow script
       const escrowScript = this.createEscrowScript(
         buyer.toPublicKey(),
         seller,
-        arbiter,
-        timeout
+        arbiter
       )
 
       // Create funding transaction
@@ -163,14 +137,12 @@ class EscrowContract {
 
       console.log('Escrow created')
       console.log(`  Amount: ${escrowAmount} satoshis`)
-      console.log(`  Timeout: ${timeout ? new Date(timeout * 1000).toISOString() : 'None'}`)
 
       return {
         transaction: tx,
         escrowScript,
         escrowDetails: {
           amount: escrowAmount,
-          timeout,
           participants: {
             buyer: buyer.toPublicKey().toString(),
             seller: seller.toString(),
@@ -359,14 +331,13 @@ async function escrowExample() {
     script: new P2PKH().lock(buyer.toPublicKey().toHash())
   }
 
-  // Create escrow for 50,000 sats with 30-day timeout
+  // Create escrow for 50,000 sats
   const { transaction, escrowScript } = await escrow.createEscrow(
     buyer,
     seller.toPublicKey(),
     arbiter.toPublicKey(),
     50000,
-    buyerUTXO,
-    30
+    buyerUTXO
   )
 
   console.log('Escrow Transaction:', transaction.id('hex'))
@@ -385,357 +356,6 @@ async function escrowExample() {
   )
 
   console.log('Release Transaction:', releaseTx.id('hex'))
-}
-```
-
-## Token Vesting Contract
-
-```typescript
-import { Transaction, PrivateKey, PublicKey, Script, OP, P2PKH } from '@bsv/sdk'
-
-/**
- * Token Vesting Smart Contract
- *
- * Implements time-locked vesting schedules for token distribution.
- */
-class VestingContract {
-  /**
-   * Create a vesting schedule
-   *
-   * @param beneficiary - Public key of the beneficiary
-   * @param cliffTime - Unix timestamp when cliff period ends
-   * @param vestingEnd - Unix timestamp when vesting completes
-   * @param totalAmount - Total amount to vest
-   * @returns Vesting details
-   */
-  createVestingSchedule(
-    beneficiary: PublicKey,
-    cliffTime: number,
-    vestingEnd: number,
-    totalAmount: number
-  ): {
-    schedule: Array<{
-      unlockTime: number
-      amount: number
-      percentage: number
-    }>
-    totalAmount: number
-    duration: number
-  } {
-    try {
-      const currentTime = Math.floor(Date.now() / 1000)
-
-      if (cliffTime <= currentTime) {
-        throw new Error('Cliff time must be in the future')
-      }
-
-      if (vestingEnd <= cliffTime) {
-        throw new Error('Vesting end must be after cliff')
-      }
-
-      // Create linear vesting schedule
-      const duration = vestingEnd - cliffTime
-      const monthlyIntervals = 12 // Vest over 12 months after cliff
-
-      const schedule: Array<{
-        unlockTime: number
-        amount: number
-        percentage: number
-      }> = []
-
-      const intervalDuration = duration / monthlyIntervals
-      const amountPerInterval = Math.floor(totalAmount / monthlyIntervals)
-
-      for (let i = 1; i <= monthlyIntervals; i++) {
-        const unlockTime = cliffTime + (intervalDuration * i)
-        const percentage = (i / monthlyIntervals) * 100
-
-        schedule.push({
-          unlockTime: Math.floor(unlockTime),
-          amount: i === monthlyIntervals
-            ? totalAmount - (amountPerInterval * (monthlyIntervals - 1)) // Last interval gets remainder
-            : amountPerInterval,
-          percentage
-        })
-      }
-
-      console.log('Vesting schedule created')
-      console.log(`  Total amount: ${totalAmount}`)
-      console.log(`  Cliff: ${new Date(cliffTime * 1000).toISOString()}`)
-      console.log(`  End: ${new Date(vestingEnd * 1000).toISOString()}`)
-      console.log(`  Intervals: ${monthlyIntervals}`)
-
-      return {
-        schedule,
-        totalAmount,
-        duration
-      }
-    } catch (error) {
-      throw new Error(`Vesting schedule creation failed: ${error.message}`)
-    }
-  }
-
-  /**
-   * Create time-locked vesting outputs
-   *
-   * @param funder - Funder's private key
-   * @param beneficiary - Beneficiary's public key
-   * @param vestingSchedule - Vesting schedule
-   * @param utxo - Funding UTXO
-   * @returns Vesting transaction
-   */
-  async createVestingTransaction(
-    funder: PrivateKey,
-    beneficiary: PublicKey,
-    vestingSchedule: Array<{
-      unlockTime: number
-      amount: number
-      percentage: number
-    }>,
-    utxo: {
-      txid: string
-      vout: number
-      satoshis: number
-      script: Script
-    }
-  ): Promise<Transaction> {
-    try {
-      const tx = new Transaction()
-
-      tx.addInput({
-        sourceTXID: utxo.txid,
-        sourceOutputIndex: utxo.vout,
-        unlockingScriptTemplate: new P2PKH().unlock(funder),
-        sequence: 0xffffffff
-      })
-
-      // Create time-locked outputs for each vesting interval
-      for (const interval of vestingSchedule) {
-        const vestingScript = this.createTimeLockedScript(
-          beneficiary,
-          interval.unlockTime
-        )
-
-        tx.addOutput({
-          satoshis: interval.amount,
-          lockingScript: vestingScript
-        })
-
-        console.log(`Added vesting output: ${interval.amount} sats at ${new Date(interval.unlockTime * 1000).toISOString()}`)
-      }
-
-      // Calculate change
-      const totalVested = vestingSchedule.reduce((sum, v) => sum + v.amount, 0)
-      const fee = 500 + (vestingSchedule.length * 50)
-      const change = utxo.satoshis - totalVested - fee
-
-      if (change > 546) {
-        tx.addOutput({
-          satoshis: change,
-          lockingScript: new P2PKH().lock(funder.toPublicKey().toHash())
-        })
-      }
-
-      await tx.sign()
-
-      console.log('Vesting transaction created')
-      console.log(`  Total outputs: ${vestingSchedule.length}`)
-      console.log(`  Total vested: ${totalVested}`)
-
-      return tx
-    } catch (error) {
-      throw new Error(`Vesting transaction creation failed: ${error.message}`)
-    }
-  }
-
-  /**
-   * Create time-locked script
-   */
-  private createTimeLockedScript(
-    beneficiary: PublicKey,
-    unlockTime: number
-  ): Script {
-    const script = new Script()
-
-    // <unlockTime> OP_CHECKLOCKTIMEVERIFY OP_DROP <beneficiaryPubKey> OP_CHECKSIG
-    script.chunks.push({ data: this.numberToBuffer(unlockTime) })
-    script.chunks.push({ op: OP.OP_CHECKLOCKTIMEVERIFY })
-    script.chunks.push({ op: OP.OP_DROP })
-    script.chunks.push({ data: beneficiary.toBuffer() })
-    script.chunks.push({ op: OP.OP_CHECKSIG })
-
-    return script
-  }
-
-  /**
-   * Claim vested tokens
-   *
-   * @param beneficiary - Beneficiary's private key
-   * @param vestedOutputs - Array of vested outputs that are now unlocked
-   * @returns Claim transaction
-   */
-  async claimVestedTokens(
-    beneficiary: PrivateKey,
-    vestedOutputs: Array<{
-      txid: string
-      vout: number
-      satoshis: number
-      script: Script
-      unlockTime: number
-    }>
-  ): Promise<Transaction> {
-    try {
-      const currentTime = Math.floor(Date.now() / 1000)
-
-      // Filter outputs that can be claimed now
-      const claimable = vestedOutputs.filter(output => output.unlockTime <= currentTime)
-
-      if (claimable.length === 0) {
-        throw new Error('No vested outputs are claimable yet')
-      }
-
-      const tx = new Transaction()
-
-      // Set lock time to the latest unlock time
-      const maxLockTime = Math.max(...claimable.map(o => o.unlockTime))
-      tx.lockTime = maxLockTime
-
-      // Add all claimable outputs as inputs
-      for (const output of claimable) {
-        tx.addInput({
-          sourceTXID: output.txid,
-          sourceOutputIndex: output.vout,
-          unlockingScriptTemplate: {
-            sign: async (transaction: Transaction, inputIndex: number) => {
-              const signature = transaction.sign(inputIndex, beneficiary, output.script)
-
-              const unlockScript = new Script()
-              unlockScript.chunks.push({ data: signature })
-
-              return unlockScript
-            },
-            estimateLength: () => 120
-          },
-          sequence: 0xfffffffe // Required for lockTime
-        })
-      }
-
-      // Consolidate into single output
-      const totalClaimed = claimable.reduce((sum, o) => sum + o.satoshis, 0)
-      const fee = 500 + (claimable.length * 100)
-      const claimAmount = totalClaimed - fee
-
-      tx.addOutput({
-        satoshis: claimAmount,
-        lockingScript: new P2PKH().lock(beneficiary.toPublicKey().toHash())
-      })
-
-      await tx.sign()
-
-      console.log('Vested tokens claimed')
-      console.log(`  Claimed outputs: ${claimable.length}`)
-      console.log(`  Total claimed: ${claimAmount}`)
-
-      return tx
-    } catch (error) {
-      throw new Error(`Token claim failed: ${error.message}`)
-    }
-  }
-
-  /**
-   * Check claimable amount at given time
-   */
-  getClaimableAmount(
-    vestingSchedule: Array<{
-      unlockTime: number
-      amount: number
-    }>,
-    checkTime?: number
-  ): {
-    claimable: number
-    locked: number
-    percentage: number
-  } {
-    const time = checkTime || Math.floor(Date.now() / 1000)
-
-    const claimable = vestingSchedule
-      .filter(v => v.unlockTime <= time)
-      .reduce((sum, v) => sum + v.amount, 0)
-
-    const total = vestingSchedule.reduce((sum, v) => sum + v.amount, 0)
-    const locked = total - claimable
-    const percentage = (claimable / total) * 100
-
-    return { claimable, locked, percentage }
-  }
-
-  /**
-   * Convert number to buffer for script
-   */
-  private numberToBuffer(num: number): Buffer {
-    if (num === 0) return Buffer.from([])
-
-    const isNegative = num < 0
-    const absNum = Math.abs(num)
-    const bytes: number[] = []
-
-    let n = absNum
-    while (n > 0) {
-      bytes.push(n & 0xff)
-      n >>= 8
-    }
-
-    if (bytes[bytes.length - 1] & 0x80) {
-      bytes.push(isNegative ? 0x80 : 0x00)
-    } else if (isNegative) {
-      bytes[bytes.length - 1] |= 0x80
-    }
-
-    return Buffer.from(bytes)
-  }
-}
-
-/**
- * Usage Example
- */
-async function vestingExample() {
-  const vesting = new VestingContract()
-
-  const company = PrivateKey.fromRandom()
-  const employee = PrivateKey.fromRandom()
-
-  // Create 1-year vesting with 3-month cliff
-  const currentTime = Math.floor(Date.now() / 1000)
-  const cliffTime = currentTime + (90 * 24 * 60 * 60) // 3 months
-  const vestingEnd = cliffTime + (365 * 24 * 60 * 60) // 1 year after cliff
-
-  const schedule = vesting.createVestingSchedule(
-    employee.toPublicKey(),
-    cliffTime,
-    vestingEnd,
-    1000000 // 1M satoshis
-  )
-
-  const companyUTXO = {
-    txid: 'company-utxo...',
-    vout: 0,
-    satoshis: 2000000,
-    script: new P2PKH().lock(company.toPublicKey().toHash())
-  }
-
-  // Create vesting transaction
-  const vestingTx = await vesting.createVestingTransaction(
-    company,
-    employee.toPublicKey(),
-    schedule.schedule,
-    companyUTXO
-  )
-
-  console.log('Vesting transaction:', vestingTx.id('hex'))
-
-  // Check claimable amount
-  const claimable = vesting.getClaimableAmount(schedule.schedule)
-  console.log('Currently claimable:', claimable.claimable, `(${claimable.percentage.toFixed(2)}%)`)
 }
 ```
 
@@ -758,23 +378,15 @@ class OracleContract {
    * @param beneficiary - Beneficiary's public key
    * @param oracle - Oracle's public key
    * @param conditionHash - Hash of the condition data
-   * @param timeout - Optional timeout for refund
-   * @param refundKey - Optional refund key for timeout
    * @returns Oracle locking script
    */
   createOracleScript(
     beneficiary: PublicKey,
     oracle: PublicKey,
-    conditionHash: string,
-    timeout?: number,
-    refundKey?: PublicKey
+    conditionHash: string
   ): Script {
     try {
       const script = new Script()
-
-      if (timeout && refundKey) {
-        script.chunks.push({ op: OP.OP_IF })
-      }
 
       // Oracle + beneficiary path
       // Requires: <oracleSignature> <conditionData> <beneficiarySignature>
@@ -791,17 +403,6 @@ class OracleContract {
       script.chunks.push({ data: beneficiary.toBuffer() })
       script.chunks.push({ op: OP.OP_CHECKSIG })
 
-      if (timeout && refundKey) {
-        // Timeout refund path
-        script.chunks.push({ op: OP.OP_ELSE })
-        script.chunks.push({ data: this.numberToBuffer(timeout) })
-        script.chunks.push({ op: OP.OP_CHECKLOCKTIMEVERIFY })
-        script.chunks.push({ op: OP.OP_DROP })
-        script.chunks.push({ data: refundKey.toBuffer() })
-        script.chunks.push({ op: OP.OP_CHECKSIG })
-        script.chunks.push({ op: OP.OP_ENDIF })
-      }
-
       return script
     } catch (error) {
       throw new Error(`Oracle script creation failed: ${error.message}`)
@@ -817,7 +418,6 @@ class OracleContract {
    * @param condition - Condition description
    * @param amount - Payment amount
    * @param utxo - Funding UTXO
-   * @param timeoutDays - Optional timeout in days
    * @returns Conditional payment details
    */
   async createConditionalPayment(
@@ -834,8 +434,7 @@ class OracleContract {
       vout: number
       satoshis: number
       script: Script
-    },
-    timeoutDays?: number
+    }
   ): Promise<{
     transaction: Transaction
     oracleScript: Script
@@ -851,17 +450,11 @@ class OracleContract {
       const conditionBuffer = Buffer.from(conditionData)
       const conditionHash = Hash.hash256(conditionBuffer).toString('hex')
 
-      const timeout = timeoutDays
-        ? Math.floor(Date.now() / 1000) + (timeoutDays * 24 * 60 * 60)
-        : undefined
-
       // Create oracle script
       const oracleScript = this.createOracleScript(
         beneficiary,
         oracle,
-        conditionHash,
-        timeout,
-        payer.toPublicKey()
+        conditionHash
       )
 
       // Create transaction
@@ -1100,8 +693,7 @@ async function oracleExample() {
       }
     },
     50000,
-    utxo,
-    30 // 30-day timeout
+    utxo
   )
 
   console.log('Conditional payment created:', transaction.id('hex'))
@@ -1259,8 +851,6 @@ class MultiPartyContract {
 ## Related Examples
 
 - [Transaction Building](../transaction-building/README.md)
-- [Atomic Swaps](../atomic-swaps/README.md)
-- [Payment Channels](../payment-channels/README.md)
 
 ## See Also
 

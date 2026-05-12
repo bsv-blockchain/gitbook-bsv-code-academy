@@ -191,19 +191,6 @@ Implement complex spending conditions:
 ```typescript
 import { Script, OP } from '@bsv/sdk';
 
-// Time-locked script (CheckLockTimeVerify)
-const lockTime = 1700000000; // Unix timestamp
-const timeLockScript = new Script()
-  .writeBin(Buffer.from(lockTime.toString(16).padStart(8, '0'), 'hex'))
-  .writeOpCode(OP.OP_CHECKLOCKTIMEVERIFY)
-  .writeOpCode(OP.OP_DROP)
-  // Then require signature
-  .writeOpCode(OP.OP_DUP)
-  .writeOpCode(OP.OP_HASH160)
-  .writeBin(Buffer.from('pubkeyhash', 'hex'))
-  .writeOpCode(OP.OP_EQUALVERIFY)
-  .writeOpCode(OP.OP_CHECKSIG);
-
 // Hash puzzle script
 const secretHash = Hash.sha256(Buffer.from('secret'));
 const hashPuzzleScript = new Script()
@@ -515,37 +502,6 @@ Create reusable script templates:
 import { Script, OP } from '@bsv/sdk';
 
 class SmartContractTemplates {
-  /**
-   * Hash Time Locked Contract (HTLC)
-   */
-  static createHTLC(
-    payeeHash: Buffer,
-    payerHash: Buffer,
-    secretHash: Buffer,
-    lockTime: number
-  ): Script {
-    return new Script()
-      // If secret is revealed
-      .writeOpCode(OP.OP_IF)
-        .writeOpCode(OP.OP_HASH256)
-        .writeBin(secretHash)
-        .writeOpCode(OP.OP_EQUALVERIFY)
-        .writeOpCode(OP.OP_DUP)
-        .writeOpCode(OP.OP_HASH160)
-        .writeBin(payeeHash)
-      .writeOpCode(OP.OP_ELSE)
-        // Or if locktime expires
-        .writeBin(Buffer.from(lockTime.toString(16), 'hex'))
-        .writeOpCode(OP.OP_CHECKLOCKTIMEVERIFY)
-        .writeOpCode(OP.OP_DROP)
-        .writeOpCode(OP.OP_DUP)
-        .writeOpCode(OP.OP_HASH160)
-        .writeBin(payerHash)
-      .writeOpCode(OP.OP_ENDIF)
-      .writeOpCode(OP.OP_EQUALVERIFY)
-      .writeOpCode(OP.OP_CHECKSIG);
-  }
-
   /**
    * Token-colored coins script
    */

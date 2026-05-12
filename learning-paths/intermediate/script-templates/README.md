@@ -15,7 +15,6 @@ By the end of this module, you will be able to:
 - ✅ Understand the Script Template architecture
 - ✅ Create custom locking and unlocking script templates
 - ✅ Implement P2PKH templates with advanced features
-- ✅ Build time-locked transactions with CHECKLOCKTIMEVERIFY
 - ✅ Create multi-signature (M-of-N) templates
 - ✅ Design hash puzzle and preimage templates
 - ✅ Compose complex templates from simpler ones
@@ -311,178 +310,7 @@ const lockingScript = puzzle.lock(hash)
 const unlockingScript = puzzle.unlock(preimage)
 ```
 
-## 4. Time-Locked Templates
-
-### CHECKLOCKTIMEVERIFY Template
-
-Reference: **[Script Component - Time Locks](../../../sdk-components/script/README.md#common-patterns)**
-
-```typescript
-import { Script, P2PKH, PrivateKey, PublicKey, Utils } from '@bsv/sdk'
-
-/**
- * Time-locked P2PKH Template
- * Funds locked until specific time/block height
- */
-class TimeLockP2PKH implements ScriptTemplate {
-  /**
-   * Lock until timestamp or block height
-   * @param address - Payment address
-   * @param locktime - Unix timestamp or block height
-   */
-  lock(address: string, locktime: number): LockingScript {
-    const script = new Script()
-
-    // <locktime> OP_CHECKLOCKTIMEVERIFY OP_DROP
-    script.writeBigNum(locktime)
-    script.writeOpCode(Script.OP_CHECKLOCKTIMEVERIFY)
-    script.writeOpCode(Script.OP_DROP)
-
-    // Then standard P2PKH
-    script.writeOpCode(Script.OP_DUP)
-    script.writeOpCode(Script.OP_HASH160)
-
-    const decoded = Utils.fromBase58Check(address)
-    const pubKeyHash = Buffer.from(decoded.data)
-    script.writeBytes(pubKeyHash)
-
-    script.writeOpCode(Script.OP_EQUALVERIFY)
-    script.writeOpCode(Script.OP_CHECKSIG)
-
-    return script
-  }
-
-  /**
-   * Unlock with signature after locktime expires
-   */
-  unlock(privateKey: PrivateKey, locktime: number): UnlockingScript {
-    const publicKey = privateKey.toPublicKey()
-
-    return {
-      script: new Script(), // Will be filled during signing
-      estimatedLength: 139, // Typical sig + pubkey size
-
-      sign: async (tx: Transaction, inputIndex: number) => {
-        const script = new Script()
-
-        // Create signature
-        const signature = tx.sign(
-          inputIndex,
-          privateKey,
-          publicKey,
-          locktime // Use locktime in signature
-        )
-
-        // <signature> <publicKey>
-        script.writeBytes(signature.toDER())
-        script.writeBytes(publicKey.toDER())
-
-        return script
-      },
-
-      estimateLength: async () => 139
-    }
-  }
-}
-
-// Usage - Lock funds for 1 week
-const timeLock = new TimeLockP2PKH()
-const oneWeekFromNow = Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60)
-
-const lockingScript = timeLock.lock(recipientAddress, oneWeekFromNow)
-
-// Create time-locked payment
-const tx = new Transaction()
-tx.addOutput({
-  lockingScript,
-  satoshis: 100000
-})
-
-// Set transaction locktime
-tx.lockTime = oneWeekFromNow
-
-// Later, recipient unlocks after time expires
-const unlockTx = new Transaction()
-unlockTx.lockTime = oneWeekFromNow
-unlockTx.addInput({
-  sourceTXID: tx.id('hex'),
-  sourceOutputIndex: 0,
-  unlockingScriptTemplate: timeLock.unlock(privateKey, oneWeekFromNow),
-  sequence: 0xfffffffe // Required for CHECKLOCKTIMEVERIFY
-})
-```
-
-### Relative Time Lock (CHECKSEQUENCEVERIFY)
-
-```typescript
-/**
- * Relative time-lock template
- * Funds locked for N blocks after confirmation
- */
-class RelativeTimeLockP2PKH implements ScriptTemplate {
-  /**
-   * @param address - Payment address
-   * @param blocks - Number of blocks to wait
-   */
-  lock(address: string, blocks: number): LockingScript {
-    const script = new Script()
-
-    // <blocks> OP_CHECKSEQUENCEVERIFY OP_DROP
-    script.writeBigNum(blocks)
-    script.writeOpCode(Script.OP_CHECKSEQUENCEVERIFY)
-    script.writeOpCode(Script.OP_DROP)
-
-    // Then P2PKH
-    script.writeOpCode(Script.OP_DUP)
-    script.writeOpCode(Script.OP_HASH160)
-
-    const decoded = Utils.fromBase58Check(address)
-    const pubKeyHash = Buffer.from(decoded.data)
-    script.writeBytes(pubKeyHash)
-
-    script.writeOpCode(Script.OP_EQUALVERIFY)
-    script.writeOpCode(Script.OP_CHECKSIG)
-
-    return script
-  }
-
-  unlock(privateKey: PrivateKey, blocks: number): UnlockingScript {
-    const publicKey = privateKey.toPublicKey()
-
-    return {
-      script: new Script(),
-      estimatedLength: 139,
-
-      sign: async (tx: Transaction, inputIndex: number) => {
-        const script = new Script()
-
-        const signature = tx.sign(inputIndex, privateKey, publicKey)
-
-        script.writeBytes(signature.toDER())
-        script.writeBytes(publicKey.toDER())
-
-        return script
-      },
-
-      estimateLength: async () => 139
-    }
-  }
-}
-
-// Usage - Lock for 10 blocks after confirmation
-const relTimeLock = new RelativeTimeLockP2PKH()
-const lockingScript = relTimeLock.lock(address, 10)
-
-// When spending, set sequence number
-unlockTx.addInput({
-  sourceTXID: txid,
-  sourceOutputIndex: 0,
-  unlockingScriptTemplate: relTimeLock.unlock(privateKey, 10),
-  sequence: 10 // Must wait 10 blocks
-})
-```
-
-## 5. Multi-Signature Templates
+## 4. Multi-Signature Templates
 
 ### M-of-N Multisig Template
 
@@ -641,7 +469,7 @@ const sellerSig = sellerPrivateKey.sign(txHash)
 const unlockingScript = escrow.unlock(buyerSig, sellerSig)
 ```
 
-## 6. Template Composition
+## 5. Template Composition
 
 ### Combining Multiple Templates
 
@@ -756,7 +584,7 @@ const unlockSingle = composite.unlockWithTimeLock(privateKey, oneWeekFromNow)
 const unlockMulti = composite.unlockWithMultisig([sig1, sig2])
 ```
 
-## 7. Protocol-Specific Templates
+## 6. Protocol-Specific Templates
 
 ### Token Transfer Template
 
@@ -838,138 +666,7 @@ const tokenData = token.parseTokenData(lockingScript)
 console.log('Token:', tokenData.tokenId, 'Amount:', tokenData.amount)
 ```
 
-### HTLC (Hashed Timelock Contract) Template
-
-```typescript
-/**
- * HTLC Template for Atomic Swaps
- * Combines hash lock + time lock
- */
-class HTLCTemplate implements ScriptTemplate {
-  /**
-   * Lock with hash and timelock
-   * Recipient can claim with preimage before timeout
-   * Sender can refund after timeout
-   */
-  lock(
-    recipientPubKey: PublicKey,
-    senderPubKey: PublicKey,
-    hash: Buffer,
-    locktime: number
-  ): LockingScript {
-    const script = new Script()
-
-    // IF recipient path (hash + signature)
-    script.writeOpCode(Script.OP_IF)
-
-    // Verify hash
-    script.writeOpCode(Script.OP_HASH256)
-    script.writeBytes(hash)
-    script.writeOpCode(Script.OP_EQUALVERIFY)
-
-    // Verify recipient signature
-    script.writeBytes(recipientPubKey.toDER())
-
-    // ELSE sender refund path (time + signature)
-    script.writeOpCode(Script.OP_ELSE)
-
-    // Check locktime
-    script.writeBigNum(locktime)
-    script.writeOpCode(Script.OP_CHECKLOCKTIMEVERIFY)
-    script.writeOpCode(Script.OP_DROP)
-
-    // Verify sender signature
-    script.writeBytes(senderPubKey.toDER())
-
-    // ENDIF
-    script.writeOpCode(Script.OP_ENDIF)
-
-    // Check signature
-    script.writeOpCode(Script.OP_CHECKSIG)
-
-    return script
-  }
-
-  unlockWithPreimage(
-    preimage: Buffer,
-    recipientPrivateKey: PrivateKey
-  ): UnlockingScript {
-    return {
-      script: new Script(),
-      estimatedLength: preimage.length + 73 + 1,
-
-      sign: async (tx: Transaction, inputIndex: number) => {
-        const script = new Script()
-
-        const sig = tx.sign(
-          inputIndex,
-          recipientPrivateKey,
-          recipientPrivateKey.toPublicKey()
-        )
-
-        script.writeBytes(sig.toDER())
-        script.writeBytes(preimage)
-        script.writeOpCode(Script.OP_1) // IF branch
-
-        return script
-      },
-
-      estimateLength: async () => preimage.length + 73 + 1
-    }
-  }
-
-  unlockWithTimeout(
-    senderPrivateKey: PrivateKey,
-    locktime: number
-  ): UnlockingScript {
-    return {
-      script: new Script(),
-      estimatedLength: 73 + 1,
-
-      sign: async (tx: Transaction, inputIndex: number) => {
-        const script = new Script()
-
-        const sig = tx.sign(
-          inputIndex,
-          senderPrivateKey,
-          senderPrivateKey.toPublicKey(),
-          locktime
-        )
-
-        script.writeBytes(sig.toDER())
-        script.writeOpCode(Script.OP_0) // ELSE branch
-
-        return script
-      },
-
-      estimateLength: async () => 73 + 1
-    }
-  }
-}
-
-// Usage - Atomic swap
-const htlc = new HTLCTemplate()
-
-const preimage = Buffer.from('secret_value')
-const hash = Hash.hash256(preimage)
-const timeoutIn24Hours = Math.floor(Date.now() / 1000) + 86400
-
-// Create HTLC output
-const lockingScript = htlc.lock(
-  recipientPubKey,
-  senderPubKey,
-  hash,
-  timeoutIn24Hours
-)
-
-// Recipient claims with preimage
-const unlockRecipient = htlc.unlockWithPreimage(preimage, recipientPrivateKey)
-
-// OR sender refunds after timeout
-const unlockRefund = htlc.unlockWithTimeout(senderPrivateKey, timeoutIn24Hours)
-```
-
-## 8. Testing Script Templates
+## 7. Testing Script Templates
 
 ### Unit Testing Templates
 
@@ -1038,7 +735,7 @@ describe('PasswordTemplate', () => {
 })
 ```
 
-## 9. Best Practices
+## 8. Best Practices
 
 1. **Always estimate unlocking script size** accurately for fee calculation
 2. **Test templates thoroughly** with both valid and invalid unlocking attempts
@@ -1051,15 +748,12 @@ describe('PasswordTemplate', () => {
 9. **Use type-safe interfaces** for template parameters
 10. **Follow BRC standards** for interoperability
 
-## 10. Common Pitfalls
+## 9. Common Pitfalls
 
 1. **Forgetting OP_0 for CHECKMULTISIG** - Off-by-one bug requires extra OP_0
-2. **Wrong sequence numbers** for CHECKLOCKTIMEVERIFY/CHECKSEQUENCEVERIFY
-3. **Incorrect locktime format** - Block height vs timestamp
-4. **Not handling estimated vs actual** unlocking scripts properly
-5. **Script size exceeding limits** - Monitor total script size
-6. **Incorrect sighash type** - Using wrong type for the use case
-7. **Not setting transaction locktime** when using time locks
+2. **Not handling estimated vs actual** unlocking scripts properly
+3. **Script size exceeding limits** - Monitor total script size
+4. **Incorrect sighash type** - Using wrong type for the use case
 
 ## Hands-On Project: Multi-Party Payment Channel
 
