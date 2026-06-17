@@ -20,7 +20,7 @@ By the end of this module, you will be able to:
 
 Before starting, ensure you have:
 - Completed [Your First Wallet](../first-wallet/README.md)
-- A wallet with testnet BSV (get from MetaNet Desktop Wallet's faucet or [BSV Discord](https://discord.gg/bsv))
+- A wallet with testnet BSV (get from BSV Desktop's faucet or [BSV Discord](https://discord.gg/bsv))
 - Basic understanding of UTXOs and transactions
 
 ## Transaction Structure (Conceptual)
@@ -133,7 +133,7 @@ async function sendPayment(
 // Run this example: npx ts-node send-payment.ts
 //
 // ⚠️  Note: You need testnet BSV first!
-// Get it from BSV Desktop: https://desktop.bsvb.tech/
+// Get it from BSV Desktop: https://github.com/bsv-blockchain/bsv-desktop/releases
 // Or request from BSV Discord: https://discord.gg/bsv
 ```
 
@@ -243,7 +243,7 @@ async function main() {
     const recipient = '1RecipientAddressGoesHere...'
 
     console.log('💡 Before running: Fund your address with testnet BSV')
-    console.log('   1. Get BSV Desktop: https://desktop.bsvb.tech/')
+    console.log('   1. Get BSV Desktop: https://github.com/bsv-blockchain/bsv-desktop/releases')
     console.log('   2. Switch to testnet mode')
     console.log('   3. Use the built-in faucet to get free testnet BSV')
     console.log('   4. Your address:', PrivateKey.fromWif(myPrivateKey).toPublicKey().toAddress())
@@ -788,7 +788,7 @@ try {
 } catch (error) {
   if (error.message.includes('insufficient')) {
     console.error('Not enough funds. Need more BSV.')
-    console.log('Get testnet BSV from MetaNet Desktop Wallet faucet or BSV Discord')
+    console.log('Get testnet BSV from BSV Desktop faucet or BSV Discord')
   }
 }
 ```
@@ -885,11 +885,11 @@ if (result.success) {
 ```typescript
 // Use testnet for development
 const NETWORK = 'test'
-// Get testnet BSV from MetaNet Desktop Wallet's built-in faucet
+// Get testnet BSV from BSV Desktop's built-in faucet
 // or request from BSV Discord: https://discord.gg/bsv
 
 console.log('Testing on testnet')
-console.log('Get testnet BSV from MetaNet Desktop Wallet faucet or BSV Discord')
+console.log('Get testnet BSV from BSV Desktop faucet or BSV Discord')
 console.log('View transactions:', 'https://test.whatsonchain.com/')
 ```
 
@@ -1036,6 +1036,6 @@ Congratulations! You've completed the Beginner Learning Path. You now know how t
 
 - [WhatsOnChain Testnet](https://test.whatsonchain.com/) - View your transactions
 - [BSV Discord](https://discord.gg/bsv) - Get free testnet BSV and community support
-- [MetaNet Desktop Wallet](https://desktop.bsvb.tech/) - Has built-in testnet faucet
+- [BSV Desktop](https://github.com/bsv-blockchain/bsv-desktop/releases) - Has built-in testnet faucet
 - [Transaction Format](https://wiki.bitcoinsv.io/index.php/Transaction) - Technical details
 - [BSV SDK Documentation](https://bsv-blockchain.github.io/ts-sdk/) - Complete SDK reference

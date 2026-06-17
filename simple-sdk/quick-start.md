@@ -5,7 +5,7 @@ Get a BSV wallet connected and send your first payment in under 5 minutes.
 ## Prerequisites
 
 - Node.js 18+
-- A BSV wallet browser extension (such as MetaNet Client)
+- a BRC-100 compatible wallet, such as BSV Browser or BSV Desktop
 - A funded BSV wallet (mainnet or testnet)
 
 ## 1. Install

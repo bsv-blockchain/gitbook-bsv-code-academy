@@ -274,7 +274,7 @@ async function testBackendSetup() {
   console.log('\n✅ BSV SDK is working correctly!')
   console.log('🚀 Ready for backend development')
   console.log('\n💡 Next: Fund this address with testnet BSV from BSV Desktop wallet')
-  console.log('   Download BSV Desktop: https://desktop.bsvb.tech/')
+  console.log('   Download BSV Desktop: https://github.com/bsv-blockchain/bsv-desktop/releases')
 }
 
 testBackendSetup().catch(console.error)
@@ -427,7 +427,7 @@ export const WalletTest: React.FC = () => {
 
       {!wallet ? (
         <button onClick={connectWallet}>
-          Connect MetaNet Desktop Wallet
+          Connect BSV Desktop
         </button>
       ) : (
         <div>
@@ -439,7 +439,7 @@ export const WalletTest: React.FC = () => {
       <div style={{ marginTop: '20px', padding: '10px', background: '#f0f0f0' }}>
         <p><strong>Prerequisites:</strong></p>
         <ul>
-          <li>MetaNet Desktop Wallet installed</li>
+          <li>BSV Desktop installed</li>
           <li>Wallet must be unlocked</li>
           <li>Your dApp origin must be authorized</li>
         </ul>
@@ -498,20 +498,20 @@ export default App
 npm start
 
 # Browser opens at http://localhost:3000
-# Click "Connect MetaNet Desktop Wallet" button
+# Click "Connect BSV Desktop" button
 # Wallet popup should appear
 # After authorization, should show "✅ Wallet connected successfully!"
 ```
 
-### MetaNet Desktop Wallet Installation (BSV Desktop)
+### BSV Desktop Installation (BSV Desktop)
 
 **Required for frontend development:**
 
 **What is BSV Desktop?**
-BSV Desktop (formerly MetaNet Desktop Wallet) is a modern wallet designed to make your experience with BSV Blockchain simple, secure, and powerful—whether you're a beginner or an advanced user. It's the standard wallet for BSV application development.
+BSV Desktop (formerly BSV Desktop) is a modern wallet designed to make your experience with BSV Blockchain simple, secure, and powerful—whether you're a beginner or an advanced user. It's the standard wallet for BSV application development.
 
 **Download and Setup:**
-1. Visit: **https://desktop.bsvb.tech/**
+1. Visit: **https://github.com/bsv-blockchain/bsv-desktop/releases**
 2. Download for your OS (Windows, macOS, or Linux)
 3. Run the installer and follow the setup wizard
 4. Create a new wallet or import existing one
@@ -570,7 +570,7 @@ npm start
 
 **Expected Behavior:**
 1. Browser opens at http://localhost:3000
-2. Click "Connect MetaNet Desktop Wallet"
+2. Click "Connect BSV Desktop"
 3. Wallet popup appears
 4. Authorize connection
 5. See "✅ Wallet connected successfully!"
@@ -595,7 +595,7 @@ npm start
 ### Getting Testnet BSV
 
 Get free testnet BSV for development:
-- Use MetaNet Desktop Wallet's built-in faucet feature
+- Use BSV Desktop's built-in faucet feature
 - Join [BSV Discord](https://discord.gg/bsv) to request testnet coins from the community
 - Use for testing without real funds
 
@@ -662,7 +662,7 @@ npm install
 ### "WalletClient connection failed"
 
 **Checklist:**
-- ✅ MetaNet Desktop Wallet installed?
+- ✅ BSV Desktop installed?
 - ✅ Wallet unlocked?
 - ✅ Testnet mode if using testnet?
 - ✅ dApp origin authorized in wallet?
@@ -724,7 +724,7 @@ PORT=3001 npm start
 - ✅ Node.js 18+ installed
 - ✅ React project created
 - ✅ BSV SDK installed
-- ✅ MetaNet Desktop Wallet installed
+- ✅ BSV Desktop installed
 - ✅ Wallet connection test works
 - ✅ Test component renders
 - ✅ Git initialized
@@ -761,7 +761,7 @@ Now that your environment is ready, continue to:
 ### Tools
 - [VS Code](https://code.visualstudio.com/)
 - [WhatsOnChain Explorer](https://whatsonchain.com/)
-- [MetaNet Desktop Wallet](https://desktop.bsvb.tech/)
+- [BSV Desktop](https://github.com/bsv-blockchain/bsv-desktop/releases)
 - [BRC Standards](https://hub.bsvblockchain.org/brc)
 - [Get BSV - Orange Gateway](https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/get-bsv/orange-gateway)
 - [BSV Discord Community](https://discord.gg/bsv) - Get help and testnet coins

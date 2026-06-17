@@ -2,7 +2,7 @@
 
 **Comprehensive Wallet Data Integration with WalletClient**
 
-Build a Next.js application that connects to the BSV Desktop Wallet to retrieve and display comprehensive wallet information. This project demonstrates how to use the BSV SDK's WalletClient to access identity keys, derive keys using different protocols, manage baskets, check balances, and explore the full capabilities of wallet integration.
+Build a Next.js application that connects to the BSV Desktop to retrieve and display comprehensive wallet information. This project demonstrates how to use the BSV SDK's WalletClient to access identity keys, derive keys using different protocols, manage baskets, check balances, and explore the full capabilities of wallet integration.
 
 **Repository**: [github.com/bsv-blockchain-demos/desktop-wallet-data](https://github.com/bsv-blockchain-demos/desktop-wallet-data)
 
@@ -28,7 +28,7 @@ A production-ready wallet information dashboard featuring:
 
 By completing this project, you will learn:
 
-- **WalletClient Integration** - Connecting to and communicating with BSV Desktop Wallet
+- **WalletClient Integration** - Connecting to and communicating with BSV Desktop
 - **Identity Management** - Retrieving and working with identity keys
 - **Key Derivation** - Using different protocol IDs to derive specialized keys
 - **Public Key Types** - Understanding Identity, Payment, and Data key types
@@ -54,7 +54,7 @@ By completing this project, you will learn:
 └─────────────────────────────────────────┘
                     ↓
 ┌─────────────────────────────────────────┐
-│      BSV Desktop Wallet (Local)         │
+│      BSV Desktop (Local)         │
 │  - User authentication                  │
 │  - Key management                       │
 │  - Signature generation                 │
@@ -75,7 +75,7 @@ By completing this project, you will learn:
 
 ### 1. Wallet Connection
 
-Initialize and connect to the BSV Desktop Wallet using a React hook:
+Initialize and connect to the BSV Desktop using a React hook:
 
 ```typescript
 import { useState, useEffect } from 'react'
@@ -533,9 +533,9 @@ desktop-wallet-data/
    npm install
    ```
 
-2. **Install BSV Desktop Wallet**
+2. **Install BSV Desktop**
 
-   Download and install the BSV Desktop Wallet from [desktop.bsvb.tech](https://desktop.bsvb.tech/)
+   Download and install the BSV Desktop from [GitHub releases](https://github.com/bsv-blockchain/bsv-desktop/releases)
 
    Make sure the wallet is running before connecting from the application.
 
@@ -548,7 +548,7 @@ desktop-wallet-data/
 
 4. **Connect to Wallet**
 
-   Click "Connect Wallet" and approve the connection in your BSV Desktop Wallet.
+   Click "Connect Wallet" and approve the connection in your BSV Desktop.
 
 5. **Explore Wallet Data**
 
@@ -562,7 +562,7 @@ desktop-wallet-data/
 
 **WalletClient** (used in this project):
 - Frontend integration for user-controlled wallets
-- Connects to BSV Desktop Wallet
+- Connects to BSV Desktop
 - User must approve operations
 - Keys remain secure in user's wallet
 - Best for dApps and consumer applications
@@ -666,7 +666,7 @@ This project's patterns enable:
 
 This project demonstrates:
 
-- **WalletClient Integration** - Connecting to BSV Desktop Wallet
+- **WalletClient Integration** - Connecting to BSV Desktop
 - **Identity Management** - Retrieving and displaying identity keys
 - **Key Derivation** - Deriving keys with different protocols and key IDs
 - **Address Generation** - Converting public keys to addresses
@@ -675,7 +675,7 @@ This project demonstrates:
 - **Capabilities Discovery** - Exploring available wallet features
 - **Network Detection** - Identifying mainnet vs testnet
 
-These patterns form the foundation for building user-facing BSV applications that integrate with the BSV Desktop Wallet, giving users full control over their keys and transactions.
+These patterns form the foundation for building user-facing BSV applications that integrate with the BSV Desktop, giving users full control over their keys and transactions.
 
 ---
 
@@ -687,5 +687,5 @@ These patterns form the foundation for building user-facing BSV applications tha
 - [BRC-42 (Key Derivation)](../../../sdk-components/brc-42/README.md)
 - [UTXO Management](../../../sdk-components/utxo-management/README.md)
 - [P2PKH](../../../sdk-components/p2pkh/README.md)
-- [BSV Desktop Wallet](https://desktop.bsvb.tech/)
+- [BSV Desktop](https://github.com/bsv-blockchain/bsv-desktop/releases)
 - [Wallet Toolbox Documentation](https://fast.brc.dev/)

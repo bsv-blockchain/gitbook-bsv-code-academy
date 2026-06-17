@@ -171,7 +171,7 @@ Frontend development is when **users control their own wallets and private keys*
 │        (BRC Protocol)                │
 │              ↕                       │
 │  ┌────────────────────────────────┐ │
-│  │  MetaNet Desktop Wallet        │ │
+│  │  BSV Desktop        │ │
 │  │  (BSV Desktop)                 │ │
 │  │                                │ │
 │  │  - Private keys (user-owned)   │ │
@@ -213,7 +213,7 @@ import { WalletClient } from '@bsv/sdk'
 ```
 
 **That's it!** The WalletClient handles everything:
-- Connection to MetaNet Desktop Wallet
+- Connection to BSV Desktop
 - Transaction signing requests
 - UTXO management (wallet handles)
 - Fee calculation (wallet handles)
@@ -228,7 +228,7 @@ class PaymentDApp {
   private wallet: WalletClient
 
   async connectWallet() {
-    // 1. Connect to user's MetaNet Desktop Wallet
+    // 1. Connect to user's BSV Desktop
     this.wallet = new WalletClient('auto')
     await this.wallet.connectToSubstrate()
 
@@ -283,11 +283,11 @@ class PaymentDApp {
 }
 ```
 
-### MetaNet Desktop Wallet (BSV Desktop)
+### BSV Desktop
 
 **The Standard Wallet:**
 
-This course **exclusively teaches MetaNet Desktop Wallet integration**. It is the reference implementation of the BRC wallet specification and provides:
+This course **exclusively teaches BSV Desktop integration**. It is the reference implementation of the BRC wallet specification and provides:
 
 - ✅ Full BRC standard compliance
 - ✅ Seamless WalletClient integration
@@ -299,9 +299,9 @@ This course **exclusively teaches MetaNet Desktop Wallet integration**. It is th
 **Official Resources:**
 - **Wallet Toolbox Documentation**: https://fast.brc.dev/
 - **BRC Standards**: https://hub.bsvblockchain.org/brc
-- **MetaNet Desktop Wallet**: https://desktop.bsvb.tech/
+- **BSV Desktop**: https://github.com/bsv-blockchain/bsv-desktop/releases
 
-**Other wallets** (Panda, Yours, etc.) are **not covered** in this course. Stick with MetaNet Desktop Wallet for standardized, reliable integration.
+**Other wallets** (Panda, Yours, etc.) are **not covered** in this course. Stick with BSV Desktop for standardized, reliable integration.
 
 ### Security Considerations
 
@@ -381,7 +381,7 @@ Many applications use **both paradigms**:
 - Handles batch payouts
 
 **Frontend (Customer wallet):**
-- Customers use MetaNet Desktop Wallet
+- Customers use BSV Desktop
 - Connect wallet to make purchases
 - Sign payment transactions
 - Receive refunds to their wallet
@@ -454,7 +454,7 @@ Now that you understand the two paradigms, the course content is organized to te
 2. **Frontend/Integration** = User controls keys, wallet signing, non-custodial
 3. **Backend** uses `PrivateKey`, `Transaction`, `ARC` from SDK
 4. **Frontend** uses `WalletClient` exclusively
-5. **MetaNet Desktop Wallet** is the standard wallet for frontend integration
+5. **BSV Desktop** is the standard wallet for frontend integration
 6. Most production applications use **both paradigms** for different parts
 
 **Choose the paradigm** that matches your use case, security requirements, and user experience goals.
@@ -465,7 +465,7 @@ Now that you understand the two paradigms, the course content is organized to te
 
 - **Wallet Toolbox Documentation**: https://fast.brc.dev/
 - **BRC Standards**: https://hub.bsvblockchain.org/brc
-- **MetaNet Desktop Wallet**: https://desktop.bsvb.tech/
+- **BSV Desktop**: https://github.com/bsv-blockchain/bsv-desktop/releases
 - **Get BSV - Orange Gateway**: https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/get-bsv/orange-gateway
 - **SDK Documentation**: https://bsv-blockchain.github.io/ts-sdk/
 - **Security Best Practices**: [sdk-components/private-keys/](../../../sdk-components/private-keys/)

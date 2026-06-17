@@ -444,7 +444,7 @@ Week 3-4: Utilitary Token Platform project (full-stack token system)
 ### Developer Tools
 - [BSV TypeScript SDK](https://github.com/bsv-blockchain/ts-sdk) - Official SDK repository
 - [BSV SDK Documentation](https://bsv-blockchain.github.io/ts-sdk/) - SDK API reference
-- [MetaNet Desktop Wallet](https://desktop.bsvb.tech/) - BSV desktop wallet
+- [BSV Desktop](https://github.com/bsv-blockchain/bsv-desktop/releases) - BSV desktop wallet
 - [Wallet Toolbox](https://fast.brc.dev/) - WalletClient API documentation
 - [Get BSV - Orange Gateway](https://hub.bsvblockchain.org/demos-and-onboardings/onboardings/onboarding-catalog/get-bsv/orange-gateway) - Purchase BSV with fiat
 - [WhatsOnChain](https://whatsonchain.com/) - BSV blockchain explorer

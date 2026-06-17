@@ -56,7 +56,7 @@ By completing this project, you will learn:
 
 ### 1. Frontend Wallet Integration
 
-Connect to the user's BSV Desktop Wallet using a React hook:
+Connect to the user's BSV Desktop using a React hook:
 
 ```typescript
 import { useState, useEffect } from 'react'
@@ -270,7 +270,7 @@ inscription-platform/
 
    Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-3. **Connect BSV Desktop Wallet** and create inscriptions
+3. **Connect BSV Desktop** and create inscriptions
 
 ---
 
@@ -322,4 +322,4 @@ These patterns form the foundation for building data storage applications, times
 - [OP_RETURN](../../../code-features/op-return/README.md)
 - [Script Component](../../../sdk-components/script/README.md)
 - [Transaction Component](../../../sdk-components/transaction/README.md)
-- [BSV Desktop Wallet](https://desktop.bsvb.tech/)
+- [BSV Desktop](https://github.com/bsv-blockchain/bsv-desktop/releases)

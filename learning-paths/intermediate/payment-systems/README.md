@@ -2409,7 +2409,7 @@ const txid = result.txid               // Extract txid from result
 - **Solution**: Ensure Database class is implemented with all required methods
 
 **Issue**: Frontend wallet not connecting
-- **Solution**: Check that MetaNet Desktop Wallet or compatible wallet is installed
+- **Solution**: Check that BSV Desktop or compatible wallet is installed
 
 ### Time Breakdown
 
@@ -2456,4 +2456,4 @@ You've built a complete payment processing system demonstrating:
 - [Wallet Toolbox Documentation](https://fast.brc.dev/)
 - [Transaction Building](../transaction-building/)
 - [WalletClient Guide](../../beginner/wallet-client-integration/)
-- [MetaNet Desktop Wallet](https://desktop.bsvb.tech/)
+- [BSV Desktop](https://github.com/bsv-blockchain/bsv-desktop/releases)

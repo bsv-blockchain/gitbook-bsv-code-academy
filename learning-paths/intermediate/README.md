@@ -8,7 +8,7 @@ The intermediate path is **project-based**. Instead of learning concepts in isol
 
 - **Full working code** you can run and deploy
 - **Backend implementation** (custodial wallet management)
-- **Frontend implementation** (user-controlled wallets with WalletClient + MetaNet Desktop Wallet)
+- **Frontend implementation** (user-controlled wallets with WalletClient + BSV Desktop)
 - **Best practices** for production deployment
 - **SDK-first approach** using pre-built components
 
@@ -38,7 +38,7 @@ Before starting this path, you should have completed the [Beginner Learning Path
 ### Project 1: [Desktop Wallet Management](desktop-wallet-management/README.md)
 **Duration**: 2-3 hours | **Difficulty**: Intermediate
 
-Build a comprehensive wallet information dashboard that connects to the BSV Desktop Wallet to retrieve and display wallet data.
+Build a comprehensive wallet information dashboard that connects to the BSV Desktop to retrieve and display wallet data.
 
 **What You'll Build**:
 - Wallet connection and authentication flow
@@ -289,7 +289,7 @@ Throughout this path, you'll learn two essential approaches to BSV application d
 ### Frontend Integration Development
 **When to Use**: User-facing dApps, consumer applications
 
-- Users control their own wallets via MetaNet Desktop Wallet
+- Users control their own wallets via BSV Desktop
 - Browser-based transaction signing through WalletClient
 - SDK's WalletClient component handles wallet communication
 - Use cases: crowdfunding platforms, marketplace frontends, consumer verification apps
@@ -304,7 +304,7 @@ All four projects emphasize using the **BSV SDK's pre-built components** rather 
 
 ✅ **DO**: Use SDK's built-in transaction methods that handle broadcasting, fees, and UTXO management automatically
 
-✅ **DO**: Use WalletClient for frontend wallet integration with MetaNet Desktop Wallet
+✅ **DO**: Use WalletClient for frontend wallet integration with BSV Desktop
 
 ✅ **DO**: Let the SDK abstract away infrastructure details
 
@@ -401,7 +401,7 @@ The projects in this path directly prepare you to build:
 - Reference [Wallet Toolbox Documentation](https://fast.brc.dev/) for WalletClient API
 - Reference [BRC Standards](https://hub.bsvblockchain.org/brc) for protocol specifications
 - Visit [BSV Skills Center](https://hub.bsvblockchain.org/bsv-skills-center) for additional resources
-- Download [MetaNet Desktop Wallet](https://desktop.bsvb.tech/) for testing frontend integration
+- Download [BSV Desktop](https://github.com/bsv-blockchain/bsv-desktop/releases) for testing frontend integration
 - Join BSV developer communities for peer support
 
 ## Estimated Time

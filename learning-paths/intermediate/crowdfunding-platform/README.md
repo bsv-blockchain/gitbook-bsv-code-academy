@@ -64,7 +64,7 @@ By completing this project, you will learn:
 
 ### 1. Frontend Wallet Integration
 
-Connect to the user's BSV Desktop Wallet using a React hook:
+Connect to the user's BSV Desktop using a React hook:
 
 ```typescript
 import { useState, useEffect } from 'react'
@@ -570,7 +570,7 @@ crowdfunding-project/
    **What this does:**
    - Creates a new private key (or uses existing from `.env`)
    - Initializes a backend wallet using BSV Wallet Toolbox
-   - Connects to your BSV Desktop Wallet
+   - Connects to your BSV Desktop
    - Sends 10,000 satoshis to the backend wallet via BRC-29 payment
    - Saves wallet configuration to `.env`
 
@@ -581,7 +581,7 @@ crowdfunding-project/
 
    Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-4. **Connect BSV Desktop Wallet** and start investing
+4. **Connect BSV Desktop** and start investing
 
 ---
 

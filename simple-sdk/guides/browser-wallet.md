@@ -1,6 +1,8 @@
 # Browser Wallet
 
-The browser wallet connects to the user's BSV wallet extension (such as MetaNet Client) and provides a full-featured API for blockchain operations.
+The browser wallet connects to the user's BRC-100 compatible wallet, such as BSV Browser or BSV Desktop, and provides a full-featured API for blockchain operations.
+
+Examples that use `messagebox.babbage.systems` are using a Babbage-hosted public endpoint. That host is a service default for the example, not a protocol requirement.
 
 ## Connecting
 

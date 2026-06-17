@@ -90,7 +90,7 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
 export const useWallet = () => useContext(WalletContext)
 ```
 
-> **BSV SDK Pattern**: WalletClient connects to BSV Desktop Wallet automatically. No API keys needed.
+> **BSV SDK Pattern**: WalletClient connects to BSV Desktop automatically. No API keys needed.
 
 ---
 
@@ -389,7 +389,7 @@ Without this, tokens are **permanently unspendable**.
 
 ## Troubleshooting
 
-- **"Failed to connect"** - Install/unlock BSV Desktop Wallet
+- **"Failed to connect"** - Install/unlock BSV Desktop
 - **"Insufficient balance"** - Need BSV for tx fees (get testnet coins from [faucet](https://faucet.bsvb.tech/))
 - **Tokens not appearing** - Check correct basket name, verify `customInstructions` stored
 
@@ -402,4 +402,4 @@ Without this, tokens are **permanently unspendable**.
 - [BRC-62: BEEF](https://hub.bsvblockchain.org/brc/transactions/0062)
 - [BRC-33: MessageBox](https://hub.bsvblockchain.org/brc/peer-to-peer/0033)
 - [BRC-100: Wallet-to-Application Interface](https://hub.bsvblockchain.org/brc/wallet/0100)
-- [BSV Desktop Wallet](https://desktop.bsvb.tech/)
+- [BSV Desktop](https://github.com/bsv-blockchain/bsv-desktop/releases)

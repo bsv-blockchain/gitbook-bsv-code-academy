@@ -14,7 +14,7 @@ A production-ready token management interface featuring:
 - Peer-to-peer token transfers via MessageBox
 - Live token wallet with balance tracking
 - Overlay service validation before broadcast
-- BSV Desktop Wallet integration
+- BSV Desktop integration
 
 ---
 
@@ -52,7 +52,7 @@ By completing this project, you will learn:
 
 ```
 ┌─────────────────────────────────────────┐
-│      BSV Desktop Wallet (User)          │
+│      BSV Desktop (User)          │
 │  - Private key management               │
 │  - Transaction signing                  │
 │  - UTXO tracking                        │
@@ -87,7 +87,7 @@ By completing this project, you will learn:
 
 ### 1. Wallet Integration
 
-Connect to BSV Desktop Wallet using React context:
+Connect to BSV Desktop using React context:
 
 ```typescript
 import { WalletClient } from '@bsv/sdk'
@@ -434,9 +434,9 @@ frontend/
 
 ## Setup
 
-1. **Install BSV Desktop Wallet**
+1. **Install BSV Desktop**
 
-   Download from [https://desktop.bsvb.tech/](https://desktop.bsvb.tech/)
+   Download from [https://github.com/bsv-blockchain/bsv-desktop/releases](https://github.com/bsv-blockchain/bsv-desktop/releases)
 
 2. **Install dependencies**
    ```bash
