@@ -117,7 +117,7 @@ find . -name "*.svg" -exec svgo {} \;
 ## Copyright and Licensing
 
 - BSV logos: Used with permission from BSV Association
-- Diagrams: Created for this project (MIT License)
+- Diagrams: Created for this project (Apache License 2.0)
 - Third-party images: Properly attributed with licenses
 
 ## Placeholder Assets
